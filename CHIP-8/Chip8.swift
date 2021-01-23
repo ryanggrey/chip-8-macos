@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-struct Chip8 {
+public struct Chip8 {
     private var ram: [Byte]
     private var v = [Byte](repeating: 0, count: 16) // 16 registers, each register is 1 byte / 8 bits
     private var i: Word = 0
@@ -42,5 +41,29 @@ struct Chip8 {
         // TODO: load the fontset into the first 80 bytes
 
         // TODO: copy program (rom) into ram starting at byte 512 by convention
+    }
+
+    public static func disassembleOp(codeBuffer: [Byte], pc: Word) {
+        let code = codeBuffer[pc]
+    }
+}
+
+extension Array {
+    subscript(place: Word) -> Element {
+        get {
+            return self[Int(place)]
+        }
+        set {
+            self[Int(place)] = newValue
+        }
+    }
+
+    subscript(place: Byte) -> Element {
+        get {
+            return self[Int(place)]
+        }
+        set {
+            self[Int(place)] = newValue
+        }
     }
 }
