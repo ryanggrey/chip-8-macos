@@ -7,9 +7,6 @@
 
 import Foundation
 
-typealias Byte = UInt8 // 8 bits
-typealias Word = UInt16 // 16 bits
-typealias Opcode = Word
 
 struct Chip8 {
     private var ram: [Byte]
