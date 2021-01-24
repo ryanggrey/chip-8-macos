@@ -18,6 +18,7 @@ public struct Rom {
             let url = URL(fileURLWithPath: filepath)
             let contents = try Data(contentsOf: url)
             let romBytes = [Byte](contents)
+            // TODO: load the fontset into the first 80 bytes
             let leadingRam = [Byte](repeating: 0, count: 0x200)
             let ram = leadingRam + romBytes
             return ram
