@@ -11,7 +11,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let loadedRom = Rom.read("Fishie")
-        Chip8.disassembleOp(codeBuffer: loadedRom, pc: 0x200)
+        Disassembler.disassemble(codeBuffer: loadedRom)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

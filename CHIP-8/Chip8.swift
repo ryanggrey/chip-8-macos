@@ -42,10 +42,6 @@ public struct Chip8 {
 
         // TODO: copy program (rom) into ram starting at byte 512 by convention
     }
-
-    public static func disassembleOp(codeBuffer: [Byte], pc: Word) {
-        let code = codeBuffer[pc]
-    }
 }
 
 extension Array {
