@@ -7,21 +7,18 @@
 
 import Foundation
 
-struct OpError: Error {
-    let message: String
-}
-
 public struct Disassembler {
     public static func disassemble(codeBuffer: [Byte]) {
-        var pc: Byte = 0
-        let numberOfWords = codeBuffer.count / 2
-        while pc < numberOfWords {
+        let pcStart = 0x200
+        var pc = pcStart
+        let lastOpIndex = (codeBuffer.count - 1)
+        while pc < lastOpIndex {
             try! disassembleOp(codeBuffer: codeBuffer, pc: pc)
             pc += 2 // increment a word at a time
         }
     }
     
-    private static func disassembleOp(codeBuffer: [Byte], pc: Byte) throws {
+    private static func disassembleOp(codeBuffer: [Byte], pc: Int) throws {
         let byte1 = codeBuffer[pc]
         let byte2 = codeBuffer[pc + 1]
         let nibble1 = byte1 >> 4 // shift everything right by 4 bits, prefixing with 0s
@@ -237,7 +234,7 @@ public struct Disassembler {
             let xStr = getRegisterStr(x)
             opStr = getOpStr("V0-V\(xStr), (I)")
         default:
-            mnemonicStr = getMnemonicStr("NOOP")
+            mnemonicStr = getMnemonicStr("UNK")
             opStr = getOpStr("")
         }
 
@@ -245,7 +242,7 @@ public struct Disassembler {
         print(dissassembly)
     }
 
-    static func getAddressAndCodeStr(_ pc: Byte, _ byte1: Byte, _ byte2: Byte) -> String {
+    static func getAddressAndCodeStr(_ pc: Int, _ byte1: Byte, _ byte2: Byte) -> String {
         let address = getHexStr(width: 4, pc)
         let byte1Str = getHexStr(width: 2, byte1)
         let byte2Str = getHexStr(width: 2, byte2)

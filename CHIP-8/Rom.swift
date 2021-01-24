@@ -17,9 +17,10 @@ public struct Rom {
         do {
             let url = URL(fileURLWithPath: filepath)
             let contents = try Data(contentsOf: url)
-            let byteData = [Byte](contents)
-            print(contents)
-            return byteData
+            let romBytes = [Byte](contents)
+            let leadingRam = [Byte](repeating: 0, count: 0x200)
+            let ram = leadingRam + romBytes
+            return ram
         } catch {
             // contents could not be loaded
             print("Rom not found: " + romName)
