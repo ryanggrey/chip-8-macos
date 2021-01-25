@@ -24,20 +24,19 @@ public class Chip8 {
     private var delayTimer: Byte = 0
     private var soundTimer: Byte = 0
 
-    // 16 levels of stack
-    private var stack = [Byte](repeating: 0, count: 16)
+    private(set) var stack: [Word]
     private var stackPointer: Byte = 0
 
     private var keys = [Byte](repeating: 0, count: 16)
 
     init(
-        pixels: [Byte],
+        pixels: [Byte] = [Byte](repeating: 0, count: 64 * 32),
+        stack: [Word] = [Word](repeating: 0, count: 16),
         ram: [Byte]) {
 
-        // initialize memory
-        self.ram = ram
-        // initialize graphics
         self.pixels = pixels
+        self.stack = stack
+        self.ram = ram
     }
 
     func doOp() throws {
@@ -52,11 +51,14 @@ public class Chip8 {
         {
         case (0x00, 0x00, 0x0e, 0x00):
             // 00E0, Display, Clears the screen.
+            // CLS
             self.pixels = self.pixels.map { _ in 0 }
             pc += 2
         case (0x00, 0x00, 0x0e, 0x0e):
             // 00EE, Flow, Returns from a subroutine.
-            throw NotImplemented()
+            // RTS
+            pc = stack.removeLast()
+            pc += 2
         case (0x00, _, _, _):
             // 0NNN, Call, Calls machine code routine (RCA 1802 for COSMAC VIP) at address NNN. Not necessary for most ROMs.
             // Noop
