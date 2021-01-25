@@ -8,5 +8,4 @@
 import Foundation
 
 public typealias Byte = UInt8 // 8 bits
-public typealias Word = UInt16 // 16 bits
 public typealias Opcode = Word

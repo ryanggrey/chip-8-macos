@@ -65,7 +65,8 @@ public class Chip8 {
             return
         case (0x01, let n1, let n2, let n3):
             // 1NNN, Flow, Jumps to address NNN.
-            throw NotImplemented()
+            // JUMP
+            pc = Word(nibbles: [n1, n2, n3])
 
         case (0x02, let n1, let n2, let n3):
             // 2NNN, Flow, Calls subroutine at NNN.

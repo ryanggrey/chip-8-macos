@@ -263,8 +263,8 @@ public struct Disassembler {
     }
 
     static func getNibblesStr(_ values: [Byte]) -> String {
-        let nibbles = concatNibbles(values)
-        let nibblesStr = getHexStr(width: values.count, nibbles)
+        let word = Word(nibbles: values)
+        let nibblesStr = getHexStr(width: values.count, word)
         return nibblesStr
     }
 
@@ -287,11 +287,5 @@ public struct Disassembler {
 
     static func getOpStr(_ value: String) -> String {
         return value
-    }
-
-    static func concatNibbles(_ bytes: [Byte]) -> Word {
-        return bytes.reduce(0x0) { (last, next) -> UInt16 in
-            return last << 4 | Word(next)
-        }
     }
 }

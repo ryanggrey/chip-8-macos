@@ -9,6 +9,10 @@ import XCTest
 @testable import CHIP_8
 
 class CHIP_8Tests: XCTestCase {
+    func test_initial_pc_is_0x200() {
+        let chip8 = Chip8(ram: [Byte]())
+        XCTAssertEqual(chip8.pc, 0x200)
+    }
 
     func test_CLS_clears_pixels() {
         let ram = createRamWithOp(0x00, 0x00, 0x0e, 0x00)
@@ -57,6 +61,22 @@ class CHIP_8Tests: XCTestCase {
         let observedStack = chip8.stack
         let expectedStack = [stack[0]]
         XCTAssertEqual(observedStack, expectedStack)
+    }
+
+    func test_JUMP_sets_pc_to_NNN() {
+        let n1: Byte = 0x01, n2: Byte = 0x0e, n3: Byte = 0x03
+        let ram = createRamWithOp(0x01, n1, n2, n3)
+        let chip8 = Chip8(ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = createPcFrom(n1, n2, n3)
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func createPcFrom(_ n1: Byte, _ n2: Byte, _ n3: Byte) -> Word {
+        let word = Word(nibbles: [n1, n2, n3])
+        return word
     }
 
     func createOp(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte) -> [Byte] {
