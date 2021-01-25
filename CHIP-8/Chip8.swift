@@ -17,7 +17,7 @@ public class Chip8 {
     //0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
     //0x050-0x0A0 - Used for the built in 4x5 pixel font set (0-F)
     //0x200-0xFFF - Program ROM and work RAM
-    private(set) var pc: Word = 0x200
+    private(set) var pc: Word
     
     private(set) var pixels: [Byte]
 
@@ -30,10 +30,12 @@ public class Chip8 {
     private var keys = [Byte](repeating: 0, count: 16)
 
     init(
+        pc: Word = 0x200,
         pixels: [Byte] = [Byte](repeating: 0, count: 64 * 32),
-        stack: [Word] = [Word](repeating: 0, count: 16),
+        stack: [Word] = [Word](),
         ram: [Byte]) {
 
+        self.pc = pc
         self.pixels = pixels
         self.stack = stack
         self.ram = ram
@@ -70,7 +72,9 @@ public class Chip8 {
 
         case (0x02, let n1, let n2, let n3):
             // 2NNN, Flow, Calls subroutine at NNN.
-            throw NotImplemented()
+            // CALL
+            stack.append(pc)
+            pc = Word(nibbles: [n1, n2, n3])
 
         case (0x03, let x, let n1, let n2):
             // 3XNN, Cond, Skips the next instruction if VX equals NN. (Usually the next instruction is a jump to skip a code block)

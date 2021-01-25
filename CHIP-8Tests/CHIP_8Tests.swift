@@ -74,6 +74,30 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
+    func test_CALL_adds_current_pc_to_stack() {
+        let n1: Byte = 0x02, n2: Byte = 0x0a, n3: Byte = 0x0b
+        let ram = createRamWithOp(0x02, n1, n2, n3)
+        let initialPc: Word = 0x200
+        let chip8 = Chip8(pc: initialPc, ram: ram)
+        XCTAssertTrue(chip8.stack.isEmpty)
+
+        try! chip8.doOp()
+        let observedStack = chip8.stack
+        let expectedStack = [initialPc]
+        XCTAssertEqual(observedStack, expectedStack)
+    }
+
+    func test_CALL_sets_pc_to_NNN() {
+        let n1: Byte = 0x0b, n2: Byte = 0x0c, n3: Byte = 0x71
+        let ram = createRamWithOp(0x02, n1, n2, n3)
+        let chip8 = Chip8(ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = createPcFrom(n1, n2, n3)
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
     func createPcFrom(_ n1: Byte, _ n2: Byte, _ n3: Byte) -> Word {
         let word = Word(nibbles: [n1, n2, n3])
         return word
