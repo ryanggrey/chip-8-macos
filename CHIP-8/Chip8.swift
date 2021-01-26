@@ -107,7 +107,11 @@ public class Chip8 {
 
         case (0x05, let x, let y, 0x00):
             // 5XY0, Cond, Skips the next instruction if VX equals VY. (Usually the next instruction is a jump to skip a code block)
-            throw NotImplemented()
+            if v[x] == v[y] {
+                pc += 4
+            } else {
+                pc += 2
+            }
 
         case (0x06, let x, let n1, let n2):
             // 6XNN, Const, Sets VX to NN.

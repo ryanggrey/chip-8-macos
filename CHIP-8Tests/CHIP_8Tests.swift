@@ -112,7 +112,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_SKIP_EQ_moves_to_next_instruction_if_Vx_NOT_equal_to_NN() {
+    func test_SKIP_EQ_0x03_moves_to_next_instruction_if_Vx_NOT_equal_to_NN() {
         let x: Byte = 2, n1: Byte = 0x0c, n2: Byte = 0x01
         let ram = createRamWithOp(0x03, x, n1, n2)
         var v = [Byte](repeating: 0, count: 3)
@@ -126,7 +126,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_SKIP_NE_skips_next_instruction_if_Vx_NOT_equal_to_NN() {
+    func test_SKIP_NE_0x03_skips_next_instruction_if_Vx_NOT_equal_to_NN() {
         let x: Byte = 2, n1: Byte = 0x09, n2: Byte = 0x0c
         let ram = createRamWithOp(0x04, x, n1, n2)
         var v = [Byte](repeating: 0, count: 3)
@@ -145,6 +145,36 @@ class CHIP_8Tests: XCTestCase {
         let ram = createRamWithOp(0x04, x, n1, n2)
         var v = [Byte](repeating: 0, count: 3)
         v[x] = Byte(nibbles: [n1, n2])
+        let chip8 = Chip8(v: v, ram: ram)
+        let initialPc = chip8.pc
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_EQ_0x05_skips_next_instruction_if_Vx_equal_to_Vy() {
+        let x: Byte = 2, y: Byte = 13
+        let ram = createRamWithOp(0x05, x, y, 0x00)
+        var v = [Byte](repeating: 0, count: 14)
+        v[x] = 0x4e
+        v[y] = v[x]
+        let chip8 = Chip8(v: v, ram: ram)
+        let initialPc = chip8.pc
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 4
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_EQ_0x05_moves_to_next_instruction_if_Vx_NOT_equal_to_Vy() {
+        let x: Byte = 2, y: Byte = 13
+        let ram = createRamWithOp(0x05, x, y, 0x00)
+        var v = [Byte](repeating: 0, count: 14)
+        v[x] = 0x4e
+        v[y] = 0x5b
         let chip8 = Chip8(v: v, ram: ram)
         let initialPc = chip8.pc
 
