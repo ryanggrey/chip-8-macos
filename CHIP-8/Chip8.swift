@@ -11,7 +11,7 @@ struct NotImplemented: Error {}
 
 public class Chip8 {
     private var ram: [Byte]
-    private var v: [Byte]
+    private(set) var v: [Byte]
     private var i: Word = 0
     private(set) var pc: Word
     
@@ -107,6 +107,7 @@ public class Chip8 {
 
         case (0x05, let x, let y, 0x00):
             // 5XY0, Cond, Skips the next instruction if VX equals VY. (Usually the next instruction is a jump to skip a code block)
+            // SKIP.EQ
             if v[x] == v[y] {
                 pc += 4
             } else {
@@ -115,7 +116,9 @@ public class Chip8 {
 
         case (0x06, let x, let n1, let n2):
             // 6XNN, Const, Sets VX to NN.
-            throw NotImplemented()
+            // MVI
+            v[x] = Byte(nibbles: [n1, n2])
+            pc += 2
 
         case (0x07, let x, let n1, let n2):
             // 7XNN, Const, Adds NN to VX. (Carry flag is not changed)
