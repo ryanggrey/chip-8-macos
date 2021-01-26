@@ -97,7 +97,13 @@ public class Chip8 {
 
         case (0x04, let x, let n1, let n2):
             // 4XNN, Cond, Skips the next instruction if VX doesn't equal NN. (Usually the next instruction is a jump to skip a code block)
-            throw NotImplemented()
+            // SKIP.NE
+            let nn = Byte(nibbles: [n1, n2])
+            if nn != v[x] {
+                pc += 4
+            } else {
+                pc += 2
+            }
 
         case (0x05, let x, let y, 0x00):
             // 5XY0, Cond, Skips the next instruction if VX equals VY. (Usually the next instruction is a jump to skip a code block)

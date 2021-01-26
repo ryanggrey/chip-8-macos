@@ -88,7 +88,7 @@ class CHIP_8Tests: XCTestCase {
     }
 
     func test_CALL_sets_pc_to_NNN() {
-        let n1: Byte = 0x0b, n2: Byte = 0x0c, n3: Byte = 0x71
+        let n1: Byte = 0x0b, n2: Byte = 0x0c, n3: Byte = 0x0d
         let ram = createRamWithOp(0x02, n1, n2, n3)
         let chip8 = Chip8(ram: ram)
 
@@ -99,7 +99,7 @@ class CHIP_8Tests: XCTestCase {
     }
 
     func test_SKIP_EQ_skips_next_instruction_if_Vx_equal_to_NN() {
-        let x: Byte = 2, n1: Byte = 0x0c, n2: Byte = 0x71
+        let x: Byte = 2, n1: Byte = 0x0c, n2: Byte = 0x0f
         let ram = createRamWithOp(0x03, x, n1, n2)
         var v = [Byte](repeating: 0, count: 3)
         v[x] = Byte(nibbles: [n1, n2])
@@ -112,11 +112,39 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_SKIP_EQ_skips_next_instruction_if_Vx_NOT_equal_to_NN() {
-        let x: Byte = 2, n1: Byte = 0x0c, n2: Byte = 0x71
+    func test_SKIP_EQ_moves_to_next_instruction_if_Vx_NOT_equal_to_NN() {
+        let x: Byte = 2, n1: Byte = 0x0c, n2: Byte = 0x01
         let ram = createRamWithOp(0x03, x, n1, n2)
         var v = [Byte](repeating: 0, count: 3)
         v[x] = Byte(nibbles: [n1, n1])
+        let chip8 = Chip8(v: v, ram: ram)
+        let initialPc = chip8.pc
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_NE_skips_next_instruction_if_Vx_NOT_equal_to_NN() {
+        let x: Byte = 2, n1: Byte = 0x09, n2: Byte = 0x0c
+        let ram = createRamWithOp(0x04, x, n1, n2)
+        var v = [Byte](repeating: 0, count: 3)
+        v[x] = Byte(nibbles: [n1, n1])
+        let chip8 = Chip8(v: v, ram: ram)
+        let initialPc = chip8.pc
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 4
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_NE_moves_to_next_instruction_if_Vx_equal_to_NN() {
+        let x: Byte = 2, n1: Byte = 0x05, n2: Byte = 0x0d
+        let ram = createRamWithOp(0x04, x, n1, n2)
+        var v = [Byte](repeating: 0, count: 3)
+        v[x] = Byte(nibbles: [n1, n2])
         let chip8 = Chip8(v: v, ram: ram)
         let initialPc = chip8.pc
 
