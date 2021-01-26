@@ -12,7 +12,6 @@
 		164F160825BB8EE6002A8D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 164F160725BB8EE6002A8D89 /* Assets.xcassets */; };
 		164F160B25BB8EE6002A8D89 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 164F160925BB8EE6002A8D89 /* Main.storyboard */; };
 		164F161725BB8EE6002A8D89 /* CHIP_8Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F161625BB8EE6002A8D89 /* CHIP_8Tests.swift */; };
-		164F162225BB8EE6002A8D89 /* CHIP_8UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F162125BB8EE6002A8D89 /* CHIP_8UITests.swift */; };
 		164F163325BB9271002A8D89 /* Chip8.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F163225BB9271002A8D89 /* Chip8.swift */; };
 		16FC136525BC577700A8776F /* Fishie.ch8 in Resources */ = {isa = PBXBuildFile; fileRef = 16FC136425BC577700A8776F /* Fishie.ch8 */; };
 		16FC137225BC608000A8776F /* Rom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC137125BC608000A8776F /* Rom.swift */; };
@@ -24,13 +23,6 @@
 
 /* Begin PBXContainerItemProxy section */
 		164F161325BB8EE6002A8D89 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 164F15F825BB8EE2002A8D89 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 164F15FF25BB8EE3002A8D89;
-			remoteInfo = "CHIP-8";
-		};
-		164F161E25BB8EE6002A8D89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 164F15F825BB8EE2002A8D89 /* Project object */;
 			proxyType = 1;
@@ -50,9 +42,6 @@
 		164F161225BB8EE6002A8D89 /* CHIP-8Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CHIP-8Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		164F161625BB8EE6002A8D89 /* CHIP_8Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CHIP_8Tests.swift; sourceTree = "<group>"; };
 		164F161825BB8EE6002A8D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		164F161D25BB8EE6002A8D89 /* CHIP-8UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CHIP-8UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		164F162125BB8EE6002A8D89 /* CHIP_8UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CHIP_8UITests.swift; sourceTree = "<group>"; };
-		164F162325BB8EE6002A8D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		164F163225BB9271002A8D89 /* Chip8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8.swift; sourceTree = "<group>"; };
 		16FC136425BC577700A8776F /* Fishie.ch8 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fishie.ch8; sourceTree = "<group>"; };
 		16FC137125BC608000A8776F /* Rom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rom.swift; sourceTree = "<group>"; };
@@ -77,13 +66,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		164F161A25BB8EE6002A8D89 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -92,7 +74,6 @@
 			children = (
 				164F160225BB8EE3002A8D89 /* CHIP-8 */,
 				164F161525BB8EE6002A8D89 /* CHIP-8Tests */,
-				164F162025BB8EE6002A8D89 /* CHIP-8UITests */,
 				164F160125BB8EE3002A8D89 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -102,7 +83,6 @@
 			children = (
 				164F160025BB8EE3002A8D89 /* CHIP-8.app */,
 				164F161225BB8EE6002A8D89 /* CHIP-8Tests.xctest */,
-				164F161D25BB8EE6002A8D89 /* CHIP-8UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,15 +114,6 @@
 				164F161825BB8EE6002A8D89 /* Info.plist */,
 			);
 			path = "CHIP-8Tests";
-			sourceTree = "<group>";
-		};
-		164F162025BB8EE6002A8D89 /* CHIP-8UITests */ = {
-			isa = PBXGroup;
-			children = (
-				164F162125BB8EE6002A8D89 /* CHIP_8UITests.swift */,
-				164F162325BB8EE6002A8D89 /* Info.plist */,
-			);
-			path = "CHIP-8UITests";
 			sourceTree = "<group>";
 		};
 		16FC136325BC574200A8776F /* roms */ = {
@@ -191,24 +162,6 @@
 			productReference = 164F161225BB8EE6002A8D89 /* CHIP-8Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		164F161C25BB8EE6002A8D89 /* CHIP-8UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 164F162C25BB8EE6002A8D89 /* Build configuration list for PBXNativeTarget "CHIP-8UITests" */;
-			buildPhases = (
-				164F161925BB8EE6002A8D89 /* Sources */,
-				164F161A25BB8EE6002A8D89 /* Frameworks */,
-				164F161B25BB8EE6002A8D89 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				164F161F25BB8EE6002A8D89 /* PBXTargetDependency */,
-			);
-			name = "CHIP-8UITests";
-			productName = "CHIP-8UITests";
-			productReference = 164F161D25BB8EE6002A8D89 /* CHIP-8UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -222,10 +175,6 @@
 						CreatedOnToolsVersion = 12.3;
 					};
 					164F161125BB8EE6002A8D89 = {
-						CreatedOnToolsVersion = 12.3;
-						TestTargetID = 164F15FF25BB8EE3002A8D89;
-					};
-					164F161C25BB8EE6002A8D89 = {
 						CreatedOnToolsVersion = 12.3;
 						TestTargetID = 164F15FF25BB8EE3002A8D89;
 					};
@@ -246,7 +195,6 @@
 			targets = (
 				164F15FF25BB8EE3002A8D89 /* CHIP-8 */,
 				164F161125BB8EE6002A8D89 /* CHIP-8Tests */,
-				164F161C25BB8EE6002A8D89 /* CHIP-8UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -263,13 +211,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		164F161025BB8EE6002A8D89 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		164F161B25BB8EE6002A8D89 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -302,14 +243,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		164F161925BB8EE6002A8D89 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				164F162225BB8EE6002A8D89 /* CHIP_8UITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -317,11 +250,6 @@
 			isa = PBXTargetDependency;
 			target = 164F15FF25BB8EE3002A8D89 /* CHIP-8 */;
 			targetProxy = 164F161325BB8EE6002A8D89 /* PBXContainerItemProxy */;
-		};
-		164F161F25BB8EE6002A8D89 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 164F15FF25BB8EE3002A8D89 /* CHIP-8 */;
-			targetProxy = 164F161E25BB8EE6002A8D89 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -538,46 +466,6 @@
 			};
 			name = Release;
 		};
-		164F162D25BB8EE6002A8D89 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = B772YKJZX7;
-				INFOPLIST_FILE = "CHIP-8UITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rgrey.CHIP-8UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "CHIP-8";
-			};
-			name = Debug;
-		};
-		164F162E25BB8EE6002A8D89 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = B772YKJZX7;
-				INFOPLIST_FILE = "CHIP-8UITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rgrey.CHIP-8UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = "CHIP-8";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -604,15 +492,6 @@
 			buildConfigurations = (
 				164F162A25BB8EE6002A8D89 /* Debug */,
 				164F162B25BB8EE6002A8D89 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		164F162C25BB8EE6002A8D89 /* Build configuration list for PBXNativeTarget "CHIP-8UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				164F162D25BB8EE6002A8D89 /* Debug */,
-				164F162E25BB8EE6002A8D89 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
