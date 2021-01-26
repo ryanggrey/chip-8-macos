@@ -11,12 +11,8 @@ struct NotImplemented: Error {}
 
 public class Chip8 {
     private var ram: [Byte]
-    private var v = [Byte](repeating: 0, count: 16) // 16 registers, each register is 1 byte / 8 bits
+    private var v: [Byte]
     private var i: Word = 0
-
-    //0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
-    //0x050-0x0A0 - Used for the built in 4x5 pixel font set (0-F)
-    //0x200-0xFFF - Program ROM and work RAM
     private(set) var pc: Word
     
     private(set) var pixels: [Byte]
@@ -30,11 +26,24 @@ public class Chip8 {
     private var keys = [Byte](repeating: 0, count: 16)
 
     init(
+        // 16 registers, each register is 1 byte / 8 bits
+        v: [Byte] = [Byte](repeating: 0, count: 16),
+
+        //0x000-0x1FF - Chip 8 interpreter (contains font set in emu)
+        //0x050-0x0A0 - Used for the built in 4x5 pixel font set (0-F)
+        //0x200-0xFFF - Program ROM and work RAM
         pc: Word = 0x200,
+
+        // 64 * 32 screen
         pixels: [Byte] = [Byte](repeating: 0, count: 64 * 32),
+
+        // stack is 12 or 16 deep, but nothing to stop it from being larger
         stack: [Word] = [Word](),
+
+        // Should be 4k, but allow this to be dictated by 0x200 + rom size
         ram: [Byte]) {
 
+        self.v = v
         self.pc = pc
         self.pixels = pixels
         self.stack = stack
@@ -78,7 +87,13 @@ public class Chip8 {
 
         case (0x03, let x, let n1, let n2):
             // 3XNN, Cond, Skips the next instruction if VX equals NN. (Usually the next instruction is a jump to skip a code block)
-            throw NotImplemented()
+            // SKIP.EQ
+            let nn = Byte(nibbles: [n1, n2])
+            if nn == v[x] {
+                pc += 4
+            } else {
+                pc += 2
+            }
 
         case (0x04, let x, let n1, let n2):
             // 4XNN, Cond, Skips the next instruction if VX doesn't equal NN. (Usually the next instruction is a jump to skip a code block)

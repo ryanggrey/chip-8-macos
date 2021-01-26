@@ -19,6 +19,7 @@
 		16FC137725BC60E400A8776F /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC137625BC60E400A8776F /* Types.swift */; };
 		16FC137C25BC622300A8776F /* Disassembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC137B25BC622300A8776F /* Disassembler.swift */; };
 		16FC138125BF7BD700A8776F /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138025BF7BD700A8776F /* Word.swift */; };
+		16FC138625C0ABF600A8776F /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138525C0ABF600A8776F /* Byte.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		16FC137625BC60E400A8776F /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		16FC137B25BC622300A8776F /* Disassembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disassembler.swift; sourceTree = "<group>"; };
 		16FC138025BF7BD700A8776F /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
+		16FC138525C0ABF600A8776F /* Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Byte.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				16FC137625BC60E400A8776F /* Types.swift */,
 				16FC137B25BC622300A8776F /* Disassembler.swift */,
 				16FC138025BF7BD700A8776F /* Word.swift */,
+				16FC138525C0ABF600A8776F /* Byte.swift */,
 			);
 			path = "CHIP-8";
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				164F163325BB9271002A8D89 /* Chip8.swift in Sources */,
+				16FC138625C0ABF600A8776F /* Byte.swift in Sources */,
 				16FC138125BF7BD700A8776F /* Word.swift in Sources */,
 				164F160625BB8EE3002A8D89 /* ViewController.swift in Sources */,
 				16FC137225BC608000A8776F /* Rom.swift in Sources */,

@@ -11,7 +11,7 @@ public typealias Word = UInt16 // 16 bits
 
 extension Word {
     init(nibbles: [Byte]) {
-        self = nibbles.reduce(0x0) { (last, next) -> UInt16 in
+        self = nibbles.reduce(0x0) { (last, next) -> Word in
             return last << 4 | Word(next)
         }
     }

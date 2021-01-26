@@ -98,6 +98,34 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
+    func test_SKIP_EQ_skips_next_instruction_if_Vx_equal_to_NN() {
+        let x: Byte = 2, n1: Byte = 0x0c, n2: Byte = 0x71
+        let ram = createRamWithOp(0x03, x, n1, n2)
+        var v = [Byte](repeating: 0, count: 3)
+        v[x] = Byte(nibbles: [n1, n2])
+        let chip8 = Chip8(v: v, ram: ram)
+        let initialPc = chip8.pc
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 4
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_EQ_skips_next_instruction_if_Vx_NOT_equal_to_NN() {
+        let x: Byte = 2, n1: Byte = 0x0c, n2: Byte = 0x71
+        let ram = createRamWithOp(0x03, x, n1, n2)
+        var v = [Byte](repeating: 0, count: 3)
+        v[x] = Byte(nibbles: [n1, n1])
+        let chip8 = Chip8(v: v, ram: ram)
+        let initialPc = chip8.pc
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
     func createPcFrom(_ n1: Byte, _ n2: Byte, _ n3: Byte) -> Word {
         let word = Word(nibbles: [n1, n2, n3])
         return word
@@ -112,5 +140,11 @@ class CHIP_8Tests: XCTestCase {
     func createRamWithOp(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte) -> [Byte] {
         let leadingRam = [Byte](repeating: 0, count: 0x200)
         return leadingRam + createOp(n1, n2, n3, n4)
+    }
+
+    func getHexStr<I: BinaryInteger & CVarArg>(width: Int, _ value: I) -> String {
+        let valueStr = String(format:"%02X", value as CVarArg)
+        let paddedStr = valueStr.padding(toLength: width, withPad: " ", startingAt: 0)
+        return paddedStr
     }
 }
