@@ -14,7 +14,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(chip8.pc, 0x200)
     }
 
-    func test_CLS_clears_pixels() {
+    func test_CLS_0x00_clears_pixels() {
         let ram = createRamWithOp(0x00, 0x00, 0x0e, 0x00)
         let width = 64, height = 32
         let dirtyPixels = [Byte](repeating: 1, count: width * height)
@@ -27,7 +27,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPixels, expectedPixels)
     }
 
-    func test_CLS_increments_pc() {
+    func test_CLS_0x00_increments_pc() {
         let ram = createRamWithOp(0x00, 0x00, 0x0e, 0x00)
         let width = 64, height = 32
         let dirtyPixels = [Byte](repeating: 1, count: width * height)
@@ -40,7 +40,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_RTS_sets_pc_to_last_stack_address_plus_two() {
+    func test_RTS_0x00_sets_pc_to_last_stack_address_plus_two() {
         let ram = createRamWithOp(0x00, 0x00, 0x0e, 0x0e)
         let lastPc: Word = 0x02
         let expectedPc: Word = lastPc + 2
@@ -52,7 +52,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_RTS_removes_last_stack_address() {
+    func test_RTS_0x00_removes_last_stack_address() {
         let ram = createRamWithOp(0x00, 0x00, 0x0e, 0x0e)
         let stack: [Word] = [0x03, 0x04]
         let chip8 = Chip8(stack: stack, ram: ram)
@@ -63,7 +63,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedStack, expectedStack)
     }
 
-    func test_JUMP_sets_pc_to_NNN() {
+    func test_JUMP_0x01_sets_pc_to_NNN() {
         let n1: Byte = 0x01, n2: Byte = 0x0e, n3: Byte = 0x03
         let ram = createRamWithOp(0x01, n1, n2, n3)
         let chip8 = Chip8(ram: ram)
@@ -74,7 +74,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_CALL_adds_current_pc_to_stack() {
+    func test_CALL_0x02_adds_current_pc_to_stack() {
         let n1: Byte = 0x02, n2: Byte = 0x0a, n3: Byte = 0x0b
         let ram = createRamWithOp(0x02, n1, n2, n3)
         let initialPc: Word = 0x200
@@ -87,7 +87,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedStack, expectedStack)
     }
 
-    func test_CALL_sets_pc_to_NNN() {
+    func test_CALL_0x02_sets_pc_to_NNN() {
         let n1: Byte = 0x0b, n2: Byte = 0x0c, n3: Byte = 0x0d
         let ram = createRamWithOp(0x02, n1, n2, n3)
         let chip8 = Chip8(ram: ram)
@@ -98,7 +98,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_SKIP_EQ_skips_next_instruction_if_Vx_equal_to_NN() {
+    func test_SKIP_EQ_0x03_skips_next_instruction_if_Vx_equal_to_NN() {
         let x: Byte = 2, n1: Byte = 0x0c, n2: Byte = 0x0f
         let ram = createRamWithOp(0x03, x, n1, n2)
         var v = [Byte](repeating: 0, count: 3)
@@ -126,7 +126,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_SKIP_NE_0x03_skips_next_instruction_if_Vx_NOT_equal_to_NN() {
+    func test_SKIP_NE_0x04_skips_next_instruction_if_Vx_NOT_equal_to_NN() {
         let x: Byte = 2, n1: Byte = 0x09, n2: Byte = 0x0c
         let ram = createRamWithOp(0x04, x, n1, n2)
         var v = [Byte](repeating: 0, count: 3)
@@ -140,7 +140,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
-    func test_SKIP_NE_moves_to_next_instruction_if_Vx_equal_to_NN() {
+    func test_SKIP_NE_0x04_moves_to_next_instruction_if_Vx_equal_to_NN() {
         let x: Byte = 2, n1: Byte = 0x05, n2: Byte = 0x0d
         let ram = createRamWithOp(0x04, x, n1, n2)
         var v = [Byte](repeating: 0, count: 3)
