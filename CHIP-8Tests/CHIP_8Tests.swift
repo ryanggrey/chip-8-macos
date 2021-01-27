@@ -224,6 +224,19 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedVx, expectedVx)
     }
 
+    func test_ADD_0x07_adds_NN_to_Vx_with_overflow() {
+        let x: Byte = 5, n1: Byte = 0x00, n2: Byte = 0x01
+        let ram = createRamWithOp(0x07, x, n1, n2)
+        var v = [Byte](repeating: 0, count: 6)
+        v[x] = Byte.max
+        let expectedVx = v[x] &+ Byte(nibbles: [n1, n2])
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
     func test_ADD_0x07_does_NOT_change_carry_flag() {
         let x: Byte = 0x0e, n1: Byte = 0x0b, n2: Byte = 0x01, f = 0x0f
         let ram = createRamWithOp(0x07, x, n1, n2)
