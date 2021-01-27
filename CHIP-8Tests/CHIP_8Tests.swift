@@ -211,6 +211,33 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
+    func test_ADD_0x07_adds_NN_to_Vx() {
+        let x: Byte = 5, n1: Byte = 0x0c, n2: Byte = 0x0c
+        let ram = createRamWithOp(0x07, x, n1, n2)
+        var v = [Byte](repeating: 0, count: 6)
+        v[x] = 0x07
+        let expectedVx = v[x] + Byte(nibbles: [n1, n2])
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_ADD_0x07_does_NOT_change_carry_flag() {
+        let x: Byte = 0x0e, n1: Byte = 0x0b, n2: Byte = 0x01, f = 0x0f
+        let ram = createRamWithOp(0x07, x, n1, n2)
+        var v = [Byte](repeating: 0, count: 0x0f + 0x01)
+        let expectedCarryFlag: Byte = 0x06
+        v[f] = expectedCarryFlag
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        // v[f] is carry flag
+        let observedCarryFlag = chip8.v[0x0f]
+        XCTAssertEqual(observedCarryFlag, expectedCarryFlag)
+    }
+
     func createPcFrom(_ n1: Byte, _ n2: Byte, _ n3: Byte) -> Word {
         let word = Word(nibbles: [n1, n2, n3])
         return word
