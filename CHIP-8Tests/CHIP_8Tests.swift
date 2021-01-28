@@ -76,8 +76,8 @@ class CHIP_8Tests: XCTestCase {
 
     func test_CALL_0x02_adds_current_pc_to_stack() {
         let n1: Byte = 0x02, n2: Byte = 0x0a, n3: Byte = 0x0b
-        let ram = createRamWithOp(0x02, n1, n2, n3)
-        let initialPc: Word = 0x200
+        let initialPc: Word = 0x2b1
+        let ram = createRamWithOp(0x02, n1, n2, n3, pc: initialPc)
         let chip8 = Chip8(pc: initialPc, ram: ram)
         XCTAssertTrue(chip8.stack.isEmpty)
 
@@ -280,8 +280,8 @@ class CHIP_8Tests: XCTestCase {
 
     func test_MOV_0x08_increments_pc() {
         let x: Byte = 0x0a, y: Byte = 0x07
-        let initialPc: Word = 0x200
-        let ram = createRamWithOp(0x08, x, y, 0x00)
+        let initialPc: Word = 0x3d1
+        let ram = createRamWithOp(0x08, x, y, 0x00, pc: initialPc)
         let chip8 = Chip8(pc: initialPc, ram: ram)
 
         try! chip8.doOp()
@@ -310,8 +310,38 @@ class CHIP_8Tests: XCTestCase {
 
     func test_OR_0x08_increments_pc() {
         let x: Byte = 3, y: Byte = 7
-        let initialPc: Word = 0x200
-        let ram = createRamWithOp(0x08, x, y, 0x01)
+        let initialPc: Word = 0x40a
+        let ram = createRamWithOp(0x08, x, y, 0x01, pc: initialPc)
+        let chip8 = Chip8(pc: initialPc, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_AND_0x08_sets_Vx_to_Vy_bitwise_and_Vx() {
+        let x: Byte = 3, y: Byte = 14
+        let initialVx: Byte = 0b1100
+        let initialVy: Byte = 0b1010
+        let registerSize = Int(max(x, y)) + 1
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[y] = initialVy
+        let ram = createRamWithOp(0x08, x, y, 0x02)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // 0b1100 & 0b1010 = 0b1000 = 8
+        let expectedVx: Byte = 8
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_AND_0x08_increments_pc() {
+        let x: Byte = 3, y: Byte = 7
+        let initialPc: Word = 0x2db
+        let ram = createRamWithOp(0x08, x, y, 0x02, pc: initialPc)
         let chip8 = Chip8(pc: initialPc, ram: ram)
 
         try! chip8.doOp()
