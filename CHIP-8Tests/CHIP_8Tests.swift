@@ -263,6 +263,33 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
+    func test_MOV_0x08_sets_Vx_to_Vy() {
+        let x: Byte = 0x0e, y: Byte = 0x0b
+        let initialVy: Byte = 0x06
+        let registerSize = Int(max(x, y)) + 1
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[y] = initialVy
+        let ram = createRamWithOp(0x08, x, y, 0x00)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        let expectedVx = initialVy
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_MOV_0x08_increments_pc() {
+        let x: Byte = 0x0a, y: Byte = 0x07
+        let initialPc: Word = 0x200
+        let ram = createRamWithOp(0x08, x, y, 0x00)
+        let chip8 = Chip8(pc: initialPc, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
     func createPcFrom(_ n1: Byte, _ n2: Byte, _ n3: Byte) -> Word {
         let word = Word(nibbles: [n1, n2, n3])
         return word

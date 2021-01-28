@@ -127,7 +127,9 @@ public class Chip8 {
             
         case (0x08, let x, let y, 0x00):
             // 8XY0, Assign, Sets VX to the value of VY.
-            throw NotImplemented()
+            // MOV
+            v[x] = v[y]
+            pc += 2
         case (0x08, let x, let y, 0x01):
             // 8XY1, BitOp, Sets VX to VX or VY. (Bitwise OR operation)
             throw NotImplemented()
