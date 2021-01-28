@@ -251,6 +251,18 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedCarryFlag, expectedCarryFlag)
     }
 
+    func test_ADD_0x07_increments_pc() {
+        let x: Byte = 0x0e, n1: Byte = 0x0b, n2: Byte = 0x01
+        let ram = createRamWithOp(0x07, x, n1, n2)
+        let chip8 = Chip8(ram: ram)
+        let initialPc = chip8.pc
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
     func createPcFrom(_ n1: Byte, _ n2: Byte, _ n3: Byte) -> Word {
         let word = Word(nibbles: [n1, n2, n3])
         return word

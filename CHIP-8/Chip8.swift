@@ -123,6 +123,7 @@ public class Chip8 {
             // 7XNN, Const, Adds NN to VX. (Carry flag is not changed)
             // ADD
             v[x] &+= Byte(nibbles: [n1, n2])
+            pc += 2
             
         case (0x08, let x, let y, 0x00):
             // 8XY0, Assign, Sets VX to the value of VY.
