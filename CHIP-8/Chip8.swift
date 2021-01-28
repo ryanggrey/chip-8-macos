@@ -132,7 +132,9 @@ public class Chip8 {
             pc += 2
         case (0x08, let x, let y, 0x01):
             // 8XY1, BitOp, Sets VX to VX or VY. (Bitwise OR operation)
-            throw NotImplemented()
+            // OR
+            v[x] = v[x] | v[y]
+            pc += 2
         case (0x08, let x, let y, 0x02):
             // 8XY2, BitOp, Sets VX to VX and VY. (Bitwise AND operation)
             throw NotImplemented()
