@@ -331,14 +331,12 @@ class CHIP_8Tests: XCTestCase {
         return [byte1, byte2]
     }
 
-    func createRamWithOp(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte) -> [Byte] {
-        let leadingRamSizeInBytes = 0x200
-        let leadingRam = [Byte](repeating: 0, count: leadingRamSizeInBytes)
-        let opSizeInBytes = 1
-        let ramSizeInBytes = 4096
-        let trailingRamSizeInBytes = ramSizeInBytes - leadingRamSizeInBytes - opSizeInBytes
-        let trailingRam = [Byte](repeating: 0, count: trailingRamSizeInBytes)
-        let ram = leadingRam + createOp(n1, n2, n3, n4) + trailingRam
+    func createRamWithOp(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte, pc: Word = 0x200) -> [Byte] {
+        var ram = [Byte](repeating: 0, count: 4096)
+        let opBytes = createOp(n1, n2, n3, n4)
+        let pcInt = Int(pc)
+        let opRange = pcInt..<pcInt + opBytes.count
+        ram.replaceSubrange(opRange, with: opBytes)
         return ram
     }
 
