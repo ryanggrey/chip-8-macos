@@ -332,8 +332,14 @@ class CHIP_8Tests: XCTestCase {
     }
 
     func createRamWithOp(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte) -> [Byte] {
-        let leadingRam = [Byte](repeating: 0, count: 0x200)
-        return leadingRam + createOp(n1, n2, n3, n4)
+        let leadingRamSizeInBytes = 0x200
+        let leadingRam = [Byte](repeating: 0, count: leadingRamSizeInBytes)
+        let opSizeInBytes = 1
+        let ramSizeInBytes = 4096
+        let trailingRamSizeInBytes = ramSizeInBytes - leadingRamSizeInBytes - opSizeInBytes
+        let trailingRam = [Byte](repeating: 0, count: trailingRamSizeInBytes)
+        let ram = leadingRam + createOp(n1, n2, n3, n4) + trailingRam
+        return ram
     }
 
     func getHexStr<I: BinaryInteger & CVarArg>(width: Int, _ value: I) -> String {
