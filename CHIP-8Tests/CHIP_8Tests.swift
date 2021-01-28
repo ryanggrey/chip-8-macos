@@ -350,6 +350,36 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
+    func test_XOR_0x08_sets_Vx_to_Vy_bitwise_xor_Vx() {
+        let x: Byte = 7, y: Byte = 13
+        let initialVx: Byte = 0b1100
+        let initialVy: Byte = 0b1010
+        let registerSize = Int(max(x, y)) + 1
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[y] = initialVy
+        let ram = createRamWithOp(0x08, x, y, 0x03)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // 0b1100 ^ 0b1010 = 0b0110 = 6
+        let expectedVx: Byte = 6
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_XOR_0x08_increments_pc() {
+        let x: Byte = 3, y: Byte = 7
+        let initialPc: Word = 0x2db
+        let ram = createRamWithOp(0x08, x, y, 0x03, pc: initialPc)
+        let chip8 = Chip8(pc: initialPc, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
     func createPcFrom(_ n1: Byte, _ n2: Byte, _ n3: Byte) -> Word {
         let word = Word(nibbles: [n1, n2, n3])
         return word

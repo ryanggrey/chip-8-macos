@@ -142,7 +142,9 @@ public class Chip8 {
             pc += 2
         case (0x08, let x, let y, 0x03):
             // 8XY3, BitOp, Sets VX to VX xor VY.
-            throw NotImplemented()
+            // XOR
+            v[x] = v[x] ^ v[y]
+            pc += 2
         case (0x08, let x, let y, 0x04):
             // 8XY4, Math, Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't.
             throw NotImplemented()
