@@ -380,6 +380,62 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
+    func test_ADD_dot_0x08_adds_Vy_to_Vx_and_sets_carry_flag() {
+        let x: Byte = 0, y: Byte = 1
+        let initialVx: Byte = 0b11111111
+        let initialVy: Byte = 0b00000001
+        let registerSize = 0x0f + 1
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[y] = initialVy
+        let ram = createRamWithOp(0x08, x, y, 0x04)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // 0b11111111 + 0b00000001 = 0b00000000 = 0 with overflow
+        let expectedVx: Byte = 0b00000000
+        XCTAssertEqual(observedVx, expectedVx)
+
+        let expectedVf: Byte = 1
+        let observedVf = chip8.v[0x0f]
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_ADD_dot_0x08_adds_Vy_to_Vx_and_does_not_set_carry_flag() {
+        let x: Byte = 0, y: Byte = 1
+        let initialVx: Byte = 0b11111110
+        let initialVy: Byte = 0b00000001
+        let registerSize = 0x0f + 1
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[y] = initialVy
+        let ram = createRamWithOp(0x08, x, y, 0x04)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // 0b11111110 + 0b00000001 = 0b11111111 = 255 with no overflow
+        let expectedVx: Byte = 0b11111111
+        XCTAssertEqual(observedVx, expectedVx)
+
+        let expectedVf: Byte = 0
+        let observedVf = chip8.v[0x0f]
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_ADD_dot_0x08_increments_pc() {
+        let x: Byte = 3, y: Byte = 7
+        let initialPc: Word = 0x2db
+        let ram = createRamWithOp(0x08, x, y, 0x04, pc: initialPc)
+        let chip8 = Chip8(pc: initialPc, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
     func createPcFrom(_ n1: Byte, _ n2: Byte, _ n3: Byte) -> Word {
         let word = Word(nibbles: [n1, n2, n3])
         return word

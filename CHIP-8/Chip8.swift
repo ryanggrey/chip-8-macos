@@ -147,9 +147,15 @@ public class Chip8 {
             pc += 2
         case (0x08, let x, let y, 0x04):
             // 8XY4, Math, Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't.
-            throw NotImplemented()
+            // ADD.
+            let (sum, hasOverflow) = v[x].addingReportingOverflow(v[y])
+            v[x] = sum
+            v[0x0f] = hasOverflow ? 1 : 0
+            pc += 2
+
         case (0x08, let x, let y, 0x05):
             // 8XY5, Math, VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
+            // SUB.
             throw NotImplemented()
         case (0x08, let x, _, 0x06):
             // 8XY6, BitOp, Stores the least significant bit of VX in VF and then shifts VX to the right by 1.
