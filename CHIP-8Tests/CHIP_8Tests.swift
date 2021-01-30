@@ -474,7 +474,6 @@ class CHIP_8Tests: XCTestCase {
 
     func test_SHR_dot_0x08_shifts_Vx_right_by_1() {
         let x: Byte = 0x0c
-        let f: Byte = 0x0f
         let initialVx: Byte = 0b10100101
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
@@ -542,6 +541,63 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 1, y: Byte = 4
         let initialPc: Word = 0x5cc
         assertPcIncremented(0x08, x, y, 0x07, initialPc: initialPc)
+    }
+
+    func test_SHL_dot_0x08_stores_the_msb_of_Vx_in_Vf_when_msb_is_1() {
+        let x: Byte = 0x0c
+        let f: Byte = 0x0f
+        let initialVx: Byte = 0b10100101
+        let initialVf: Byte = 0b00000000
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[f] = initialVf
+        let ram = createRamWithOp(0x08, x, 0x00, 0x0e)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVf = chip8.v[f]
+        // msb of 0b10110101 is 0b1000000
+        let expectedVf: Byte = 0b10000000
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_SHL_dot_0x08_stores_the_msb_of_Vx_in_Vf_when_msb_is_0() {
+        let x: Byte = 0x0c
+        let f: Byte = 0x0f
+        let initialVx: Byte = 0b01010100
+        let initialVf: Byte = 0b00000001
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[f] = initialVf
+        let ram = createRamWithOp(0x08, x, 0x00, 0x0e)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVf = chip8.v[f]
+        // msb of 0b01010100 is 0b00000000
+        let expectedVf: Byte = 0b00000000
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_SHL_dot_0x08_shifts_Vx_left_by_1() {
+        let x: Byte = 0x0c
+        let initialVx: Byte = 0b10100101
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        let ram = createRamWithOp(0x08, x, 0x00, 0x0e)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // 0b10100101 shifted left by 1 = 0b01001010
+        let expectedVx: Byte = 0b01001010
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_SHL_dot_0x08_increments_pc() {
+        let x: Byte = 5, y: Byte = 9
+        let initialPc: Word = 0x57e
+        assertPcIncremented(0x08, x, y, 0x0e, initialPc: initialPc)
     }
 
     func assertPcIncremented(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte, initialPc: Word) {

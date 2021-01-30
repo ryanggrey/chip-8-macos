@@ -175,7 +175,11 @@ public class Chip8 {
             pc += 2
         case (0x08, let x, _, 0x0e):
             // 8XYE, BitOp, Stores the most significant bit of VX in VF and then shifts VX to the left by 1.
-            throw NotImplemented()
+            // SHL.
+            let msbX = v[x] & 0b10000000
+            v[0x0f] = msbX
+            v[x] = v[x] << 1
+            pc += 2
 
         case (0x09, let x, let y, 0x00):
             // 9XY0, Cond, Skips the next instruction if VX doesn't equal VY. (Usually the next instruction is a jump to skip a code block)
