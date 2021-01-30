@@ -384,7 +384,7 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b11111111
         let initialVy: Byte = 0b00000001
-        let registerSize = 0x0f + 1
+        let registerSize = 0x0f + 0x01
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -406,7 +406,7 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b11111110
         let initialVy: Byte = 0b00000001
-        let registerSize = 0x0f + 1
+        let registerSize = 0x0f + 0x01
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -440,7 +440,7 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b00000000
         let initialVy: Byte = 0b00000001
-        let registerSize = 0x0f + 1
+        let registerSize = 0x0f + 0x01
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -462,7 +462,7 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b00000001
         let initialVy: Byte = 0b00000001
-        let registerSize = 0x0f + 1
+        let registerSize = 0x0f + 0x01
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -484,6 +484,73 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 3, y: Byte = 7
         let initialPc: Word = 0x2db
         let ram = createRamWithOp(0x08, x, y, 0x05, pc: initialPc)
+        let chip8 = Chip8(pc: initialPc, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SHR_dot_0x08_stores_the_lsb_of_Vx_in_Vf_when_lsb_is_1() {
+        let x: Byte = 0x0c
+        let f: Byte = 0x0f
+        let initialVx: Byte = 0b10100101
+        let initialVf: Byte = 0b00000000
+        let registerSize = Int(max(x, f)) + 1
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[f] = initialVf
+        let ram = createRamWithOp(0x08, x, 0x00, 0x06)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVf = chip8.v[f]
+        // lsb of 0b10110101 is 0b00000001
+        let expectedVf: Byte = 0b00000001
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_SHR_dot_0x08_stores_the_lsb_of_Vx_in_Vf_when_lsb_is_0() {
+        let x: Byte = 0x0c
+        let f: Byte = 0x0f
+        let initialVx: Byte = 0b11110100
+        let initialVf: Byte = 0b00000001
+        let registerSize = Int(max(x, f)) + 1
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[f] = initialVf
+        let ram = createRamWithOp(0x08, x, 0x00, 0x06)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVf = chip8.v[f]
+        // lsb of 0b10110101 is 0b00000000
+        let expectedVf: Byte = 0b00000000
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_SHR_dot_0x08_shifts_Vx_right_by_1() {
+        let x: Byte = 0x0c
+        let f: Byte = 0x0f
+        let initialVx: Byte = 0b10100101
+        let registerSize = Int(max(x, f)) + 1
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        let ram = createRamWithOp(0x08, x, 0x00, 0x06)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // 0b10100101 shifted right by 1 = 0b01010010
+        let expectedVx: Byte = 0b01010010
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_SHR_dot_0x08_increments_pc() {
+        let x: Byte = 0, y: Byte = 15
+        let initialPc: Word = 0x21c
+        let ram = createRamWithOp(0x08, x, y, 0x06, pc: initialPc)
         let chip8 = Chip8(pc: initialPc, ram: ram)
 
         try! chip8.doOp()

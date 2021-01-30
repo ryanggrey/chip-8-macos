@@ -161,7 +161,11 @@ public class Chip8 {
             pc += 2
         case (0x08, let x, _, 0x06):
             // 8XY6, BitOp, Stores the least significant bit of VX in VF and then shifts VX to the right by 1.
-            throw NotImplemented()
+            // SHR.
+            let lsbX = v[x] & 0b00000001
+            v[0x0f] = lsbX
+            v[x] = v[x] >> 1
+            pc += 2
         case (0x08, let x, let y, 0x07):
             // 8XY7, Math, Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
             throw NotImplemented()
