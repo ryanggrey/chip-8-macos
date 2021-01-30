@@ -494,6 +494,56 @@ class CHIP_8Tests: XCTestCase {
         assertPcIncremented(0x08, x, y, 0x06, initialPc: initialPc)
     }
 
+    func test_SUBB_dot_0x08_sets_Vx_to_Vy_minus_Vx_and_does_set_flag() {
+        // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
+
+        let x: Byte = 0, y: Byte = 1
+        let initialVx: Byte = 0b00000010
+        let initialVy: Byte = 0b00000011
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[y] = initialVy
+        let ram = createRamWithOp(0x08, x, y, 0x07)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // 0b00000011 - 0b00000010 = 0b00000001 with NO borrow
+        let expectedVx: Byte = 0b00000001
+        XCTAssertEqual(observedVx, expectedVx)
+
+        let expectedVf: Byte = 1
+        let observedVf = chip8.v[0x0f]
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_SUBB_dot_0x08_sets_Vx_to_Vy_minus_Vx_and_does_NOT_set_flag() {
+        let x: Byte = 4, y: Byte = 5
+        let initialVx: Byte = 0b00000110
+        let initialVy: Byte = 0b00000011
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[y] = initialVy
+        let ram = createRamWithOp(0x08, x, y, 0x07)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // 0b00000011 - 0b00000110 = 3 - 6 = 0 - 3 = 255 - 2 = 253 = 0b11111101 with borrow
+        let expectedVx: Byte = 0b11111101
+        XCTAssertEqual(observedVx, expectedVx)
+
+        let expectedVf: Byte = 0
+        let observedVf = chip8.v[0x0f]
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_SUBB_dot_0x08_increments_pc() {
+        let x: Byte = 1, y: Byte = 4
+        let initialPc: Word = 0x5cc
+        assertPcIncremented(0x08, x, y, 0x07, initialPc: initialPc)
+    }
+
     func assertPcIncremented(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte, initialPc: Word) {
         let ram = createRamWithOp(n1, n2, n3, n4, pc: initialPc)
         let chip8 = Chip8(pc: initialPc, ram: ram)

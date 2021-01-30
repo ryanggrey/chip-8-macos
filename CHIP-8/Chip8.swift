@@ -168,7 +168,11 @@ public class Chip8 {
             pc += 2
         case (0x08, let x, let y, 0x07):
             // 8XY7, Math, Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
-            throw NotImplemented()
+            // SUBB.
+            let (result, hasOverflow) = v[y].subtractingReportingOverflow(v[x])
+            v[x] = result
+            v[0x0f] = hasOverflow ? 0 : 1
+            pc += 2
         case (0x08, let x, _, 0x0e):
             // 8XYE, BitOp, Stores the most significant bit of VX in VF and then shifts VX to the left by 1.
             throw NotImplemented()
