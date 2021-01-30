@@ -632,6 +632,24 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
+    func test_MVI_0x0a_sets_i_to_NNN() {
+        // ANNN, MEM, Sets I to the address NNN.
+        let n1: Byte = 0x0a, n2: Byte = 0x0b, n3: Byte = 0x0c
+        let ram = createRamWithOp(0x0a, n1, n2, n3)
+        let chip8 = Chip8(ram: ram)
+
+        try! chip8.doOp()
+        let observedI = chip8.i
+        let expectedI = Word(nibbles: [n1, n2, n3])
+        XCTAssertEqual(observedI, expectedI)
+    }
+
+    func test_MVI_0x0a_increments_pc() {
+        let n1: Byte = 0x0a, n2: Byte = 0x0b, n3: Byte = 0x0c
+        let initialPc: Word = 0x3a0
+        assertPcIncremented(0x0a, n1, n2, n3, initialPc: initialPc)
+    }
+
     func assertPcIncremented(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte, initialPc: Word) {
         let ram = createRamWithOp(n1, n2, n3, n4, pc: initialPc)
         let chip8 = Chip8(pc: initialPc, ram: ram)

@@ -12,7 +12,7 @@ struct NotImplemented: Error {}
 public class Chip8 {
     private var ram: [Byte]
     private(set) var v: [Byte]
-    private var i: Word = 0
+    private(set) var i: Word = 0
     private(set) var pc: Word
     
     private(set) var pixels: [Byte]
@@ -192,7 +192,9 @@ public class Chip8 {
 
         case (0x0a, let n1, let n2, let n3):
             // ANNN, MEM, Sets I to the address NNN.
-            throw NotImplemented()
+            // MVI
+            i = Word(nibbles: [n1, n2, n3])
+            pc += 2
 
         case (0x0b, let n1, let n2, let n3):
             // BNNN, Flow, Jumps to the address NNN plus V0.
