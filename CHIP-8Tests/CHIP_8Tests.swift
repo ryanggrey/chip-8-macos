@@ -600,6 +600,38 @@ class CHIP_8Tests: XCTestCase {
         assertPcIncremented(0x08, x, y, 0x0e, initialPc: initialPc)
     }
 
+    func test_SKIP_NE_0x09_skips_if_Vx_does_NOT_equal_Vy() {
+        let x: Byte = 0x0c, y: Byte = 0x0e
+        let initialVx: Byte = 1, initialVy: Byte = 2
+        let initialPc: Word = 0x5c9
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[y] = initialVy
+        let ram = createRamWithOp(0x09, x, y, 0x00, pc: initialPc)
+        let chip8 = Chip8(v: v, pc: initialPc, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 4
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_NE_0x09_increments_if_Vx_does_equal_Vy() {
+        let x: Byte = 0x0c, y: Byte = 0x0e
+        let initialVx: Byte = 3, initialVy: Byte = 3
+        let initialPc: Word = 0x5c9
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        v[y] = initialVy
+        let ram = createRamWithOp(0x09, x, y, 0x00, pc: initialPc)
+        let chip8 = Chip8(v: v, pc: initialPc, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
     func assertPcIncremented(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte, initialPc: Word) {
         let ram = createRamWithOp(n1, n2, n3, n4, pc: initialPc)
         let chip8 = Chip8(pc: initialPc, ram: ram)

@@ -183,7 +183,12 @@ public class Chip8 {
 
         case (0x09, let x, let y, 0x00):
             // 9XY0, Cond, Skips the next instruction if VX doesn't equal VY. (Usually the next instruction is a jump to skip a code block)
-            throw NotImplemented()
+            // SKIP.NE
+            if v[x] == v[y] {
+                pc += 2
+            } else {
+                pc += 4
+            }
 
         case (0x0a, let n1, let n2, let n3):
             // ANNN, MEM, Sets I to the address NNN.
