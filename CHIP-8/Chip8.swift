@@ -148,15 +148,15 @@ public class Chip8 {
         case (0x08, let x, let y, 0x04):
             // 8XY4, Math, Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there isn't.
             // ADD.
-            let (sum, hasOverflow) = v[x].addingReportingOverflow(v[y])
-            v[x] = sum
+            let (result, hasOverflow) = v[x].addingReportingOverflow(v[y])
+            v[x] = result
             v[0x0f] = hasOverflow ? 1 : 0
             pc += 2
         case (0x08, let x, let y, 0x05):
             // 8XY5, Math, VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there isn't.
             // SUB.
-            let (sum, hasOverflow) = v[x].subtractingReportingOverflow(v[y])
-            v[x] = sum
+            let (result, hasOverflow) = v[x].subtractingReportingOverflow(v[y])
+            v[x] = result
             v[0x0f] = hasOverflow ? 0 : 1
             pc += 2
         case (0x08, let x, _, 0x06):
