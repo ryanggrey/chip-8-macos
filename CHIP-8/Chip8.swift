@@ -198,7 +198,10 @@ public class Chip8 {
 
         case (0x0b, let n1, let n2, let n3):
             // BNNN, Flow, Jumps to the address NNN plus V0.
-            throw NotImplemented()
+            // JUMP
+            let nibbles = Word(nibbles: [n1, n2, n3])
+            let v0 = Word(v[0])
+            pc = nibbles + v0
 
         case (0x0c, let x, let n1, let n2):
             // CXNN, Rand, Sets VX to the result of a bitwise AND operation on a random number (Typically: 0 to 255) and NN.

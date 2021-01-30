@@ -633,7 +633,6 @@ class CHIP_8Tests: XCTestCase {
     }
 
     func test_MVI_0x0a_sets_i_to_NNN() {
-        // ANNN, MEM, Sets I to the address NNN.
         let n1: Byte = 0x0a, n2: Byte = 0x0b, n3: Byte = 0x0c
         let ram = createRamWithOp(0x0a, n1, n2, n3)
         let chip8 = Chip8(ram: ram)
@@ -648,6 +647,40 @@ class CHIP_8Tests: XCTestCase {
         let n1: Byte = 0x0a, n2: Byte = 0x0b, n3: Byte = 0x0c
         let initialPc: Word = 0x3a0
         assertPcIncremented(0x0a, n1, n2, n3, initialPc: initialPc)
+    }
+
+    func test_JUMP_0x0b_sets_pc_to_NNN_plus_V0() {
+        let x: Byte = 0, n1: Byte = 0x02, n2: Byte = 0x0a, n3: Byte = 0x06
+        let initialVx: Byte = 0b00011010
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        let ram = createRamWithOp(0x0b, n1, n2, n3)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        // nnn + V0 = 0x02, 0x0a, 0x06 + 0b00011010 = 0b0000, 0b0010, 0b1010, 0b0110 + 0b00011010
+        // 0b0000, 0b0010, 0b1010, 0b0110 = 0b0000001010100110 + 0b00011010 = 678 + 26 = 704
+        let expectedPc: Word = 704
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_JUMP_0x0b_sets_pc_to_NNN_plus_V0_with_maximums() {
+        let x: Byte = 0, n1: Byte = 0b1111, n2: Byte = 0b1111, n3: Byte = 0b1111
+        let initialVx: Byte = 0b11111111
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        let ram = createRamWithOp(0x0b, n1, n2, n3)
+        let chip8 = Chip8(v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedPc = chip8.pc
+        // nnn + V0 = 0b1111, 0b1111, 0b1111 + 0b11111111 =
+        // 0b0000111111111111 + 0b11111111 = 4095 + 255 = 4350
+        // TODO: this address is outside of the normal 4k Chip-8 memory, should rom programmer or Chip-8 implementation handle this?
+        let expectedPc: Word = 4350
+
+        XCTAssertEqual(observedPc, expectedPc)
     }
 
     func assertPcIncremented(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte, initialPc: Word) {
