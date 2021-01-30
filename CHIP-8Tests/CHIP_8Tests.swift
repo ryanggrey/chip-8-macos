@@ -9,6 +9,8 @@ import XCTest
 @testable import CHIP_8
 
 class CHIP_8Tests: XCTestCase {
+    let registerSize = 0x0f + 0x01
+
     func test_initial_pc_is_0x200() {
         let chip8 = Chip8(ram: [Byte]())
         XCTAssertEqual(chip8.pc, 0x200)
@@ -252,7 +254,6 @@ class CHIP_8Tests: XCTestCase {
     func test_MOV_0x08_sets_Vx_to_Vy() {
         let x: Byte = 0x0e, y: Byte = 0x0b
         let initialVy: Byte = 0x06
-        let registerSize = Int(max(x, y)) + 1
         var v = [Byte](repeating: 0, count: registerSize)
         v[y] = initialVy
         let ram = createRamWithOp(0x08, x, y, 0x00)
@@ -274,7 +275,6 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 2, y: Byte = 3
         let initialVx: Byte = 0b1101
         let initialVy: Byte = 0b0110
-        let registerSize = Int(max(x, y)) + 1
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -298,7 +298,6 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 3, y: Byte = 14
         let initialVx: Byte = 0b1100
         let initialVy: Byte = 0b1010
-        let registerSize = Int(max(x, y)) + 1
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -322,7 +321,6 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 7, y: Byte = 13
         let initialVx: Byte = 0b1100
         let initialVy: Byte = 0b1010
-        let registerSize = Int(max(x, y)) + 1
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -346,7 +344,6 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b11111111
         let initialVy: Byte = 0b00000001
-        let registerSize = 0x0f + 0x01
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -368,7 +365,6 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b11111110
         let initialVy: Byte = 0b00000001
-        let registerSize = 0x0f + 0x01
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -396,7 +392,6 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b00000000
         let initialVy: Byte = 0b00000001
-        let registerSize = 0x0f + 0x01
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -418,7 +413,6 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b00000001
         let initialVy: Byte = 0b00000001
-        let registerSize = 0x0f + 0x01
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[y] = initialVy
@@ -447,7 +441,6 @@ class CHIP_8Tests: XCTestCase {
         let f: Byte = 0x0f
         let initialVx: Byte = 0b10100101
         let initialVf: Byte = 0b00000000
-        let registerSize = Int(max(x, f)) + 1
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[f] = initialVf
@@ -466,7 +459,6 @@ class CHIP_8Tests: XCTestCase {
         let f: Byte = 0x0f
         let initialVx: Byte = 0b11110100
         let initialVf: Byte = 0b00000001
-        let registerSize = Int(max(x, f)) + 1
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         v[f] = initialVf
@@ -484,7 +476,6 @@ class CHIP_8Tests: XCTestCase {
         let x: Byte = 0x0c
         let f: Byte = 0x0f
         let initialVx: Byte = 0b10100101
-        let registerSize = Int(max(x, f)) + 1
         var v = [Byte](repeating: 0, count: registerSize)
         v[x] = initialVx
         let ram = createRamWithOp(0x08, x, 0x00, 0x06)
