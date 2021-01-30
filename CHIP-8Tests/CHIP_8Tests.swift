@@ -231,7 +231,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedVx, expectedVx)
     }
 
-    func test_ADD_0x07_does_NOT_change_carry_flag() {
+    func test_ADD_0x07_does_NOT_change_flag() {
         let x: Byte = 0x0e, n1: Byte = 0x0b, n2: Byte = 0x01, f = 0x0f
         let ram = createRamWithOp(0x07, x, n1, n2)
         var v = [Byte](repeating: 0, count: 0x0f + 0x01)
@@ -340,7 +340,7 @@ class CHIP_8Tests: XCTestCase {
         assertPcIncremented(0x08, x, y, 0x03, initialPc: initialPc)
     }
 
-    func test_ADD_dot_0x08_adds_Vy_to_Vx_and_sets_carry_flag() {
+    func test_ADD_dot_0x08_adds_Vy_to_Vx_and_sets_flag() {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b11111111
         let initialVy: Byte = 0b00000001
@@ -361,7 +361,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedVf, expectedVf)
     }
 
-    func test_ADD_dot_0x08_adds_Vy_to_Vx_and_does_not_set_carry_flag() {
+    func test_ADD_dot_0x08_adds_Vy_to_Vx_and_does_not_set_flag() {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b11111110
         let initialVy: Byte = 0b00000001
@@ -388,7 +388,7 @@ class CHIP_8Tests: XCTestCase {
         assertPcIncremented(0x08, x, y, 0x04, initialPc: initialPc)
     }
 
-    func test_SUB_dot_0x08_sbtracts_Vy_from_Vx_and_does_not_set_carry_flag() {
+    func test_SUB_dot_0x08_sbtracts_Vy_from_Vx_and_does_not_set_flag() {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b00000000
         let initialVy: Byte = 0b00000001
@@ -409,7 +409,7 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedVf, expectedVf)
     }
 
-    func test_SUB_dot_0x08_sbtracts_Vy_from_Vx_and_does_set_carry_flag() {
+    func test_SUB_dot_0x08_sbtracts_Vy_from_Vx_and_does_set_flag() {
         let x: Byte = 0, y: Byte = 1
         let initialVx: Byte = 0b00000001
         let initialVy: Byte = 0b00000001
