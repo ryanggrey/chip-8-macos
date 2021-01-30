@@ -683,6 +683,33 @@ class CHIP_8Tests: XCTestCase {
         XCTAssertEqual(observedPc, expectedPc)
     }
 
+    func test_RAND_0x0c_sets_Vx_to_rand_bitwise_and_nn() {
+        let x: Byte = 0, n1: Byte = 0b0011, n2: Byte = 0b1001
+        let initialVx: Byte = 0b11111111
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = initialVx
+        let ram = createRamWithOp(0x0c, x, n1, n2)
+
+        // inject a random byte generating function to allow deterministic test
+        let randomByte: () -> Byte = { 0b10001001 }
+        let chip8 = Chip8(randomByteFunction: randomByte, v: v, ram: ram)
+
+        try! chip8.doOp()
+        let observedVx = chip8.v[x]
+        // rand() & nn = 0b10001001 & 0b0011,0b1001
+        // = 0b10001001 & 0b00111001 = 0b00001001
+
+        let expectedVx: Byte = 0b00001001
+
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_RAND_0x0a_increments_pc() {
+        let x: Byte = 0, n1: Byte = 0b0011, n2: Byte = 0b1001
+        let initialPc: Word = 0x3a0
+        assertPcIncremented(0x0c, x, n1, n2, initialPc: initialPc)
+    }
+
     func assertPcIncremented(_ n1: Byte, _ n2: Byte, _ n3: Byte, _ n4: Byte, initialPc: Word) {
         let ram = createRamWithOp(n1, n2, n3, n4, pc: initialPc)
         let chip8 = Chip8(pc: initialPc, ram: ram)

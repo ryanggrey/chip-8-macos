@@ -24,7 +24,11 @@ public class Chip8 {
 
     private var keys = [Byte](repeating: 0, count: 16)
 
+    private(set) var randomByte: () -> Byte
+
     init(
+        randomByteFunction: @escaping () -> Byte = { Byte.random(in: Byte.min..<Byte.max) },
+
         // 16 registers, each register is 1 byte / 8 bits
         v: [Byte] = [Byte](repeating: 0, count: 16),
 
@@ -42,6 +46,7 @@ public class Chip8 {
         // Should be 4k, but allow this to be dictated by 0x200 + rom size
         ram: [Byte]) {
 
+        self.randomByte = randomByteFunction
         self.v = v
         self.pc = pc
         self.pixels = pixels
@@ -205,8 +210,10 @@ public class Chip8 {
 
         case (0x0c, let x, let n1, let n2):
             // CXNN, Rand, Sets VX to the result of a bitwise AND operation on a random number (Typically: 0 to 255) and NN.
-            throw NotImplemented()
-
+            // RAND
+            v[x] = randomByte() & Byte(nibbles: [n1, n2])
+            pc += 2
+            
         case (0x0d, let x, let y, let n):
             // DXYN, Disp, Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N+1 pixels. Each row of 8 pixels is read as bit-coded starting from memory location I; I value doesn’t change after the execution of this instruction. As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the sprite is drawn, and to 0 if that doesn’t happen
             throw NotImplemented()
