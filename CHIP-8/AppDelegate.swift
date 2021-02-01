@@ -13,10 +13,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // TODO: allow loading of any rom
         let loadedRom = Rom.read("Fishie")
         Disassembler.disassemble(codeBuffer: loadedRom)
-        let width = 64, height = 32
-        let pixels = [Byte](repeating: 0, count: width * height)
-        let chip8 = Chip8(pixels: pixels, ram: loadedRom)
-        try! chip8.doOp()
+        let chip8 = Chip8()
+        // TODO: run the chip
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

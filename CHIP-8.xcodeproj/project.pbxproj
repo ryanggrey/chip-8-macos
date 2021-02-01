@@ -11,7 +11,7 @@
 		164F160625BB8EE3002A8D89 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F160525BB8EE3002A8D89 /* ViewController.swift */; };
 		164F160825BB8EE6002A8D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 164F160725BB8EE6002A8D89 /* Assets.xcassets */; };
 		164F160B25BB8EE6002A8D89 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 164F160925BB8EE6002A8D89 /* Main.storyboard */; };
-		164F161725BB8EE6002A8D89 /* CHIP_8Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F161625BB8EE6002A8D89 /* CHIP_8Tests.swift */; };
+		164F161725BB8EE6002A8D89 /* OpExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F161625BB8EE6002A8D89 /* OpExecutorTests.swift */; };
 		164F163325BB9271002A8D89 /* Chip8.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F163225BB9271002A8D89 /* Chip8.swift */; };
 		16FC136525BC577700A8776F /* Fishie.ch8 in Resources */ = {isa = PBXBuildFile; fileRef = 16FC136425BC577700A8776F /* Fishie.ch8 */; };
 		16FC137225BC608000A8776F /* Rom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC137125BC608000A8776F /* Rom.swift */; };
@@ -19,6 +19,9 @@
 		16FC137C25BC622300A8776F /* Disassembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC137B25BC622300A8776F /* Disassembler.swift */; };
 		16FC138125BF7BD700A8776F /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138025BF7BD700A8776F /* Word.swift */; };
 		16FC138625C0ABF600A8776F /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138525C0ABF600A8776F /* Byte.swift */; };
+		16FC139025C8965C00A8776F /* OpExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138F25C8965B00A8776F /* OpExecutor.swift */; };
+		16FC139425C8966C00A8776F /* OpHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC139325C8966C00A8776F /* OpHandler.swift */; };
+		16FC139825C896C300A8776F /* ChipState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC139725C896C200A8776F /* ChipState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +43,7 @@
 		164F160C25BB8EE6002A8D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		164F160D25BB8EE6002A8D89 /* CHIP_8.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CHIP_8.entitlements; sourceTree = "<group>"; };
 		164F161225BB8EE6002A8D89 /* CHIP-8Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CHIP-8Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		164F161625BB8EE6002A8D89 /* CHIP_8Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CHIP_8Tests.swift; sourceTree = "<group>"; };
+		164F161625BB8EE6002A8D89 /* OpExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpExecutorTests.swift; sourceTree = "<group>"; };
 		164F161825BB8EE6002A8D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		164F163225BB9271002A8D89 /* Chip8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8.swift; sourceTree = "<group>"; };
 		16FC136425BC577700A8776F /* Fishie.ch8 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fishie.ch8; sourceTree = "<group>"; };
@@ -49,6 +52,9 @@
 		16FC137B25BC622300A8776F /* Disassembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disassembler.swift; sourceTree = "<group>"; };
 		16FC138025BF7BD700A8776F /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		16FC138525C0ABF600A8776F /* Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Byte.swift; sourceTree = "<group>"; };
+		16FC138F25C8965B00A8776F /* OpExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpExecutor.swift; sourceTree = "<group>"; };
+		16FC139325C8966C00A8776F /* OpHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpHandler.swift; sourceTree = "<group>"; };
+		16FC139725C896C200A8776F /* ChipState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +109,9 @@
 				16FC137B25BC622300A8776F /* Disassembler.swift */,
 				16FC138025BF7BD700A8776F /* Word.swift */,
 				16FC138525C0ABF600A8776F /* Byte.swift */,
+				16FC138F25C8965B00A8776F /* OpExecutor.swift */,
+				16FC139325C8966C00A8776F /* OpHandler.swift */,
+				16FC139725C896C200A8776F /* ChipState.swift */,
 			);
 			path = "CHIP-8";
 			sourceTree = "<group>";
@@ -110,7 +119,7 @@
 		164F161525BB8EE6002A8D89 /* CHIP-8Tests */ = {
 			isa = PBXGroup;
 			children = (
-				164F161625BB8EE6002A8D89 /* CHIP_8Tests.swift */,
+				164F161625BB8EE6002A8D89 /* OpExecutorTests.swift */,
 				164F161825BB8EE6002A8D89 /* Info.plist */,
 			);
 			path = "CHIP-8Tests";
@@ -229,7 +238,10 @@
 				16FC138125BF7BD700A8776F /* Word.swift in Sources */,
 				164F160625BB8EE3002A8D89 /* ViewController.swift in Sources */,
 				16FC137225BC608000A8776F /* Rom.swift in Sources */,
+				16FC139825C896C300A8776F /* ChipState.swift in Sources */,
+				16FC139425C8966C00A8776F /* OpHandler.swift in Sources */,
 				16FC137725BC60E400A8776F /* Types.swift in Sources */,
+				16FC139025C8965C00A8776F /* OpExecutor.swift in Sources */,
 				164F160425BB8EE3002A8D89 /* AppDelegate.swift in Sources */,
 				16FC137C25BC622300A8776F /* Disassembler.swift in Sources */,
 			);
@@ -239,7 +251,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				164F161725BB8EE6002A8D89 /* CHIP_8Tests.swift in Sources */,
+				164F161725BB8EE6002A8D89 /* OpExecutorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
