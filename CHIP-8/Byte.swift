@@ -16,3 +16,14 @@ extension Byte {
         }
     }
 }
+
+extension Array {
+    subscript(place: Byte) -> Element {
+        get {
+            return self[Int(place)]
+        }
+        set {
+            self[Int(place)] = newValue
+        }
+    }
+}

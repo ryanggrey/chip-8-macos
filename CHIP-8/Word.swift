@@ -16,3 +16,14 @@ extension Word {
         }
     }
 }
+
+extension Array {
+    subscript(place: Word) -> Element {
+        get {
+            return self[Int(place)]
+        }
+        set {
+            self[Int(place)] = newValue
+        }
+    }
+}

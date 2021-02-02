@@ -21,23 +21,3 @@ public class Chip8 {
         // TODO:
     }
 }
-
-extension Array {
-    subscript(place: Word) -> Element {
-        get {
-            return self[Int(place)]
-        }
-        set {
-            self[Int(place)] = newValue
-        }
-    }
-
-    subscript(place: Byte) -> Element {
-        get {
-            return self[Int(place)]
-        }
-        set {
-            self[Int(place)] = newValue
-        }
-    }
-}
