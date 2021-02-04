@@ -16,17 +16,10 @@ struct OpExecutor: OpHandler {
         randomByte = randomByteFunction
     }
 
-        let byte1 = Byte(op >> 8)
-        let byte2 = Byte(op & 0b0000000011111111)
-        let nibble1 = byte1 >> 4 // shift everything right by 4 bits, prefixing with 0s
-        let nibble2 = byte1 & 0b00001111 // & with 00001111, causing the 1st nibble to be 0ed and the 2nd nibble to be preserved
-        let nibble3 = byte2 >> 4
-        let nibble4 = byte2 & 0b00001111
-
     public func handle(state: ChipState, op: Word) throws -> ChipState {
         var newState = state
 
-        switch (nibble1, nibble2, nibble3, nibble4)
+        switch (op.nibble1, op.nibble2, op.nibble3, op.nibble4)
         {
         case (0x00, 0x00, 0x0e, 0x00):
             // 00E0, Display, Clears the screen.
