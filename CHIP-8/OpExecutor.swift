@@ -171,9 +171,8 @@ struct OpExecutor: OpHandler {
             newState.v[x] = randomByte() & Byte(nibbles: [n1, n2])
             newState.pc += 2
 
-        case (0x0d, let x, let y, let n):
-            // DXYN, Disp, Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N+1 pixels. Each row of 8 pixels is read as bit-coded starting from memory location I; I value doesn’t change after the execution of this instruction. As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the sprite is drawn, and to 0 if that doesn’t happen
-            return state
+        case (0x0d, _, _, _):
+            newState = try! draw(state: state, op: op)
 
         case (0x0e, let x, 0x09, 0x0e):
             // EX9E, KeyOp, Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
@@ -203,7 +202,6 @@ struct OpExecutor: OpHandler {
             return state
         case (0x0f, let x, 0x01, 0x0e):
             // FX1E, MEM, Adds VX to I. VF is not affected.
-            return state
             // ADD
             newState.i &+= Word(state.v[x])
             newState.pc += 2
@@ -227,7 +225,68 @@ struct OpExecutor: OpHandler {
             throw NotImplemented()
             return state
         }
-        
+
+        return newState
+    }
+
+    private func draw(state: ChipState, op: Word) throws -> ChipState {
+        // DXYN, Disp, Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N+1 pixels. Each row of 8 pixels is read as bit-coded starting from memory location I; I value doesn’t change after the execution of this instruction. As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the sprite is drawn, and to 0 if that doesn’t happen
+
+        // Screen coords:
+        // (0,0)      (63,0)
+        // (0,31)    (63,31)
+
+        var newState = state
+        let x = op.nibble2, y = op.nibble3, n = op.nibble4
+
+        let spriteWidth = 8
+        let leftSpriteCol = 0, rightSpriteCol = leftSpriteCol + spriteWidth
+        let spriteColRange = leftSpriteCol..<rightSpriteCol
+        let topSpriteRow = 0, bottomSpriteRow = topSpriteRow + Int(n)
+        let spriteRowRange = topSpriteRow..<bottomSpriteRow
+
+        let xCoord = Int(state.v[x]), yCoord = Int(state.v[y])
+
+        var newPixels = state.pixels
+        var isCollision = false
+        for rowIndex in spriteRowRange {
+            let pixelByteAddress = state.i + Word(rowIndex)
+            let pixelByte = state.ram[pixelByteAddress]
+
+            for colIndex in spriteColRange {
+                let bitMask: Byte = 0b10000000 >> colIndex
+                let pixelMasked: Byte = (pixelByte & bitMask)
+                let pixelBit: Byte = pixelMasked > 0 ? 1 : 0
+
+                // TODO: inject screen width
+                let screenWidth = 64
+                let screenHeight = 32
+
+                // wrap 2d array
+                let preWrappedpixelAddress = (yCoord + rowIndex) * screenWidth + (xCoord + colIndex)
+                let pixelAddress = preWrappedpixelAddress % (screenWidth * screenHeight)
+
+                // wrap x-axis & y-axis independently
+                // 2d wrapping and 1d wrapping seem to work identically (for "maze")
+                // I don't think it matters how we wrap pixels so long as we have a 1-to-1 mapping of 2d coords to array address and are consistent in our reads/writes to that array
+                // let indepententlyWrappedPixelAddress = ((yCoord + rowIndex) % screenHeight) * screenWidth + ((xCoord + colIndex) % screenWidth)
+
+                let oldPixel = state.pixels[pixelAddress]
+
+                // Sprites are XORed onto the existing screen.
+                let newPixel = pixelBit ^ oldPixel
+                newPixels[pixelAddress] = newPixel
+
+                // VF is set to 1 if any screen pixels are flipped from set to unset when the sprite is drawn, and to 0 if that doesn’t happen
+                if oldPixel == 1 && newPixel == 0 {
+                    isCollision = true
+                }
+            }
+        }
+        newState.pixels = newPixels
+        newState.v[0x0f] = isCollision ? 1 : 0
+        newState.pc += 2
+
         return newState
     }
 }
