@@ -14,8 +14,8 @@
 		164F161725BB8EE6002A8D89 /* OpExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F161625BB8EE6002A8D89 /* OpExecutorTests.swift */; };
 		164F163325BB9271002A8D89 /* Chip8.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F163225BB9271002A8D89 /* Chip8.swift */; };
 		16FC136525BC577700A8776F /* Fishie.ch8 in Resources */ = {isa = PBXBuildFile; fileRef = 16FC136425BC577700A8776F /* Fishie.ch8 */; };
-		16FC137225BC608000A8776F /* Rom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC137125BC608000A8776F /* Rom.swift */; };
 		167368DA25CAE665002295FE /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167368D925CAE665002295FE /* Font.swift */; };
+		16FC137225BC608000A8776F /* RomLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC137125BC608000A8776F /* RomLoader.swift */; };
 		16FC137C25BC622300A8776F /* Disassembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC137B25BC622300A8776F /* Disassembler.swift */; };
 		16FC138125BF7BD700A8776F /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138025BF7BD700A8776F /* Word.swift */; };
 		16FC138625C0ABF600A8776F /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138525C0ABF600A8776F /* Byte.swift */; };
@@ -47,8 +47,8 @@
 		164F161825BB8EE6002A8D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		164F163225BB9271002A8D89 /* Chip8.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8.swift; sourceTree = "<group>"; };
 		16FC136425BC577700A8776F /* Fishie.ch8 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fishie.ch8; sourceTree = "<group>"; };
-		16FC137125BC608000A8776F /* Rom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rom.swift; sourceTree = "<group>"; };
 		167368D925CAE665002295FE /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		16FC137125BC608000A8776F /* RomLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RomLoader.swift; sourceTree = "<group>"; };
 		16FC137B25BC622300A8776F /* Disassembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disassembler.swift; sourceTree = "<group>"; };
 		16FC138025BF7BD700A8776F /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		16FC138525C0ABF600A8776F /* Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Byte.swift; sourceTree = "<group>"; };
@@ -105,6 +105,7 @@
 				164F160D25BB8EE6002A8D89 /* CHIP_8.entitlements */,
 				164F163225BB9271002A8D89 /* Chip8.swift */,
 				16FC137125BC608000A8776F /* Rom.swift */,
+				16FC137125BC608000A8776F /* RomLoader.swift */,
 				16FC137B25BC622300A8776F /* Disassembler.swift */,
 				16FC138025BF7BD700A8776F /* Word.swift */,
 				16FC138525C0ABF600A8776F /* Byte.swift */,
@@ -237,7 +238,7 @@
 				16FC138625C0ABF600A8776F /* Byte.swift in Sources */,
 				16FC138125BF7BD700A8776F /* Word.swift in Sources */,
 				164F160625BB8EE3002A8D89 /* ViewController.swift in Sources */,
-				16FC137225BC608000A8776F /* Rom.swift in Sources */,
+				16FC137225BC608000A8776F /* RomLoader.swift in Sources */,
 				16FC139825C896C300A8776F /* ChipState.swift in Sources */,
 				16FC139425C8966C00A8776F /* OpHandler.swift in Sources */,
 				167368DA25CAE665002295FE /* Font.swift in Sources */,
