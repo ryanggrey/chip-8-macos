@@ -776,6 +776,82 @@ class OpExecutorTests: XCTestCase {
         assertPcIncremented(op: op)
     }
 
+    func test_ADD_0x0f_adds_Vx_to_I() {
+        let x: Byte = 4
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x0e])
+        var v = [Byte](repeating: 0, count: 6)
+        v[x] = 1
+
+        var state = ChipState()
+        state.v = v
+        state.i = Word.max - Word(v[x])
+
+        let expectedI = state.i + Word(v[x])
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedI = newState.i
+        XCTAssertEqual(observedI, expectedI)
+    }
+
+    func test_ADD_0x0f_adds_Vx_to_I_with_overflow() {
+        let x: Byte = 4
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x0e])
+        var v = [Byte](repeating: 0, count: 6)
+        v[x] = 2
+
+        var state = ChipState()
+        state.v = v
+        state.i = Word.max - 1
+
+        // I + Vx =
+        // Word.max-1 + 2 =
+        // 0b1111111111111110 + 0b0000000000000010 =
+        // 0b0000000000000000 with overflow of 0b0000000000000001
+        let expectedI: Word = 0b0000000000000000
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedI = newState.i
+        XCTAssertEqual(observedI, expectedI)
+    }
+
+    func test_ADD_0x0f_does_NOT_change_flag_when_1() {
+        let x: Byte = 4
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x0e])
+        let expectedVf: Byte = 1
+
+        var state = ChipState()
+        state.v[x] = 2
+        let f = 0x0f
+        state.v[f] = expectedVf
+        state.i = Word.max - 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedVf = newState.v[f]
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_ADD_0x0f_does_NOT_change_flag_when_0() {
+        let x: Byte = 4
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x0e])
+        let expectedVf: Byte = 0
+
+        var state = ChipState()
+        state.v[x] = 2
+        let f = 0x0f
+        state.v[f] = expectedVf
+        state.i = Word.max - 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedVf = newState.v[f]
+        XCTAssertEqual(observedVf, expectedVf)
+    }
+
+    func test_ADD_0x0f_increments_pc() {
+        let x: Byte = 0x0e
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x0e])
+        assertPcIncremented(op: op)
+    }
+
     func assertPcIncremented(op: Word) {
         let state = ChipState()
         let newState = try! opExecutor.handle(state: state, op: op)

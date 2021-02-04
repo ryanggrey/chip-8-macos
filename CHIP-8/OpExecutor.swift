@@ -204,6 +204,9 @@ struct OpExecutor: OpHandler {
         case (0x0f, let x, 0x01, 0x0e):
             // FX1E, MEM, Adds VX to I. VF is not affected.
             return state
+            // ADD
+            newState.i &+= Word(state.v[x])
+            newState.pc += 2
         case (0x0f, let x, 0x02, 0x09):
             // FX29, MEM, Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
             throw NotImplemented()
