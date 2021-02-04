@@ -776,6 +776,11 @@ class OpExecutorTests: XCTestCase {
         assertPcIncremented(op: op)
     }
 
+    // TODO
+    func test_SPRITE_0x0c_draws_at_Vx_Vy() {
+        // DXYN, Disp, Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N+1 pixels. Each row of 8 pixels is read as bit-coded starting from memory location I; I value doesn’t change after the execution of this instruction. As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the sprite is drawn, and to 0 if that doesn’t happen
+    }
+
     func test_ADD_0x0f_adds_Vx_to_I() {
         let x: Byte = 4
         let op = Word(nibbles: [0x0f, x, 0x01, 0x0e])
