@@ -16,7 +16,6 @@ struct OpExecutor: OpHandler {
         randomByte = randomByteFunction
     }
 
-    public func handle(state: ChipState, op: Word) -> ChipState {
         let byte1 = Byte(op >> 8)
         let byte2 = Byte(op & 0b0000000011111111)
         let nibble1 = byte1 >> 4 // shift everything right by 4 bits, prefixing with 0s
@@ -24,6 +23,7 @@ struct OpExecutor: OpHandler {
         let nibble3 = byte2 >> 4
         let nibble4 = byte2 & 0b00001111
 
+    public func handle(state: ChipState, op: Word) throws -> ChipState {
         var newState = state
 
         switch (nibble1, nibble2, nibble3, nibble4)
@@ -184,40 +184,51 @@ struct OpExecutor: OpHandler {
 
         case (0x0e, let x, 0x09, 0x0e):
             // EX9E, KeyOp, Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
+            throw NotImplemented()
             return state
 
         case (0x0e, let x, 0x0a, 0x01):
             // EXA1, KeyOp, Skips the next instruction if the key stored in VX isn't pressed. (Usually the next instruction is a jump to skip a code block)
+            throw NotImplemented()
             return state
 
         case (0x0f, let x, 0x00, 0x07):
             // FX07, Timer, Sets VX to the value of the delay timer.
+            throw NotImplemented()
             return state
         case (0x0f, let x, 0x00, 0x0a):
             // FX0A, KeyOp, A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted until next key event)
+            throw NotImplemented()
             return state
         case (0x0f, let x, 0x01, 0x05):
             // FX15, Timer, Sets the delay timer to VX.
+            throw NotImplemented()
             return state
         case (0x0f, let x, 0x01, 0x08):
             // FX18, Sound, Sets the sound timer to VX.
+            throw NotImplemented()
             return state
         case (0x0f, let x, 0x01, 0x0e):
             // FX1E, MEM, Adds VX to I. VF is not affected.
             return state
         case (0x0f, let x, 0x02, 0x09):
             // FX29, MEM, Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
+            throw NotImplemented()
             return state
         case (0x0f, let x, 0x03, 0x03):
             // FX33, BCD, Stores the binary-coded decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2. (In other words, take the decimal representation of VX, place the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.)
+            throw NotImplemented()
             return state
         case (0x0f, let x, 0x05, 0x05):
             // FX55, MEM, Stores V0 to VX (including VX) in memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified
+            throw NotImplemented()
             return state
         case (0x0f, let x, 0x06, 0x05):
             // FX65, MEM, Fills V0 to VX (including VX) with values from memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified.
+            throw NotImplemented()
             return state
         default:
+            throw NotImplemented()
             return state
         }
         

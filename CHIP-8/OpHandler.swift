@@ -8,5 +8,5 @@
 import Foundation
 
 protocol OpHandler {
-    func handle(state: ChipState, op: Word) -> ChipState
+    func handle(state: ChipState, op: Word) throws -> ChipState
 }

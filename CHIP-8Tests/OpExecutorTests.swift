@@ -21,7 +21,7 @@ class OpExecutorTests: XCTestCase {
         XCTAssertEqual(state.pixels, dirtyPixels)
 
         let op = Word(nibbles: [0x00, 0x00, 0x0e, 0x00])
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedPixels = newState.pixels
         let expectedPixels = [Byte](repeating: 0, count: width * height)
@@ -42,7 +42,7 @@ class OpExecutorTests: XCTestCase {
         state.stack = stack
 
         let op = Word(nibbles: [0x00, 0x00, 0x0e, 0x0e])
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         XCTAssertEqual(observedPc, expectedPc)
     }
@@ -54,7 +54,7 @@ class OpExecutorTests: XCTestCase {
         state.stack = stack
 
         let op = Word(nibbles: [0x00, 0x00, 0x0e, 0x0e])
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedStack = newState.stack
         let expectedStack = [stack[0]]
@@ -65,7 +65,7 @@ class OpExecutorTests: XCTestCase {
         let n1: Byte = 0x01, n2: Byte = 0x0e, n3: Byte = 0x03
         let op = Word(nibbles: [0x01, n1, n2, n3])
         let state = ChipState()
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = createPcFrom(n1, n2, n3)
         XCTAssertEqual(observedPc, expectedPc)
@@ -79,7 +79,7 @@ class OpExecutorTests: XCTestCase {
         state.pc = initialPc
         XCTAssertTrue(state.stack.isEmpty)
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedStack = newState.stack
         let expectedStack = [initialPc]
         XCTAssertEqual(observedStack, expectedStack)
@@ -89,7 +89,7 @@ class OpExecutorTests: XCTestCase {
         let n1: Byte = 0x0b, n2: Byte = 0x0c, n3: Byte = 0x0d
         let op = Word(nibbles: [0x02, n1, n2, n3])
 
-        let newState = opExecutor.handle(state: ChipState(), op: op)
+        let newState = try! opExecutor.handle(state: ChipState(), op: op)
         let observedPc = newState.pc
         let expectedPc = createPcFrom(n1, n2, n3)
         XCTAssertEqual(observedPc, expectedPc)
@@ -104,7 +104,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 4
         XCTAssertEqual(observedPc, expectedPc)
@@ -119,7 +119,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 2
         XCTAssertEqual(observedPc, expectedPc)
@@ -134,7 +134,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 4
         XCTAssertEqual(observedPc, expectedPc)
@@ -149,7 +149,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 2
         XCTAssertEqual(observedPc, expectedPc)
@@ -165,7 +165,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 4
         XCTAssertEqual(observedPc, expectedPc)
@@ -181,7 +181,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 2
         XCTAssertEqual(observedPc, expectedPc)
@@ -197,7 +197,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         XCTAssertEqual(observedVx, expectedVx)
     }
@@ -211,7 +211,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 2
         XCTAssertEqual(observedPc, expectedPc)
@@ -228,7 +228,7 @@ class OpExecutorTests: XCTestCase {
 
         let expectedVx = v[x] + Byte(nibbles: [n1, n2])
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         XCTAssertEqual(observedVx, expectedVx)
     }
@@ -243,7 +243,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         XCTAssertEqual(observedVx, expectedVx)
     }
@@ -258,7 +258,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         // v[f] is carry flag
         let observedCarryFlag = newState.v[0x0f]
         XCTAssertEqual(observedCarryFlag, expectedCarryFlag)
@@ -280,7 +280,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         let expectedVx = initialVy
         XCTAssertEqual(observedVx, expectedVx)
@@ -304,7 +304,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b1101 | 0b0110 = 0b1111
         let expectedVx: Byte = 0b1111
@@ -329,7 +329,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b1100 & 0b1010 = 0b1000 = 8
         let expectedVx: Byte = 8
@@ -354,7 +354,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b1100 ^ 0b1010 = 0b0110 = 6
         let expectedVx: Byte = 6
@@ -379,7 +379,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b11111111 + 0b00000001 = 0b00000000 = 0 with overflow
         let expectedVx: Byte = 0b00000000
@@ -402,7 +402,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedVx = newState.v[x]
         // 0b11111110 + 0b00000001 = 0b11111111 = 255 with no overflow
@@ -432,7 +432,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b00000000 - 0b00000001 = 0b11111111 = 255 with borrow
         let expectedVx: Byte = 0b11111111
@@ -455,7 +455,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedVx = newState.v[x]
         // 0b00000001 - 0b00000001 = 0b00000000 = 0 without borrow
@@ -486,7 +486,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVf = newState.v[f]
         // lsb of 0b10110101 is 0b00000001
         let expectedVf: Byte = 0b00000001
@@ -506,7 +506,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVf = newState.v[f]
         // lsb of 0b10110101 is 0b00000000
         let expectedVf: Byte = 0b00000000
@@ -523,7 +523,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b10100101 shifted right by 1 = 0b01010010
         let expectedVx: Byte = 0b01010010
@@ -550,7 +550,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b00000011 - 0b00000010 = 0b00000001 with NO borrow
         let expectedVx: Byte = 0b00000001
@@ -573,7 +573,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b00000011 - 0b00000110 = 3 - 6 = 0 - 3 = 255 - 2 = 253 = 0b11111101 with borrow
         let expectedVx: Byte = 0b11111101
@@ -603,7 +603,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVf = newState.v[f]
         // msb of 0b10110101 is 0b1000000
         let expectedVf: Byte = 0b10000000
@@ -623,7 +623,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVf = newState.v[f]
         // msb of 0b01010100 is 0b00000000
         let expectedVf: Byte = 0b00000000
@@ -640,7 +640,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedVx = newState.v[x]
         // 0b10100101 shifted left by 1 = 0b01001010
         let expectedVx: Byte = 0b01001010
@@ -665,7 +665,7 @@ class OpExecutorTests: XCTestCase {
         state.v = v
 
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 4
         XCTAssertEqual(observedPc, expectedPc)
@@ -682,7 +682,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedPc = newState.pc
         let expectedPc = state.pc + 2
@@ -695,7 +695,7 @@ class OpExecutorTests: XCTestCase {
 
         let state = ChipState()
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedI = newState.i
         let expectedI = Word(nibbles: [n1, n2, n3])
@@ -718,7 +718,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         // nnn + V0 = 0x02, 0x0a, 0x06 + 0b00011010 = 0b0000, 0b0010, 0b1010, 0b0110 + 0b00011010
         // 0b0000, 0b0010, 0b1010, 0b0110 = 0b0000001010100110 + 0b00011010 = 678 + 26 = 704
@@ -736,7 +736,7 @@ class OpExecutorTests: XCTestCase {
         var state = ChipState()
         state.v = v
 
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         // nnn + V0 = 0b1111, 0b1111, 0b1111 + 0b11111111 =
         // 0b0000111111111111 + 0b11111111 = 4095 + 255 = 4350
@@ -759,7 +759,7 @@ class OpExecutorTests: XCTestCase {
         // inject a random byte generating function to allow deterministic test
         let randomByteFunction: () -> Byte = { 0b10001001 }
         let opExecutor = OpExecutor(randomByteFunction: randomByteFunction )
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedVx = newState.v[x]
         // rand() & nn = 0b10001001 & 0b0011,0b1001
@@ -770,7 +770,7 @@ class OpExecutorTests: XCTestCase {
         XCTAssertEqual(observedVx, expectedVx)
     }
 
-    func test_RAND_0x0a_increments_pc() {
+    func test_RAND_0x0c_increments_pc() {
         let x: Byte = 0, n1: Byte = 0b0011, n2: Byte = 0b1001
         let op = Word(nibbles: [0x0c, x, n1, n2])
         assertPcIncremented(op: op)
@@ -778,7 +778,7 @@ class OpExecutorTests: XCTestCase {
 
     func assertPcIncremented(op: Word) {
         let state = ChipState()
-        let newState = opExecutor.handle(state: state, op: op)
+        let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
         let expectedPc = state.pc + 2
         XCTAssertEqual(observedPc, expectedPc)
