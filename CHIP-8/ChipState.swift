@@ -9,7 +9,7 @@ import Foundation
 
 struct ChipState {
     // 4K memory
-    // public var ram = [Byte](repeating: 0, count: 4096)
+    public var ram = [Byte](repeating: 0, count: 4096)
     // 16 variables
     public var v = [Byte](repeating: 0, count: 16)
     public var i: Word = 0
@@ -23,4 +23,15 @@ struct ChipState {
     public var stack = [Word]()
     // 16 key inputs
     public var keys = [Byte](repeating: 0, count: 16)
+
+    public var currentOp: Word {
+        let byte1 = ram[pc]
+        let byte2 = ram[pc + 1]
+        let nibble1 = byte1 >> 4 // shift everything right by 4 bits, prefixing with 0s
+        let nibble2 = byte1 & 0x0F // & with 00001111, causing the 1st nibble to be 0ed and the 2nd nibble to be preserved
+        let nibble3 = byte2 >> 4
+        let nibble4 = byte2 & 0x0F
+        let opWord = Word(nibbles: [nibble1, nibble2, nibble3, nibble4])
+        return opWord
+    }
 }
