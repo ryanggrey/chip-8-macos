@@ -17,6 +17,8 @@ struct OpExecutor: OpHandler {
     }
 
     public func handle(state: ChipState, op: Word) throws -> ChipState {
+        Disassembler().disassemble(pc: Int(state.pc), op: op)
+        
         var newState = state
 
         switch (op.nibble1, op.nibble2, op.nibble3, op.nibble4)

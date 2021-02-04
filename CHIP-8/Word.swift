@@ -16,6 +16,12 @@ extension Word {
         }
     }
 
+    init(bytes: [Byte]) {
+        self = bytes.reduce(0x0) { (last, next) -> Word in
+            return last << 8 | Word(next)
+        }
+    }
+
     var byte1: Byte {
         // shift everything right by 8 bits, prefixing with 0s
         return Byte(self >> 8)

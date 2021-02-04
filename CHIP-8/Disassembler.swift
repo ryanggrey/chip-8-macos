@@ -8,29 +8,25 @@
 import Foundation
 
 public struct Disassembler {
-    public static func disassemble(codeBuffer: [Byte]) {
+    public func disassemble(codeBuffer: [Byte]) {
         let pcStart = 0x200
         var pc = pcStart
         let lastOpIndex = (codeBuffer.count - 1)
         while pc < lastOpIndex {
-            try! disassembleOp(codeBuffer: codeBuffer, pc: pc)
-            pc += 2 // increment a word at a time
+            let byte1 = codeBuffer[pc]
+            let byte2 = codeBuffer[pc+1]
+            let op = Word(bytes: [byte1, byte2])
+            disassemble(pc: pc, op: op)
+            pc += 2
         }
     }
-    
-    private static func disassembleOp(codeBuffer: [Byte], pc: Int) throws {
-        let byte1 = codeBuffer[pc]
-        let byte2 = codeBuffer[pc + 1]
-        let nibble1 = byte1 >> 4 // shift everything right by 4 bits, prefixing with 0s
-        let nibble2 = byte1 & 0x0F // & with 00001111, causing the 1st nibble to be 0ed and the 2nd nibble to be preserved
-        let nibble3 = byte2 >> 4
-        let nibble4 = byte2 & 0x0F
 
-        let addressAndCodeStr = getAddressAndCodeStr(pc, byte1, byte2)
+    public func disassemble(pc: Int, op: Word) {
+        let addressAndCodeStr = getAddressAndCodeStr(pc, op.byte1, op.byte2)
         var mnemonicStr = getMnemonicStr("NOOP")
         var opStr = getOpStr("")
 
-        switch (nibble1, nibble2, nibble3, nibble4)
+        switch (op.nibble1, op.nibble2, op.nibble3, op.nibble4)
         {
         case (0x00, 0x00, 0x0e, 0x00):
             // 00E0, Display, Clears the screen.
@@ -242,7 +238,7 @@ public struct Disassembler {
         print(dissassembly)
     }
 
-    static func getAddressAndCodeStr(_ pc: Int, _ byte1: Byte, _ byte2: Byte) -> String {
+    private func getAddressAndCodeStr(_ pc: Int, _ byte1: Byte, _ byte2: Byte) -> String {
         let address = getHexStr(width: 4, pc)
         let byte1Str = getHexStr(width: 2, byte1)
         let byte2Str = getHexStr(width: 2, byte2)
@@ -250,42 +246,42 @@ public struct Disassembler {
         return addressAndOpStr
     }
 
-    static func getHexStr<I: BinaryInteger & CVarArg>(width: Int, _ value: I) -> String {
+    private func getHexStr<I: BinaryInteger & CVarArg>(width: Int, _ value: I) -> String {
         let valueStr = String(format:"%02X", value as CVarArg)
         let paddedStr = valueStr.padding(toLength: width, withPad: " ", startingAt: 0)
         return paddedStr
     }
 
-    static func getRegisterStr<I: BinaryInteger & CVarArg>(_ value: I) -> String {
+    private func getRegisterStr<I: BinaryInteger & CVarArg>(_ value: I) -> String {
         let valueStr = String(format:"%01X", value as CVarArg)
         let paddedStr = valueStr.padding(toLength: 1, withPad: " ", startingAt: 0)
         return paddedStr
     }
 
-    static func getNibblesStr(_ values: [Byte]) -> String {
+    private func getNibblesStr(_ values: [Byte]) -> String {
         let word = Word(nibbles: values)
         let nibblesStr = getHexStr(width: values.count, word)
         return nibblesStr
     }
 
-    static func getAddressNibblesStr(_ nibbles: [Byte]) -> String {
+    private func getAddressNibblesStr(_ nibbles: [Byte]) -> String {
         let nibblesStr = getNibblesStr(nibbles)
         let notatedNibblesStr = "$\(nibblesStr)"
         return notatedNibblesStr
     }
 
-    static func getValueNibblesStr(_ nibbles: [Byte]) -> String {
+    private func getValueNibblesStr(_ nibbles: [Byte]) -> String {
         let nibblesStr = getNibblesStr(nibbles)
         let notatedNibblesStr = "#$\(nibblesStr)"
         return notatedNibblesStr
     }
 
-    static func getMnemonicStr(_ value: String) -> String {
+    private func getMnemonicStr(_ value: String) -> String {
         let paddedStr = value.padding(toLength: 10, withPad: " ", startingAt: 0)
         return paddedStr
     }
 
-    static func getOpStr(_ value: String) -> String {
+    private func getOpStr(_ value: String) -> String {
         return value
     }
 }

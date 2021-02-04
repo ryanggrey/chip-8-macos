@@ -21,7 +21,6 @@ class ViewController: NSViewController {
     }
 
     private func runEmulator(with rom: [Byte]) {
-        Disassembler.disassemble(codeBuffer: rom)
         let chipState = ChipState(ram: rom)
         self.chip8 = Chip8(state: chipState)
         timer = Timer.scheduledTimer(
