@@ -10,15 +10,11 @@ import Cocoa
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // TODO: allow loading of any rom
-        let loadedRom = Rom.read("Fishie")
-        Disassembler.disassemble(codeBuffer: loadedRom)
-        let chip8 = Chip8()
-        // TODO: run the chip
+        let window = NSApp.mainWindow
+        window?.aspectRatio = NSSize(width: 2, height: 1)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
     }
 }
 
