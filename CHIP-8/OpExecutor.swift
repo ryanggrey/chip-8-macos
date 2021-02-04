@@ -9,7 +9,7 @@ import Foundation
 
 typealias RandomByteFunction = () -> Byte
 
-struct OpExecutor: OpHandler {
+struct OpExecutor {
     private(set) var randomByte: RandomByteFunction
 
     init(randomByteFunction: @escaping RandomByteFunction = { Byte.random(in: Byte.min..<Byte.max) }) {

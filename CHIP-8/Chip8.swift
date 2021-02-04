@@ -11,7 +11,7 @@ struct NotImplemented: Error {}
 
 public class Chip8 {
     private var state: ChipState
-    private let opExecutor: OpHandler
+    private let opExecutor: OpExecutor
 
     init(state: ChipState) {
         self.state = state

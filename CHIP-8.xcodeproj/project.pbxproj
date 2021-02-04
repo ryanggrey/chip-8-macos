@@ -21,7 +21,6 @@
 		16FC138125BF7BD700A8776F /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138025BF7BD700A8776F /* Word.swift */; };
 		16FC138625C0ABF600A8776F /* Byte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138525C0ABF600A8776F /* Byte.swift */; };
 		16FC139025C8965C00A8776F /* OpExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC138F25C8965B00A8776F /* OpExecutor.swift */; };
-		16FC139425C8966C00A8776F /* OpHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC139325C8966C00A8776F /* OpHandler.swift */; };
 		16FC139825C896C300A8776F /* ChipState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC139725C896C200A8776F /* ChipState.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +54,6 @@
 		16FC138025BF7BD700A8776F /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		16FC138525C0ABF600A8776F /* Byte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Byte.swift; sourceTree = "<group>"; };
 		16FC138F25C8965B00A8776F /* OpExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpExecutor.swift; sourceTree = "<group>"; };
-		16FC139325C8966C00A8776F /* OpHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpHandler.swift; sourceTree = "<group>"; };
 		16FC139725C896C200A8776F /* ChipState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,7 +108,6 @@
 				16FC138025BF7BD700A8776F /* Word.swift */,
 				16FC138525C0ABF600A8776F /* Byte.swift */,
 				16FC138F25C8965B00A8776F /* OpExecutor.swift */,
-				16FC139325C8966C00A8776F /* OpHandler.swift */,
 				16FC139725C896C200A8776F /* ChipState.swift */,
 				167368D525CAE33F002295FE /* Chip8View.swift */,
 				167368D925CAE665002295FE /* Font.swift */,
@@ -235,7 +232,6 @@
 				164F160625BB8EE3002A8D89 /* ViewController.swift in Sources */,
 				16FC137225BC608000A8776F /* RomLoader.swift in Sources */,
 				16FC139825C896C300A8776F /* ChipState.swift in Sources */,
-				16FC139425C8966C00A8776F /* OpHandler.swift in Sources */,
 				167368DA25CAE665002295FE /* Font.swift in Sources */,
 				16FC139025C8965C00A8776F /* OpExecutor.swift in Sources */,
 				164F160425BB8EE3002A8D89 /* AppDelegate.swift in Sources */,
