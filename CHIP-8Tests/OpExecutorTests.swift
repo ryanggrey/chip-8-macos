@@ -776,9 +776,121 @@ class OpExecutorTests: XCTestCase {
         assertPcIncremented(op: op)
     }
 
-    // TODO
-    func test_SPRITE_0x0c_draws_at_Vx_Vy() {
+    func test_SPRITE_0x0d_draws_pixel_on_row_0() {
+        let x: Byte = 0, y: Byte = 1, n: Byte = 4
+        let initialVx: Byte = 3, initialVy: Byte = 5, initialIAddress: Word = 12
+        let op = Word(nibbles: [0x0d, x, y, n])
+
+        var state = ChipState()
+        state.v[x] = initialVx
+        state.v[y] = initialVy
+        state.i = initialIAddress
+        let initialIValue: Byte = 0b00000001
+        state.ram[initialIAddress] = initialIValue
+
+        var expectedPixels = [Byte](repeating: 0, count: 64 * 32)
+        // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
+        // where colIndex is the index (counting l to r) in initialIValue of the '1'
+        // where colIndex = 7
+        // (5 + 0) * 64 + 3 + 7 = 330
+        let pixelAddress = 330
+        expectedPixels[pixelAddress] = 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPixels = newState.pixels
+
+        XCTAssertEqual(observedPixels, expectedPixels)
+    }
+
+    func test_SPRITE_0x0d_draws_pixel_on_row_1() {
+        let x: Byte = 0, y: Byte = 1, n: Byte = 4
+        let initialVx: Byte = 3, initialVy: Byte = 5, initialIAddress: Word = 12
+        let op = Word(nibbles: [0x0d, x, y, n])
+
+        var state = ChipState()
+        state.v[x] = initialVx
+        state.v[y] = initialVy
+        state.i = initialIAddress
+        let initialIValue: Byte = 0b00000001
+
+        // row 0 is the byte at initialIAddress
+        // so row 1 is the byte at initialIAddress + 1
+        let ramAddress = initialIAddress + 1
+        state.ram[ramAddress] = initialIValue
+
+        var expectedPixels = [Byte](repeating: 0, count: 64 * 32)
+        // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
+        // where colIndex is the index (counting l to r) in initialIValue of the '1'
+        // where colIndex = 7
+        // (5 + 1) * 64 + 3 + 7 = 394
+        let pixelAddress = 394
+        expectedPixels[pixelAddress] = 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPixels = newState.pixels
+
+        XCTAssertEqual(observedPixels, expectedPixels)
+    }
+
+    func test_SPRITE_0x0d_draws_overflow_pixels() {
         // DXYN, Disp, Draws a sprite at coordinate (VX, VY) that has a width of 8 pixels and a height of N+1 pixels. Each row of 8 pixels is read as bit-coded starting from memory location I; I value doesn’t change after the execution of this instruction. As described above, VF is set to 1 if any screen pixels are flipped from set to unset when the sprite is drawn, and to 0 if that doesn’t happen
+        let x: Byte = 5, y: Byte = 12, n: Byte = 2
+
+        // make Vx so that drawing 8 pixels horizontally makes 1 pixel wrap
+        // rightmost x index = screen width - 1 = 64 - 1
+        // deduct not quite enough space for the width of a sprite = (sprite width - 1)
+        // Vx = (rightmost x index) - (sprite width - 1)
+        // Vx = 64 - 1 - 8 + 1 = 56
+        let initialVx: Byte = 56
+
+        // make Vy so that drawing n pixels vertically makes 1 pixel wrap
+        // bottom-most y index = screen height - 1 = 32 - 1
+        // deduct not quite enough space for the height of n = (n - 1)
+        // Vy = (bottom-most y index) - (n - 1)
+        // Vy = 32 - 1 - 2 + 1 = 32
+        let initialVy: Byte = 32
+
+        let initialIAddress: Word = 12
+        let op = Word(nibbles: [0x0d, x, y, n])
+
+        var state = ChipState()
+        state.v[x] = initialVx
+        state.v[y] = initialVy
+        state.i = initialIAddress
+        let initialIValue: Byte = 0b00000001
+
+        // row 0 is the byte at initialIAddress
+        let ramAddress = initialIAddress
+        state.ram[ramAddress] = initialIValue
+
+        var expectedPixels = [Byte](repeating: 0, count: 64 * 32)
+        // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
+        // where colIndex is the index (counting l to r) in initialIValue of the '1'
+        // where colIndex = 7
+        // (32 + 0) * 64 + 56 + 7 = 2111
+        // then wrap around screen
+        // 2111 % (64 * 2) = 63
+        let pixelAddress = 63
+        expectedPixels[pixelAddress] = 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPixels = newState.pixels
+
+        XCTAssertEqual(observedPixels, expectedPixels)
+    }
+
+    func test_SPRITE_0x0d_sets_flag() {
+
+    }
+
+    func test_SPRITE_0x0d_does_not_set_flag() {
+
+    }
+
+    func test_SPRITE_0x0d_increments_pc() {
+        let x: Byte = 1, y: Byte = 3, n: Byte = 4
+        let op = Word(nibbles: [0x0d, x, y, n])
+        assertPcIncremented(op: op)
     }
 
     func test_ADD_0x0f_adds_Vx_to_I() {
