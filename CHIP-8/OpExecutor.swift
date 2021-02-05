@@ -174,17 +174,26 @@ struct OpExecutor {
             newState.pc += 2
 
         case (0x0d, _, _, _):
+            // SPRITE
             newState = try! draw(state: state, op: op)
 
         case (0x0e, let x, 0x09, 0x0e):
             // EX9E, KeyOp, Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
-            throw NotImplemented()
-            return state
+            // SKIP.KEY
+            if state.keys[state.v[x]] == 0 {
+                newState.pc += 2
+            } else {
+                newState.pc += 4
+            }
 
         case (0x0e, let x, 0x0a, 0x01):
             // EXA1, KeyOp, Skips the next instruction if the key stored in VX isn't pressed. (Usually the next instruction is a jump to skip a code block)
-            throw NotImplemented()
-            return state
+            // SKIP.NOKEY
+            if state.keys[state.v[x]] == 1 {
+                newState.pc += 2
+            } else {
+                newState.pc += 4
+            }
 
         case (0x0f, let x, 0x00, 0x07):
             // FX07, Timer, Sets VX to the value of the delay timer.

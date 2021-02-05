@@ -1100,6 +1100,82 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0f, x, 0x01, 0x0e])
         assertPcIncremented(op: op)
     }
+
+    func test_SKIP_KEY_0x0e_skips() {
+        let x: Byte = 0x09
+        let op = Word(nibbles: [0x0e, x, 0x09, 0x0e])
+        let triggerKey: Byte = 1
+        let initialPc: Word = 0x6e6
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = triggerKey
+
+        var state = ChipState()
+        state.pc = initialPc
+        state.v = v
+        state.keys[triggerKey] = 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPc = newState.pc
+        let expectedPc: Word = initialPc + 4
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_KEY_0x0e_does_not_skip() {
+        let x: Byte = 0x00
+        let op = Word(nibbles: [0x0e, x, 0x09, 0x0e])
+        let triggerKey: Byte = 12
+        let initialPc: Word = 0xaae6
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = triggerKey
+
+        var state = ChipState()
+        state.pc = initialPc
+        state.v = v
+        state.keys[triggerKey] = 0
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPc = newState.pc
+        let expectedPc: Word = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_NOKEY_0x0e_skips() {
+        let x: Byte = 0x09
+        let op = Word(nibbles: [0x0e, x, 0x0a, 0x01])
+        let triggerKey: Byte = 1
+        let initialPc: Word = 0x6e6
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = triggerKey
+
+        var state = ChipState()
+        state.pc = initialPc
+        state.v = v
+        state.keys[triggerKey] = 0
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPc = newState.pc
+        let expectedPc: Word = initialPc + 4
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_SKIP_NOKEY_0x0e_does_not_skip() {
+        let x: Byte = 0x00
+        let op = Word(nibbles: [0x0e, x, 0x0a, 0x01])
+        let triggerKey: Byte = 12
+        let initialPc: Word = 0xaae6
+        var v = [Byte](repeating: 0, count: registerSize)
+        v[x] = triggerKey
+
+        var state = ChipState()
+        state.pc = initialPc
+        state.v = v
+        state.keys[triggerKey] = 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPc = newState.pc
+        let expectedPc: Word = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
 }
 
 // Utils
