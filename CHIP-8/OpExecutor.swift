@@ -216,12 +216,14 @@ struct OpExecutor {
 
         case (0x0f, let x, 0x00, 0x07):
             // FX07, Timer, Sets VX to the value of the delay timer.
-            // TODO:
+            // MOV
+            // TODO: test
             newState.v[x] = Byte(round(state.delayTimer))
             newState.pc += 2
         case (0x0f, let x, 0x00, 0x0a):
             // FX0A, KeyOp, A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted until next key event)
-            // TODO:
+            // WAITKEY
+            // TODO: test
             if let key = state.downKeys.lastObject as? Int, state.isAwaitingKey {
                 newState.v[x] = Byte(key)
                 newState.isAwaitingKey = false
@@ -231,12 +233,14 @@ struct OpExecutor {
             }
         case (0x0f, let x, 0x01, 0x05):
             // FX15, Timer, Sets the delay timer to VX.
-            // TODO:
+            // MOV
+            // TODO: test
             newState.delayTimer = TimeInterval(state.v[x])
             newState.pc += 2
         case (0x0f, let x, 0x01, 0x08):
             // FX18, Sound, Sets the sound timer to VX.
-            // TODO:
+            // MOV
+            // TODO: test
             newState.soundTimer = TimeInterval(state.v[x])
             newState.pc += 2
         case (0x0f, let x, 0x01, 0x0e):
@@ -246,7 +250,8 @@ struct OpExecutor {
             newState.pc += 2
         case (0x0f, let x, 0x02, 0x09):
             // FX29, MEM, Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
-            // TODO:
+            // SPRITECHAR
+            // TODO: test
             let character = state.v[x]
             let charHeight: Byte = 5
             newState.i = Word(character * charHeight)
@@ -258,7 +263,8 @@ struct OpExecutor {
             return state
         case (0x0f, let x, 0x05, 0x05):
             // FX55, MEM, Stores V0 to VX (including VX) in memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified
-            // TODO:
+            // MOVM
+            // TODO: test
             for vIndex in 0...x {
                 let address = state.i + Word(vIndex)
                 let vValue = state.v[vIndex]
@@ -268,7 +274,8 @@ struct OpExecutor {
             newState.pc += 2
         case (0x0f, let x, 0x06, 0x05):
             // FX65, MEM, Fills V0 to VX (including VX) with values from memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified.
-            // TODO:
+            // MOVM
+            // TODO: test
             for vIndex in 0...x {
                 let address = state.i + Word(vIndex)
                 let memoryValue = state.ram[address]
