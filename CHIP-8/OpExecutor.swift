@@ -204,16 +204,18 @@ struct OpExecutor {
 
         case (0x0f, let x, 0x00, 0x07):
             // FX07, Timer, Sets VX to the value of the delay timer.
-            throw NotImplemented()
-            return state
+            // TODO:
+            newState.v[x] = Byte(round(state.delayTimer))
+            newState.pc += 2
         case (0x0f, let x, 0x00, 0x0a):
             // FX0A, KeyOp, A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted until next key event)
             throw NotImplemented()
             return state
         case (0x0f, let x, 0x01, 0x05):
             // FX15, Timer, Sets the delay timer to VX.
-            throw NotImplemented()
-            return state
+            // TODO:
+            newState.delayTimer = TimeInterval(state.v[x])
+            newState.pc += 2
         case (0x0f, let x, 0x01, 0x08):
             // FX18, Sound, Sets the sound timer to VX.
             // TODO:
@@ -255,6 +257,11 @@ struct OpExecutor {
         default:
             throw NotImplemented()
             return state
+        }
+
+        if newState.delayTimer > 0 {
+            newState.delayTimer -= hz * 60
+        }
 
         if newState.soundTimer > 0 {
             newState.soundTimer -= hz * 60
