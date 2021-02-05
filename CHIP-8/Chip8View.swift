@@ -37,6 +37,10 @@ class Chip8View: NSView {
         bounds.fill()
     }
 
+    override var acceptsFirstResponder: Bool {
+        return true
+    }
+
     private func drawPixels() {
         // draw white pixels
         NSColor.white.setFill()

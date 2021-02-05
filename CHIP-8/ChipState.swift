@@ -21,6 +21,12 @@ struct ChipState {
     public var soundTimer: TimeInterval = 0
     // 12 or 16 sized stack in real Chip-8, but allow this to grow dynamically
     public var stack = [Word]()
+    // stack of currently pressed keys
+    // last pressed key at top of stack
+    // first pressed key on bottom of stak
+    public var downKeys = NSMutableOrderedSet()
+
+    public var isAwaitingKey = false
 
     public var shouldPlaySound: Bool {
         return soundTimer > 0

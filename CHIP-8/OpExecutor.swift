@@ -21,12 +21,23 @@ struct OpExecutor {
         self.hz = hz
     }
 
+    private func isAwaitingKey(op: Word) -> Bool {
+        switch (op.nibble1, op.nibble2, op.nibble3, op.nibble4) {
+        case (0x0f, _, 0x00, 0x0a):
+            return true
+        default:
+            return false
+        }
     }
 
     public func handle(state: ChipState, op: Word) throws -> ChipState {
         Disassembler().disassemble(pc: Int(state.pc), op: op)
         
         var newState = state
+
+        if state.isAwaitingKey && !isAwaitingKey(op: op) {
+            return state
+        }
 
         switch (op.nibble1, op.nibble2, op.nibble3, op.nibble4)
         {
@@ -187,7 +198,8 @@ struct OpExecutor {
         case (0x0e, let x, 0x09, 0x0e):
             // EX9E, KeyOp, Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
             // SKIP.KEY
-            if state.keys[state.v[x]] == 0 {
+
+            if !state.downKeys.contains(state.v[x]) {
                 newState.pc += 2
             } else {
                 newState.pc += 4
@@ -196,7 +208,7 @@ struct OpExecutor {
         case (0x0e, let x, 0x0a, 0x01):
             // EXA1, KeyOp, Skips the next instruction if the key stored in VX isn't pressed. (Usually the next instruction is a jump to skip a code block)
             // SKIP.NOKEY
-            if state.keys[state.v[x]] == 1 {
+            if state.downKeys.contains(state.v[x]) {
                 newState.pc += 2
             } else {
                 newState.pc += 4
@@ -209,8 +221,14 @@ struct OpExecutor {
             newState.pc += 2
         case (0x0f, let x, 0x00, 0x0a):
             // FX0A, KeyOp, A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted until next key event)
-            throw NotImplemented()
-            return state
+            // TODO:
+            if let key = state.downKeys.lastObject as? Int, state.isAwaitingKey {
+                newState.v[x] = Byte(key)
+                newState.isAwaitingKey = false
+                newState.pc += 2
+            } else {
+                newState.isAwaitingKey = true
+            }
         case (0x0f, let x, 0x01, 0x05):
             // FX15, Timer, Sets the delay timer to VX.
             // TODO:
@@ -228,8 +246,12 @@ struct OpExecutor {
             newState.pc += 2
         case (0x0f, let x, 0x02, 0x09):
             // FX29, MEM, Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
-            throw NotImplemented()
-            return state
+            // TODO:
+            let character = state.v[x]
+            let charHeight: Byte = 5
+            newState.i = Word(character * charHeight)
+
+            newState.pc += 2
         case (0x0f, let x, 0x03, 0x03):
             // FX33, BCD, Stores the binary-coded decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2. (In other words, take the decimal representation of VX, place the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.)
             throw NotImplemented()
@@ -256,7 +278,6 @@ struct OpExecutor {
             newState.pc += 2
         default:
             throw NotImplemented()
-            return state
         }
 
         if newState.delayTimer > 0 {

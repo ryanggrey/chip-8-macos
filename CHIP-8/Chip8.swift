@@ -29,4 +29,12 @@ public class Chip8 {
     public func cycle() {
         self.state = try! opExecutor.handle(state: self.state, op: state.currentOp)
     }
+
+    public func handleKeyDown(key: Int) {
+        state.downKeys.add(Byte(key))
+    }
+
+    public func handleKeyUp(key: Int) {
+        state.downKeys.remove(Byte(key))
+    }
 }
