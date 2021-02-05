@@ -13,6 +13,7 @@ class ViewController: NSViewController {
     private var chip8: Chip8!
     private var timer: Timer?
     private let hz: TimeInterval = 1/600
+    private let beep = NSSound(data: NSDataAsset(name: "chip8-beep")!.data)!
 
     private func runRomSelectorModal() {
         RomSelectorModal.runModal { [weak self] loadedRom in
@@ -23,6 +24,7 @@ class ViewController: NSViewController {
     private func runEmulator(with rom: [Byte]) {
         let chipState = ChipState(ram: rom)
         self.chip8 = Chip8(state: chipState)
+        self.chip8 = Chip8(state: chipState, hz: hz)
         timer = Timer.scheduledTimer(
             timeInterval: hz,
             target: self,
@@ -35,6 +37,9 @@ class ViewController: NSViewController {
     @objc private func timerFired() {
         chip8.cycle()
         render(pixels: chip8.pixels)
+        if chip8.shouldPlaySound && !beep.isPlaying {
+            beep.play()
+        }
     }
 
     private func render(pixels: [Byte]) {

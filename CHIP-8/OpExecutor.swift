@@ -11,9 +11,16 @@ typealias RandomByteFunction = () -> Byte
 
 struct OpExecutor {
     private(set) var randomByte: RandomByteFunction
+    private let hz: TimeInterval
 
-    init(randomByteFunction: @escaping RandomByteFunction = { Byte.random(in: Byte.min..<Byte.max) }) {
+    init(
+        hz: TimeInterval,
+        randomByteFunction: @escaping RandomByteFunction = { Byte.random(in: Byte.min..<Byte.max) }
+    ) {
         randomByte = randomByteFunction
+        self.hz = hz
+    }
+
     }
 
     public func handle(state: ChipState, op: Word) throws -> ChipState {
@@ -209,8 +216,9 @@ struct OpExecutor {
             return state
         case (0x0f, let x, 0x01, 0x08):
             // FX18, Sound, Sets the sound timer to VX.
-            throw NotImplemented()
-            return state
+            // TODO:
+            newState.soundTimer = TimeInterval(state.v[x])
+            newState.pc += 2
         case (0x0f, let x, 0x01, 0x0e):
             // FX1E, MEM, Adds VX to I. VF is not affected.
             // ADD
@@ -235,6 +243,9 @@ struct OpExecutor {
         default:
             throw NotImplemented()
             return state
+
+        if newState.soundTimer > 0 {
+            newState.soundTimer -= hz * 60
         }
 
         return newState

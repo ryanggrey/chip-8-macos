@@ -13,9 +13,13 @@ public class Chip8 {
     private var state: ChipState
     private let opExecutor: OpExecutor
 
-    init(state: ChipState) {
+    init(state: ChipState, hz: TimeInterval) {
         self.state = state
-        self.opExecutor = OpExecutor()
+        self.opExecutor = OpExecutor(hz: hz)
+    }
+
+    public var shouldPlaySound: Bool {
+        return state.shouldPlaySound
     }
 
     public var pixels: [Byte] {
