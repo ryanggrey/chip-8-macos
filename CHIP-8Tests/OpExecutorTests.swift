@@ -879,12 +879,144 @@ class OpExecutorTests: XCTestCase {
         XCTAssertEqual(observedPixels, expectedPixels)
     }
 
-    func test_SPRITE_0x0d_sets_flag() {
+    func test_SPRITE_0x0d_sets_flag_for_1_to_0() {
+        let x: Byte = 0, y: Byte = 1, n: Byte = 4
+        let initialVx: Byte = 9, initialVy: Byte = 20, initialIAddress: Word = 0x2ae
+        let op = Word(nibbles: [0x0d, x, y, n])
 
+        var state = ChipState()
+        state.v[x] = initialVx
+        state.v[y] = initialVy
+        state.i = initialIAddress
+        let initialFlag: Byte = 0
+        state.v[0x0f] = initialFlag
+
+        let initialIValue: Byte = 0b01000000
+
+        // row 0 is the byte at initialIAddress
+        // so row 1 is the byte at initialIAddress + 1
+        let ramAddress = initialIAddress + 1
+        state.ram[ramAddress] = initialIValue
+
+        // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
+        // where colIndex is the index (counting l to r) in initialIValue (col[1])
+        // where colIndex = 1
+        // (20 + 1) * 64 + 9 + 1 = 1354
+        let pixelAddress = 1354
+
+        // ensure we move from 1 -> 0
+        state.pixels[pixelAddress] = 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let expectedFlag: Byte = 1
+        let observedFlag = newState.v[0x0f]
+
+        XCTAssertEqual(observedFlag, expectedFlag)
     }
 
-    func test_SPRITE_0x0d_does_not_set_flag() {
+    func test_SPRITE_0x0d_does_not_set_flag_for_0_to_1() {
+        let x: Byte = 0, y: Byte = 1, n: Byte = 4
+        let initialVx: Byte = 9, initialVy: Byte = 20, initialIAddress: Word = 0x2ae
+        let op = Word(nibbles: [0x0d, x, y, n])
 
+        var state = ChipState()
+        state.v[x] = initialVx
+        state.v[y] = initialVy
+        state.i = initialIAddress
+        let initialFlag: Byte = 0
+        state.v[0x0f] = initialFlag
+
+        let initialIValue: Byte = 0b01000000
+
+        // row 0 is the byte at initialIAddress
+        // so row 1 is the byte at initialIAddress + 1
+        let ramAddress = initialIAddress + 1
+        state.ram[ramAddress] = initialIValue
+
+        // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
+        // where colIndex is the index (counting l to r) in initialIValue (col[1])
+        // where colIndex = 1
+        // (20 + 1) * 64 + 9 + 1 = 1354
+        let pixelAddress = 1354
+
+        // ensure we move from 0 -> 1
+        state.pixels[pixelAddress] = 0
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let expectedFlag: Byte = 0
+        let observedFlag = newState.v[0x0f]
+
+        XCTAssertEqual(observedFlag, expectedFlag)
+    }
+
+    func test_SPRITE_0x0d_does_not_set_flag_for_0_to_0() {
+        let x: Byte = 0, y: Byte = 1, n: Byte = 4
+        let initialVx: Byte = 9, initialVy: Byte = 20, initialIAddress: Word = 0x2ae
+        let op = Word(nibbles: [0x0d, x, y, n])
+
+        var state = ChipState()
+        state.v[x] = initialVx
+        state.v[y] = initialVy
+        state.i = initialIAddress
+        let initialFlag: Byte = 0
+        state.v[0x0f] = initialFlag
+
+        let initialIValue: Byte = 0b00000000
+
+        // row 0 is the byte at initialIAddress
+        // so row 1 is the byte at initialIAddress + 1
+        let ramAddress = initialIAddress + 1
+        state.ram[ramAddress] = initialIValue
+
+        // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
+        // where colIndex is the index (counting l to r) in initialIValue (col[1])
+        // where colIndex = 1
+        // (20 + 1) * 64 + 9 + 1 = 1354
+        let pixelAddress = 1354
+
+        // ensure we move from 0 -> 0
+        state.pixels[pixelAddress] = 0
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let expectedFlag: Byte = 0
+        let observedFlag = newState.v[0x0f]
+
+        XCTAssertEqual(observedFlag, expectedFlag)
+    }
+
+    func test_SPRITE_0x0d_does_not_set_flag_for_1_to_1() {
+        let x: Byte = 0, y: Byte = 1, n: Byte = 4
+        let initialVx: Byte = 9, initialVy: Byte = 20, initialIAddress: Word = 0x2ae
+        let op = Word(nibbles: [0x0d, x, y, n])
+
+        var state = ChipState()
+        state.v[x] = initialVx
+        state.v[y] = initialVy
+        state.i = initialIAddress
+        let initialFlag: Byte = 0
+        state.v[0x0f] = initialFlag
+
+        let initialIValue: Byte = 0b00000000
+
+        // row 0 is the byte at initialIAddress
+        // so row 1 is the byte at initialIAddress + 1
+        let ramAddress = initialIAddress + 1
+        state.ram[ramAddress] = initialIValue
+
+        // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
+        // where colIndex is the index (counting l to r) in initialIValue (col[1])
+        // where colIndex = 1
+        // (20 + 1) * 64 + 9 + 1 = 1354
+        let pixelAddress = 1354
+
+        // ensure we move from 1 -> 1
+        state.pixels[pixelAddress] = 1
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let expectedFlag: Byte = 0
+        let observedFlag = newState.v[0x0f]
+
+        XCTAssertEqual(observedFlag, expectedFlag)
     }
 
     func test_SPRITE_0x0d_increments_pc() {
