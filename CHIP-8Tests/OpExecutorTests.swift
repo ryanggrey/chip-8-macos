@@ -1100,7 +1100,10 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0f, x, 0x01, 0x0e])
         assertPcIncremented(op: op)
     }
+}
 
+// Utils
+extension OpExecutorTests {
     func assertPcIncremented(op: Word) {
         let state = ChipState()
         let newState = try! opExecutor.handle(state: state, op: op)
