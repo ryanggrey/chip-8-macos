@@ -234,12 +234,24 @@ struct OpExecutor {
             return state
         case (0x0f, let x, 0x05, 0x05):
             // FX55, MEM, Stores V0 to VX (including VX) in memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified
-            throw NotImplemented()
-            return state
+            // TODO:
+            for vIndex in 0...x {
+                let address = state.i + Word(vIndex)
+                let vValue = state.v[vIndex]
+                newState.ram[address] = vValue
+            }
+
+            newState.pc += 2
         case (0x0f, let x, 0x06, 0x05):
             // FX65, MEM, Fills V0 to VX (including VX) with values from memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified.
-            throw NotImplemented()
-            return state
+            // TODO:
+            for vIndex in 0...x {
+                let address = state.i + Word(vIndex)
+                let memoryValue = state.ram[address]
+                newState.v[vIndex] = memoryValue
+            }
+
+            newState.pc += 2
         default:
             throw NotImplemented()
             return state
