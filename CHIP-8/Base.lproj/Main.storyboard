@@ -707,25 +707,46 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="CHIP_8" customModuleProvider="target" sceneMemberID="viewController">
                     <stackView key="view" distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" id="J3V-yw-41X">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="329"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="474"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="Vi4-ud-cqL" customClass="Chip8View" customModule="CHIP_8" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="29" width="600" height="300"/>
+                                <rect key="frame" x="0.0" y="174" width="600" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Vi4-ud-cqL" secondAttribute="height" multiplier="2:1" id="CTR-XM-CoU"/>
                                 </constraints>
                             </customView>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cjb-B3-E9x">
-                                <rect key="frame" x="-6" y="-7" width="101" height="32"/>
-                                <buttonCell key="cell" type="push" title="Load Rom" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aa9-ay-x8l">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="loadRomPressed:" target="XfG-lQ-9wD" id="DVn-op-vya"/>
-                                </connections>
-                            </button>
+                            <stackView distribution="fillProportionally" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGQ-sM-gdV">
+                                <rect key="frame" x="0.0" y="0.0" width="220" height="166"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cjb-B3-E9x">
+                                        <rect key="frame" x="-6" y="138" width="101" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Load Rom" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aa9-ay-x8l">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="loadRomPressed:" target="XfG-lQ-9wD" id="DVn-op-vya"/>
+                                        </connections>
+                                    </button>
+                                    <comboBox verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEw-sF-drc">
+                                        <rect key="frame" x="97" y="143" width="126" height="25"/>
+                                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Control Scheme" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="4Im-a3-E0g">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </comboBoxCell>
+                                    </comboBox>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Vi4-ud-cqL" firstAttribute="width" secondItem="J3V-yw-41X" secondAttribute="width" id="WVq-Ql-EYl"/>
@@ -741,6 +762,7 @@
                     </stackView>
                     <connections>
                         <outlet property="chip8View" destination="Vi4-ud-cqL" id="Pq2-j7-gfA"/>
+                        <outlet property="controlSchemeComboBox" destination="MEw-sF-drc" id="lyP-iE-qxZ"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
