@@ -60,29 +60,43 @@ class ViewController: NSViewController {
     }
 
     private func chip8Key(from input: UInt16) -> Int? {
-        // TODO: better mapping
-        // macKey : chip8Key
-        let keyMapping: [UInt16 : Int] = [
-            0 : 0,
-            1 : 1,
-            2 : 2,
-            3 : 3,
-            4 : 4,
-            5 : 5,
-            6 : 6,
-            7 : 7,
-            8 : 8,
-            9 : 9,
-            10 : 10,
-            11 : 11,
-            12 : 12,
-            13 : 13,
-            14 : 14,
-            15 : 15,
+        guard let key = MacKeyCode(rawValue: input) else { return nil }
+        let keyMapping: [MacKeyCode : Chip8KeyCode] = [
+            .up : .up,
+            .w : .up,
+            .right : .right,
+            .d : .right,
+            .down: .down,
+            .s : .down,
+            .left : .left,
+            .a : .left,
+            .space : .centre,
+            .e : .centre,
         ]
 
-        return keyMapping[input]
+        return keyMapping[key]?.rawValue
     }
+}
+
+enum MacKeyCode: CGKeyCode {
+    case up = 0x7E
+    case w = 0x0D
+    case right = 0x7C
+    case d = 0x02
+    case down = 0x7D
+    case s = 0x01
+    case left = 0x7B
+    case a = 0x00
+    case space = 0x31
+    case e = 0x0E
+}
+
+enum Chip8KeyCode: Int {
+    case up = 2
+    case right = 6
+    case down = 8
+    case left = 4
+    case centre = 5
 }
 
 // handle inputs
