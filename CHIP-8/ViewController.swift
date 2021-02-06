@@ -13,6 +13,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var controlSchemeComboBox: NSComboBox!
 
     private var chip8: Chip8!
+    private var loadedRom: [Byte]?
     private var timer: Timer?
     private let cpuHz: TimeInterval = 1/600
     private let beep = NSSound(data: NSDataAsset(name: "chip8-beep")!.data)!
@@ -24,6 +25,7 @@ class ViewController: NSViewController {
 
     private func runRomSelectorModal() {
         RomSelectorModal.runModal { [weak self] loadedRom in
+            self?.loadedRom = loadedRom
             self?.runEmulator(with: loadedRom)
         }
     }
@@ -204,6 +206,12 @@ extension ViewController {
     @IBAction func loadRomPressed(_ sender: NSButton) {
         timer?.invalidate()
         self.runRomSelectorModal()
+    }
+
+    @IBAction func restartPressed(_ sender: NSButton) {
+        timer?.invalidate()
+        guard let loadedRom = loadedRom else { return }
+        self.runEmulator(with: loadedRom)
     }
 }
 

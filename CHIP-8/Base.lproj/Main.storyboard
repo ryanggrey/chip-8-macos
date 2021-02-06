@@ -717,11 +717,11 @@
                                 </constraints>
                             </customView>
                             <stackView distribution="fillProportionally" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGQ-sM-gdV">
-                                <rect key="frame" x="0.0" y="0.0" width="220" height="166"/>
+                                <rect key="frame" x="0.0" y="0.0" width="272" height="166"/>
                                 <subviews>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cjb-B3-E9x">
-                                        <rect key="frame" x="-6" y="138" width="101" height="32"/>
-                                        <buttonCell key="cell" type="push" title="Load Rom" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aa9-ay-x8l">
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cjb-B3-E9x" userLabel="Open">
+                                        <rect key="frame" x="-6" y="138" width="73" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Open" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aa9-ay-x8l">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -729,8 +729,18 @@
                                             <action selector="loadRomPressed:" target="XfG-lQ-9wD" id="DVn-op-vya"/>
                                         </connections>
                                     </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cVk-jG-hbj" userLabel="Restart">
+                                        <rect key="frame" x="63" y="138" width="84" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Restart" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oLv-hT-Sjc">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="restartPressed:" target="XfG-lQ-9wD" id="FaT-K7-J0h"/>
+                                        </connections>
+                                    </button>
                                     <comboBox verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEw-sF-drc">
-                                        <rect key="frame" x="97" y="143" width="126" height="25"/>
+                                        <rect key="frame" x="149" y="143" width="126" height="25"/>
                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Control Scheme" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="4Im-a3-E0g">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -741,8 +751,10 @@
                                 <visibilityPriorities>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
