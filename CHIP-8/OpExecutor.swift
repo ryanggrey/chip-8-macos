@@ -259,8 +259,18 @@ struct OpExecutor {
             newState.pc += 2
         case (0x0f, let x, 0x03, 0x03):
             // FX33, BCD, Stores the binary-coded decimal representation of VX, with the most significant of three digits at the address in I, the middle digit at I plus 1, and the least significant digit at I plus 2. (In other words, take the decimal representation of VX, place the hundreds digit in memory at location in I, the tens digit at location I+1, and the ones digit at location I+2.)
-            throw NotImplemented()
-            return state
+            // MOVBCD
+            // TODO: test
+            let vx = state.v[x]
+            let ones =     (vx / 1  ) % 10
+            let tens =     (vx / 10 ) % 10
+            let hundreds = (vx / 100) % 10
+
+            newState.ram[state.i + 0] = ones
+            newState.ram[state.i + 1] = tens
+            newState.ram[state.i + 2] = hundreds
+
+            newState.pc += 2
         case (0x0f, let x, 0x05, 0x05):
             // FX55, MEM, Stores V0 to VX (including VX) in memory starting at address I. The offset from I is increased by 1 for each value written, but I itself is left unmodified
             // MOVM
