@@ -53,10 +53,12 @@ struct OpExecutor {
             // RTS
             newState.pc = newState.stack.popLast() ?? Word(0)
             newState.pc += 2
-        case (0x00, _, _, _):
+        case (0x00, let n1, let n2, let n3):
             // 0NNN, Call, Calls machine code routine (RCA 1802 for COSMAC VIP) at address NNN. Not necessary for most ROMs.
-            // Noop
-            return newState
+            // CALL
+            // TODO: test
+            newState.pc = Word(nibbles: [n1, n2, n3])
+
         case (0x01, let n1, let n2, let n3):
             // 1NNN, Flow, Jumps to address NNN.
             // JUMP

@@ -36,10 +36,11 @@ public struct Disassembler {
             // 00EE, Flow, Returns from a subroutine.
             mnemonicStr = getMnemonicStr("RTS")
             opStr = getOpStr("")
-        case (0x00, _, _, _):
+        case (0x00, let n1, let n2, let n3):
             // 0NNN, Call, Calls machine code routine (RCA 1802 for COSMAC VIP) at address NNN. Not necessary for most ROMs.
-            mnemonicStr = getMnemonicStr("NOOP")
-            opStr = getOpStr("")
+            mnemonicStr = getMnemonicStr("CALL")
+            let nibbles = getAddressNibblesStr([n1, n2, n3])
+            opStr = getOpStr(nibbles)
         case (0x01, let n1, let n2, let n3):
             // 1NNN, Flow, Jumps to address NNN.
             mnemonicStr = getMnemonicStr("JUMP")
