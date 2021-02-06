@@ -17,12 +17,15 @@ public struct RomLoader {
         do {
             let url = URL(fileURLWithPath: path)
             let contents = try Data(contentsOf: url)
-            let romBytes = [Byte](contents)
-            let leadingRam = [Byte](repeating: 0, count: 0x200)
-            var ram = leadingRam + romBytes
+
+            var ram = [Byte](repeating: 0, count: 4096)
 
             let fontBytes = Font.bytes
             ram.replaceSubrange(0..<fontBytes.count, with: fontBytes)
+
+            let romBytes = [Byte](contents)
+            ram.replaceSubrange(0x200..<0x200+romBytes.count, with: romBytes)
+
             return ram
         } catch {
             // contents could not be loaded
