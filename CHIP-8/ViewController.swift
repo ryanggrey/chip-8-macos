@@ -14,7 +14,7 @@ class ViewController: NSViewController {
 
     private var chip8: Chip8!
     private var timer: Timer?
-    private let hz: TimeInterval = 1/600
+    private let cpuHz: TimeInterval = 1/600
     private let beep = NSSound(data: NSDataAsset(name: "chip8-beep")!.data)!
 
     override func viewDidLoad() {
@@ -29,10 +29,15 @@ class ViewController: NSViewController {
     }
 
     private func runEmulator(with rom: [Byte]) {
-        let chipState = ChipState(ram: rom)
-        self.chip8 = Chip8(state: chipState, hz: hz)
+        var chipState = ChipState()
+        chipState.ram = rom
+
+        self.chip8 = Chip8(
+            state: chipState,
+            cpuHz: cpuHz
+        )
         timer = Timer.scheduledTimer(
-            timeInterval: hz,
+            timeInterval: cpuHz,
             target: self,
             selector: #selector(self.timerFired),
             userInfo: nil,
@@ -42,14 +47,15 @@ class ViewController: NSViewController {
 
     @objc private func timerFired() {
         chip8.cycle()
-        render(pixels: chip8.pixels)
+        render(screen: chip8.screen)
         if chip8.shouldPlaySound && !beep.isPlaying {
             beep.play()
         }
     }
 
-    private func render(pixels: [Byte]) {
-        chip8View.bitmap = pixels
+    private func render(screen: Chip8Screen) {
+        chip8View.screen = screen
+        chip8View.needsDisplay = true
     }
 
     override func keyDown(with event: NSEvent) {

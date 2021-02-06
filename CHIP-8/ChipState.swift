@@ -15,8 +15,7 @@ struct ChipState {
     public var i: Word = 0
     // Roms loaded into 0x200. Memory prior to this is reserved (for font etc)
     public var pc: Word = 0x200
-    // 64x32 screen
-    public var pixels = [Byte](repeating: 0, count: 64 * 32)
+    public var screen = Chip8Screen()
     public var delayTimer: TimeInterval = 0
     public var soundTimer: TimeInterval = 0
     // 12 or 16 sized stack in real Chip-8, but allow this to grow dynamically

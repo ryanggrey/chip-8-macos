@@ -13,28 +13,31 @@ public class Chip8 {
     private var state: ChipState
     private let opExecutor: OpExecutor
 
-    init(state: ChipState, hz: TimeInterval) {
+    init(
+        state: ChipState,
+        cpuHz: TimeInterval
+    ) {
         self.state = state
-        self.opExecutor = OpExecutor(cpuHz: hz)
+        self.opExecutor = OpExecutor(cpuHz: cpuHz)
     }
 
-    public var shouldPlaySound: Bool {
+    var shouldPlaySound: Bool {
         return state.shouldPlaySound
     }
 
-    public var pixels: [Byte] {
-        return state.pixels
+    var screen: Chip8Screen {
+        return state.screen
     }
 
-    public func cycle() {
+    func cycle() {
         self.state = try! opExecutor.handle(state: self.state, op: state.currentOp)
     }
 
-    public func handleKeyDown(key: Int) {
+    func handleKeyDown(key: Int) {
         state.downKeys.add(Byte(key))
     }
 
-    public func handleKeyUp(key: Int) {
+    func handleKeyUp(key: Int) {
         state.downKeys.remove(Byte(key))
     }
 }

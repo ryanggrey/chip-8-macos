@@ -8,20 +8,7 @@
 import Cocoa
 
 class Chip8View: NSView {
-    var bitmap: [Byte] {
-        didSet {
-            needsDisplay = true
-        }
-    }
-
-    // TODO: inject
-    private let bitmapWidth = 64
-    private let bitmapHeight = 32
-
-    required init?(coder: NSCoder) {
-        bitmap = [Byte](repeating: 0, count: bitmapWidth * bitmapHeight)
-        super.init(coder: coder)
-    }
+    var screen: Chip8Screen?
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
@@ -42,18 +29,20 @@ class Chip8View: NSView {
     }
 
     private func drawPixels() {
+        guard let screen = screen else { return }
+
         // draw white pixels
         NSColor.white.setFill()
-        let pixelWidth = round(self.frame.size.width / CGFloat(bitmapWidth))
-        let pixelHeight = round(self.frame.size.height / CGFloat(bitmapHeight))
+        let pixelWidth = round(self.frame.size.width / CGFloat(screen.size.width))
+        let pixelHeight = round(self.frame.size.height / CGFloat(screen.size.height))
         let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
 
-        let xRange = 0..<bitmapWidth
-        let yRange = 0..<bitmapHeight
+        let xRange = 0..<screen.size.width
+        let yRange = 0..<screen.size.height
         for x in xRange {
             for y in yRange {
-                let pixelAddress = y * bitmapWidth + x
-                guard bitmap[pixelAddress] == 1 else {
+                let pixelAddress = y * screen.size.width + x
+                guard screen.pixels[pixelAddress] == 1 else {
                     // skip if we're not meant to draw pixel
                     continue
                 }

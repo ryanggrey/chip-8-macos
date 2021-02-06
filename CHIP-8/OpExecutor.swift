@@ -12,8 +12,8 @@ typealias RandomByteFunction = () -> Byte
 struct OpExecutor {
     private(set) var randomByte: RandomByteFunction
     private let cpuHz: TimeInterval
-    let delayHz: TimeInterval = 1/60
-    let soundHz: TimeInterval = 1/60
+    private let delayHz: TimeInterval = 1/60
+    private let soundHz: TimeInterval = 1/60
 
     init(
         cpuHz: TimeInterval,
@@ -46,7 +46,7 @@ struct OpExecutor {
         case (0x00, 0x00, 0x0e, 0x00):
             // 00E0, Display, Clears the screen.
             // CLS
-            newState.pixels = state.pixels.map { _ in 0 }
+            newState.screen.pixels = state.screen.pixels.map { _ in 0 }
             newState.pc += 2
         case (0x00, 0x00, 0x0e, 0x0e):
             // 00EE, Flow, Returns from a subroutine.
@@ -328,7 +328,7 @@ struct OpExecutor {
 
         let xCoord = Int(state.v[x]), yCoord = Int(state.v[y])
 
-        var newPixels = state.pixels
+        var newPixels = state.screen.pixels
         var isCollision = false
         for rowIndex in spriteRowRange {
             let pixelByteAddress = state.i + Word(rowIndex)
@@ -339,20 +339,11 @@ struct OpExecutor {
                 let pixelMasked: Byte = (pixelByte & bitMask)
                 let pixelBit: Byte = pixelMasked > 0 ? 1 : 0
 
-                // TODO: inject screen width
-                let screenWidth = 64
-                let screenHeight = 32
-
                 // wrap 2d array
-                let preWrappedpixelAddress = (yCoord + rowIndex) * screenWidth + (xCoord + colIndex)
-                let pixelAddress = preWrappedpixelAddress % (screenWidth * screenHeight)
+                let preWrappedpixelAddress = (yCoord + rowIndex) * state.screen.size.width + (xCoord + colIndex)
+                let pixelAddress = preWrappedpixelAddress % (state.screen.size.area)
 
-                // wrap x-axis & y-axis independently
-                // 2d wrapping and 1d wrapping seem to work identically (for "maze")
-                // I don't think it matters how we wrap pixels so long as we have a 1-to-1 mapping of 2d coords to array address and are consistent in our reads/writes to that array
-                // let indepententlyWrappedPixelAddress = ((yCoord + rowIndex) % screenHeight) * screenWidth + ((xCoord + colIndex) % screenWidth)
-
-                let oldPixel = state.pixels[pixelAddress]
+                let oldPixel = state.screen.pixels[pixelAddress]
 
                 // Sprites are XORed onto the existing screen.
                 let newPixel = pixelBit ^ oldPixel
@@ -364,7 +355,7 @@ struct OpExecutor {
                 }
             }
         }
-        newState.pixels = newPixels
+        newState.screen.pixels = newPixels
         newState.v[0x0f] = isCollision ? 1 : 0
         newState.pc += 2
 

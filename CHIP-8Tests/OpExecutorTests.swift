@@ -10,21 +10,21 @@ import XCTest
 
 class OpExecutorTests: XCTestCase {
     let registerSize = 0x0f + 0x01
-    let opExecutor = OpExecutor(cpuHz: 1/600)
+    var opExecutor = OpExecutor(cpuHz: 1/600)
 
     func test_CLS_0x00_clears_pixels() {
-        let width = 64, height = 32
-        let dirtyPixels = [Byte](repeating: 1, count: width * height)
-
         var state = ChipState()
-        state.pixels = dirtyPixels
-        XCTAssertEqual(state.pixels, dirtyPixels)
+
+        let dirtyPixels = [Byte](repeating: 1, count: state.screen.size.area)
+
+        state.screen.pixels = dirtyPixels
+        XCTAssertEqual(state.screen.pixels, dirtyPixels)
 
         let op = Word(nibbles: [0x00, 0x00, 0x0e, 0x00])
         let newState = try! opExecutor.handle(state: state, op: op)
 
-        let observedPixels = newState.pixels
-        let expectedPixels = [Byte](repeating: 0, count: width * height)
+        let observedPixels = newState.screen.pixels
+        let expectedPixels = [Byte](repeating: 0, count: state.screen.size.area)
         XCTAssertEqual(observedPixels, expectedPixels)
     }
 
@@ -758,7 +758,10 @@ class OpExecutorTests: XCTestCase {
 
         // inject a random byte generating function to allow deterministic test
         let randomByteFunction: () -> Byte = { 0b10001001 }
-        let opExecutor = OpExecutor(cpuHz: 1/600, randomByteFunction: randomByteFunction )
+        let opExecutor = OpExecutor(
+            cpuHz: 1/600,
+            randomByteFunction: randomByteFunction
+        )
         let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedVx = newState.v[x]
@@ -788,7 +791,7 @@ class OpExecutorTests: XCTestCase {
         let initialIValue: Byte = 0b00000001
         state.ram[initialIAddress] = initialIValue
 
-        var expectedPixels = [Byte](repeating: 0, count: 64 * 32)
+        var expectedPixels = [Byte](repeating: 0, count: state.screen.size.area)
         // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
         // where colIndex is the index (counting l to r) in initialIValue of the '1'
         // where colIndex = 7
@@ -797,7 +800,7 @@ class OpExecutorTests: XCTestCase {
         expectedPixels[pixelAddress] = 1
 
         let newState = try! opExecutor.handle(state: state, op: op)
-        let observedPixels = newState.pixels
+        let observedPixels = newState.screen.pixels
 
         XCTAssertEqual(observedPixels, expectedPixels)
     }
@@ -818,7 +821,7 @@ class OpExecutorTests: XCTestCase {
         let ramAddress = initialIAddress + 1
         state.ram[ramAddress] = initialIValue
 
-        var expectedPixels = [Byte](repeating: 0, count: 64 * 32)
+        var expectedPixels = [Byte](repeating: 0, count: state.screen.size.area)
         // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
         // where colIndex is the index (counting l to r) in initialIValue of the '1'
         // where colIndex = 7
@@ -827,7 +830,7 @@ class OpExecutorTests: XCTestCase {
         expectedPixels[pixelAddress] = 1
 
         let newState = try! opExecutor.handle(state: state, op: op)
-        let observedPixels = newState.pixels
+        let observedPixels = newState.screen.pixels
 
         XCTAssertEqual(observedPixels, expectedPixels)
     }
@@ -863,7 +866,7 @@ class OpExecutorTests: XCTestCase {
         let ramAddress = initialIAddress
         state.ram[ramAddress] = initialIValue
 
-        var expectedPixels = [Byte](repeating: 0, count: 64 * 32)
+        var expectedPixels = [Byte](repeating: 0, count: state.screen.size.area)
         // Vx, Vy = (initialVy + rowIndex) * screenWidth + (initialVx + colIndex) =
         // where colIndex is the index (counting l to r) in initialIValue of the '1'
         // where colIndex = 7
@@ -874,7 +877,7 @@ class OpExecutorTests: XCTestCase {
         expectedPixels[pixelAddress] = 1
 
         let newState = try! opExecutor.handle(state: state, op: op)
-        let observedPixels = newState.pixels
+        let observedPixels = newState.screen.pixels
 
         XCTAssertEqual(observedPixels, expectedPixels)
     }
@@ -905,7 +908,7 @@ class OpExecutorTests: XCTestCase {
         let pixelAddress = 1354
 
         // ensure we move from 1 -> 0
-        state.pixels[pixelAddress] = 1
+        state.screen.pixels[pixelAddress] = 1
 
         let newState = try! opExecutor.handle(state: state, op: op)
         let expectedFlag: Byte = 1
@@ -940,7 +943,7 @@ class OpExecutorTests: XCTestCase {
         let pixelAddress = 1354
 
         // ensure we move from 0 -> 1
-        state.pixels[pixelAddress] = 0
+        state.screen.pixels[pixelAddress] = 0
 
         let newState = try! opExecutor.handle(state: state, op: op)
         let expectedFlag: Byte = 0
@@ -975,7 +978,7 @@ class OpExecutorTests: XCTestCase {
         let pixelAddress = 1354
 
         // ensure we move from 0 -> 0
-        state.pixels[pixelAddress] = 0
+        state.screen.pixels[pixelAddress] = 0
 
         let newState = try! opExecutor.handle(state: state, op: op)
         let expectedFlag: Byte = 0
@@ -1010,7 +1013,7 @@ class OpExecutorTests: XCTestCase {
         let pixelAddress = 1354
 
         // ensure we move from 1 -> 1
-        state.pixels[pixelAddress] = 1
+        state.screen.pixels[pixelAddress] = 1
 
         let newState = try! opExecutor.handle(state: state, op: op)
         let expectedFlag: Byte = 0
