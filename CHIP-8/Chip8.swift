@@ -15,7 +15,7 @@ public class Chip8 {
 
     init(state: ChipState, hz: TimeInterval) {
         self.state = state
-        self.opExecutor = OpExecutor(hz: hz)
+        self.opExecutor = OpExecutor(cpuHz: hz)
     }
 
     public var shouldPlaySound: Bool {

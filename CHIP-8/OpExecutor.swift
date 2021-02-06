@@ -11,14 +11,16 @@ typealias RandomByteFunction = () -> Byte
 
 struct OpExecutor {
     private(set) var randomByte: RandomByteFunction
-    private let hz: TimeInterval
+    private let cpuHz: TimeInterval
+    let delayHz: TimeInterval = 1/60
+    let soundHz: TimeInterval = 1/60
 
     init(
-        hz: TimeInterval,
+        cpuHz: TimeInterval,
         randomByteFunction: @escaping RandomByteFunction = { Byte.random(in: Byte.min..<Byte.max) }
     ) {
         randomByte = randomByteFunction
-        self.hz = hz
+        self.cpuHz = cpuHz
     }
 
     private func isAwaitingKey(op: Word) -> Bool {
@@ -298,11 +300,11 @@ struct OpExecutor {
         }
 
         if newState.delayTimer > 0 {
-            newState.delayTimer -= hz * 60
+            newState.delayTimer -= cpuHz / delayHz
         }
 
         if newState.soundTimer > 0 {
-            newState.soundTimer -= hz * 60
+            newState.soundTimer -= cpuHz / soundHz
         }
 
         return newState

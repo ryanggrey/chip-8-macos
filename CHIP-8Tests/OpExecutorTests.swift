@@ -10,7 +10,7 @@ import XCTest
 
 class OpExecutorTests: XCTestCase {
     let registerSize = 0x0f + 0x01
-    let opExecutor = OpExecutor()
+    let opExecutor = OpExecutor(cpuHz: 1/600)
 
     func test_CLS_0x00_clears_pixels() {
         let width = 64, height = 32
@@ -758,7 +758,7 @@ class OpExecutorTests: XCTestCase {
 
         // inject a random byte generating function to allow deterministic test
         let randomByteFunction: () -> Byte = { 0b10001001 }
-        let opExecutor = OpExecutor(randomByteFunction: randomByteFunction )
+        let opExecutor = OpExecutor(cpuHz: 1/600, randomByteFunction: randomByteFunction )
         let newState = try! opExecutor.handle(state: state, op: op)
 
         let observedVx = newState.v[x]
@@ -1104,15 +1104,15 @@ class OpExecutorTests: XCTestCase {
     func test_SKIP_KEY_0x0e_skips() {
         let x: Byte = 0x09
         let op = Word(nibbles: [0x0e, x, 0x09, 0x0e])
-        let triggerKey: Byte = 1
+        let triggerKey = 1
         let initialPc: Word = 0x6e6
         var v = [Byte](repeating: 0, count: registerSize)
-        v[x] = triggerKey
+        v[x] = Byte(triggerKey)
 
         var state = ChipState()
         state.pc = initialPc
         state.v = v
-        state.keys[triggerKey] = 1
+        state.downKeys.add(triggerKey)
 
         let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
@@ -1123,15 +1123,14 @@ class OpExecutorTests: XCTestCase {
     func test_SKIP_KEY_0x0e_does_not_skip() {
         let x: Byte = 0x00
         let op = Word(nibbles: [0x0e, x, 0x09, 0x0e])
-        let triggerKey: Byte = 12
+        let triggerKey = 12
         let initialPc: Word = 0xaae6
         var v = [Byte](repeating: 0, count: registerSize)
-        v[x] = triggerKey
+        v[x] = Byte(triggerKey)
 
         var state = ChipState()
         state.pc = initialPc
         state.v = v
-        state.keys[triggerKey] = 0
 
         let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
@@ -1142,15 +1141,14 @@ class OpExecutorTests: XCTestCase {
     func test_SKIP_NOKEY_0x0e_skips() {
         let x: Byte = 0x09
         let op = Word(nibbles: [0x0e, x, 0x0a, 0x01])
-        let triggerKey: Byte = 1
+        let triggerKey = 1
         let initialPc: Word = 0x6e6
         var v = [Byte](repeating: 0, count: registerSize)
-        v[x] = triggerKey
+        v[x] = Byte(triggerKey)
 
         var state = ChipState()
         state.pc = initialPc
         state.v = v
-        state.keys[triggerKey] = 0
 
         let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
@@ -1161,15 +1159,15 @@ class OpExecutorTests: XCTestCase {
     func test_SKIP_NOKEY_0x0e_does_not_skip() {
         let x: Byte = 0x00
         let op = Word(nibbles: [0x0e, x, 0x0a, 0x01])
-        let triggerKey: Byte = 12
+        let triggerKey = 12
         let initialPc: Word = 0xaae6
         var v = [Byte](repeating: 0, count: registerSize)
-        v[x] = triggerKey
+        v[x] = Byte(triggerKey)
 
         var state = ChipState()
         state.pc = initialPc
         state.v = v
-        state.keys[triggerKey] = 1
+        state.downKeys.add(triggerKey)
 
         let newState = try! opExecutor.handle(state: state, op: op)
         let observedPc = newState.pc
