@@ -79,38 +79,6 @@ class ViewController: NSViewController {
         return activeKeyMapping?[key]?.rawValue
     }
 
-    let wasdKeyMapping: KeyMapping = [
-        .up : .two,
-        .w : .two,
-        .right : .six,
-        .d : .six,
-        .down: .eight,
-        .s : .eight,
-        .left : .four,
-        .a : .four,
-        .space : .five,
-        .e : .five,
-    ]
-
-    let literalKeyMapping: KeyMapping = [
-        .zero : .zero,
-        .one : .one,
-        .two : .two,
-        .three : .three,
-        .four : .four,
-        .five : .five,
-        .six : .six,
-        .seven : .seven,
-        .eight : .eight,
-        .nine : .nine,
-        .a : .a,
-        .b : .b,
-        .c : .c,
-        .d : .d,
-        .e : .e,
-        .f : .f,
-    ]
-
     private func resetControlScheme() {
         controlSchemeComboBox.dataSource = self
         controlSchemeComboBox.delegate = self
@@ -118,8 +86,8 @@ class ViewController: NSViewController {
     }
 
     private func getControlSchemes() -> [ControlScheme] {
-        let wasdScheme = ControlScheme(name: "WASD Controls", mapping: wasdKeyMapping)
-        let fullScheme = ControlScheme(name: "Literal Controls", mapping: literalKeyMapping)
+        let wasdScheme = ControlScheme(name: "WASD Controls", mapping: KeyMapping.wasd)
+        let fullScheme = ControlScheme(name: "Literal Controls", mapping: KeyMapping.literal)
         return [wasdScheme, fullScheme]
     }
 
@@ -128,61 +96,6 @@ class ViewController: NSViewController {
     }
 
     private var activeKeyMapping: KeyMapping?
-}
-
-typealias KeyMapping = [MacKeyCode : Chip8KeyCode]
-
-struct ControlScheme {
-    let name: String
-    let mapping: KeyMapping
-}
-
-enum MacKeyCode: CGKeyCode {
-    case zero = 0x1D
-    case one = 0x12
-    case two = 0x13
-    case three = 0x14
-    case four = 0x15
-    case five = 0x17
-    case six = 0x16
-    case seven = 0x1A
-    case eight = 0x1C
-    case nine = 0x19
-    // case a = 0x00
-    case b = 0x0B
-    case c = 0x08
-    // case d = 0x02
-    // case e = 0x0E
-    case f = 0x03
-
-    case up = 0x7E
-    case w = 0x0D
-    case right = 0x7C
-    case d = 0x02
-    case down = 0x7D
-    case s = 0x01
-    case left = 0x7B
-    case a = 0x00
-    case space = 0x31
-    case e = 0x0E
-}
-
-enum Chip8KeyCode: Int {case zero = 0x0
-    case one = 0x1
-    case two = 0x2 // up
-    case three = 0x3
-    case four = 0x4 // left
-    case five = 0x5 // centre
-    case six = 0x6 // right
-    case seven = 0x7
-    case eight = 0x8 // down
-    case nine = 0x9
-    case a = 0xa
-    case b = 0xb
-    case c = 0xc
-    case d = 0xd
-    case e = 0xe
-    case f = 0xf
 }
 
 extension ViewController: NSComboBoxDataSource, NSComboBoxDelegate {
@@ -201,7 +114,7 @@ extension ViewController: NSComboBoxDataSource, NSComboBoxDelegate {
     }
 }
 
-// handle inputs
+// handle control actions
 extension ViewController {
     @IBAction func loadRomPressed(_ sender: NSButton) {
         timer?.invalidate()
