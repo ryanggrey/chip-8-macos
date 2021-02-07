@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		164F160425BB8EE3002A8D89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F160325BB8EE3002A8D89 /* AppDelegate.swift */; };
-		164F160625BB8EE3002A8D89 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F160525BB8EE3002A8D89 /* ViewController.swift */; };
+		164F160625BB8EE3002A8D89 /* Chip8ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F160525BB8EE3002A8D89 /* Chip8ViewController.swift */; };
 		164F160825BB8EE6002A8D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 164F160725BB8EE6002A8D89 /* Assets.xcassets */; };
 		164F160B25BB8EE6002A8D89 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 164F160925BB8EE6002A8D89 /* Main.storyboard */; };
 		164F161725BB8EE6002A8D89 /* OpExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F161625BB8EE6002A8D89 /* OpExecutorTests.swift */; };
@@ -43,7 +43,7 @@
 /* Begin PBXFileReference section */
 		164F160025BB8EE3002A8D89 /* CHIP-8.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CHIP-8.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		164F160325BB8EE3002A8D89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		164F160525BB8EE3002A8D89 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		164F160525BB8EE3002A8D89 /* Chip8ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8ViewController.swift; sourceTree = "<group>"; };
 		164F160725BB8EE6002A8D89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		164F160A25BB8EE6002A8D89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		164F160C25BB8EE6002A8D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 			children = (
 				16B52B0B25D07DD6007C67A6 /* InputHandling */,
 				164F160325BB8EE3002A8D89 /* AppDelegate.swift */,
-				164F160525BB8EE3002A8D89 /* ViewController.swift */,
+				164F160525BB8EE3002A8D89 /* Chip8ViewController.swift */,
 				164F160725BB8EE6002A8D89 /* Assets.xcassets */,
 				164F160925BB8EE6002A8D89 /* Main.storyboard */,
 				164F160C25BB8EE6002A8D89 /* Info.plist */,
@@ -257,7 +257,7 @@
 				16FC138125BF7BD700A8776F /* Word.swift in Sources */,
 				167368D625CAE33F002295FE /* Chip8View.swift in Sources */,
 				16B52B0425CF5299007C67A6 /* Chip8Screen.swift in Sources */,
-				164F160625BB8EE3002A8D89 /* ViewController.swift in Sources */,
+				164F160625BB8EE3002A8D89 /* Chip8ViewController.swift in Sources */,
 				16B52B1B25D07E5B007C67A6 /* ControlScheme.swift in Sources */,
 				16B52B1725D07E46007C67A6 /* KeyMapping.swift in Sources */,
 				16FC137225BC608000A8776F /* RomLoader.swift in Sources */,

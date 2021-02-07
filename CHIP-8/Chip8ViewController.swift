@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class Chip8ViewController: NSViewController {
 
     @IBOutlet weak var chip8View: Chip8View!
     @IBOutlet weak var controlSchemeComboBox: NSComboBox!
@@ -98,7 +98,7 @@ class ViewController: NSViewController {
     private var activeKeyMapping: KeyMapping?
 }
 
-extension ViewController: NSComboBoxDataSource, NSComboBoxDelegate {
+extension Chip8ViewController: NSComboBoxDataSource, NSComboBoxDelegate {
     func numberOfItems(in comboBox: NSComboBox) -> Int {
         return getControlSchemes().count
     }
@@ -115,7 +115,7 @@ extension ViewController: NSComboBoxDataSource, NSComboBoxDelegate {
 }
 
 // handle control actions
-extension ViewController {
+extension Chip8ViewController {
     @IBAction func loadRomPressed(_ sender: NSButton) {
         timer?.invalidate()
         self.runRomSelectorModal()
