@@ -716,11 +716,11 @@
                                     <constraint firstAttribute="width" secondItem="Vi4-ud-cqL" secondAttribute="height" multiplier="2:1" id="CTR-XM-CoU"/>
                                 </constraints>
                             </customView>
-                            <stackView distribution="fillProportionally" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGQ-sM-gdV">
-                                <rect key="frame" x="0.0" y="0.0" width="272" height="166"/>
+                            <stackView distribution="fillEqually" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGQ-sM-gdV">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="166"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Cjb-B3-E9x" userLabel="Open">
-                                        <rect key="frame" x="-6" y="138" width="73" height="32"/>
+                                        <rect key="frame" x="-6" y="138" width="123" height="32"/>
                                         <buttonCell key="cell" type="push" title="Open" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="aa9-ay-x8l">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -730,7 +730,7 @@
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cVk-jG-hbj" userLabel="Restart">
-                                        <rect key="frame" x="63" y="138" width="84" height="32"/>
+                                        <rect key="frame" x="113" y="138" width="124" height="32"/>
                                         <buttonCell key="cell" type="push" title="Restart" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oLv-hT-Sjc">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -739,8 +739,22 @@
                                             <action selector="restartPressed:" target="XfG-lQ-9wD" id="FaT-K7-J0h"/>
                                         </connections>
                                     </button>
+                                    <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="NAS-I8-gD9" userLabel="Background">
+                                        <rect key="frame" x="239" y="116" width="111" height="50"/>
+                                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="backgroundColorChanged:" target="XfG-lQ-9wD" id="0Pf-iS-ZiB"/>
+                                        </connections>
+                                    </colorWell>
+                                    <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="VbP-3E-3od" userLabel="Pixels">
+                                        <rect key="frame" x="358" y="116" width="111" height="50"/>
+                                        <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="pixelColourChanged:" target="XfG-lQ-9wD" id="2sP-f1-WQJ"/>
+                                        </connections>
+                                    </colorWell>
                                     <comboBox verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MEw-sF-drc">
-                                        <rect key="frame" x="149" y="143" width="126" height="25"/>
+                                        <rect key="frame" x="477" y="143" width="126" height="25"/>
                                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Control Scheme" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="4Im-a3-E0g">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -752,8 +766,12 @@
                                     <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
@@ -773,8 +791,10 @@
                         </customSpacing>
                     </stackView>
                     <connections>
+                        <outlet property="backgroundColorWell" destination="NAS-I8-gD9" id="fLZ-oP-OEc"/>
                         <outlet property="chip8View" destination="Vi4-ud-cqL" id="Pq2-j7-gfA"/>
                         <outlet property="controlSchemeComboBox" destination="MEw-sF-drc" id="lyP-iE-qxZ"/>
+                        <outlet property="pixelColorWell" destination="VbP-3E-3od" id="Jhi-Tz-t5G"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

@@ -9,6 +9,8 @@ import Cocoa
 
 class Chip8View: NSView {
     var screen: Chip8Screen?
+    var backgroundColor: NSColor?
+    var pixelColor: NSColor?
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
@@ -19,8 +21,9 @@ class Chip8View: NSView {
     override var isFlipped: Bool { return true }
 
     private func drawBackground() {
-        // draw black background
-        NSColor.black.setFill()
+        guard let backgroundColor = backgroundColor else { return }
+        
+        backgroundColor.setFill()
         bounds.fill()
     }
 
@@ -29,10 +32,10 @@ class Chip8View: NSView {
     }
 
     private func drawPixels() {
-        guard let screen = screen else { return }
+        guard let screen = screen, let pixelColor = pixelColor else { return }
 
         // draw white pixels
-        NSColor.white.setFill()
+        pixelColor.setFill()
         let pixelWidth = round(self.frame.size.width / CGFloat(screen.size.width))
         let pixelHeight = round(self.frame.size.height / CGFloat(screen.size.height))
         let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
