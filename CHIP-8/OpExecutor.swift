@@ -19,7 +19,7 @@ struct OpExecutor {
         cpuHz: TimeInterval,
         randomByteFunction: @escaping RandomByteFunction = { Byte.random(in: Byte.min..<Byte.max) }
     ) {
-        randomByte = randomByteFunction
+        self.randomByte = randomByteFunction
         self.cpuHz = cpuHz
     }
 
@@ -202,13 +202,11 @@ struct OpExecutor {
         case (0x0e, let x, 0x09, 0x0e):
             // EX9E, KeyOp, Skips the next instruction if the key stored in VX is pressed. (Usually the next instruction is a jump to skip a code block)
             // SKIP.KEY
-
             if !state.downKeys.contains(state.v[x]) {
                 newState.pc += 2
             } else {
                 newState.pc += 4
             }
-
         case (0x0e, let x, 0x0a, 0x01):
             // EXA1, KeyOp, Skips the next instruction if the key stored in VX isn't pressed. (Usually the next instruction is a jump to skip a code block)
             // SKIP.NOKEY
