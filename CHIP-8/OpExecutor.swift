@@ -32,6 +32,7 @@ struct OpExecutor {
         }
     }
 
+    // TODO: remove throws?
     public func handle(state: ChipState, op: Word) throws -> ChipState {
         Disassembler().disassemble(pc: Int(state.pc), op: op)
         
@@ -56,7 +57,6 @@ struct OpExecutor {
         case (0x00, let n1, let n2, let n3):
             // 0NNN, Call, Calls machine code routine (RCA 1802 for COSMAC VIP) at address NNN. Not necessary for most ROMs.
             // CALL
-            // TODO: test
             newState.pc = Word(nibbles: [n1, n2, n3])
 
         case (0x01, let n1, let n2, let n3):

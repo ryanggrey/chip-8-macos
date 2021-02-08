@@ -61,6 +61,16 @@ class OpExecutorTests: XCTestCase {
         XCTAssertEqual(observedStack, expectedStack)
     }
 
+    func test_CALL_0x00_sets_pc_to_NNN() {
+        let n1: Byte = 0x02, n2: Byte = 0x0e, n3: Byte = 0x04
+        let op = Word(nibbles: [0x00, n1, n2, n3])
+        let state = ChipState()
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPc = newState.pc
+        let expectedPc = createPcFrom(n1, n2, n3)
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
     func test_JUMP_0x01_sets_pc_to_NNN() {
         let n1: Byte = 0x01, n2: Byte = 0x0e, n3: Byte = 0x03
         let op = Word(nibbles: [0x01, n1, n2, n3])
