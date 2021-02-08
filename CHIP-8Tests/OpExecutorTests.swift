@@ -284,7 +284,7 @@ class OpExecutorTests: XCTestCase {
         let x: Byte = 0x0e, y: Byte = 0x0b
         let op = Word(nibbles: [0x08, x, y, 0x00])
         let initialVy: Byte = 0x06
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[y] = initialVy
 
         var state = ChipState()
@@ -307,7 +307,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x01])
         let initialVx: Byte = 0b1101
         let initialVy: Byte = 0b0110
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -332,7 +332,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x02])
         let initialVx: Byte = 0b1100
         let initialVy: Byte = 0b1010
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -357,7 +357,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x03])
         let initialVx: Byte = 0b1100
         let initialVy: Byte = 0b1010
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -382,7 +382,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x04])
         let initialVx: Byte = 0b11111111
         let initialVy: Byte = 0b00000001
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -405,7 +405,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x04])
         let initialVx: Byte = 0b11111110
         let initialVy: Byte = 0b00000001
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -435,7 +435,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x05])
         let initialVx: Byte = 0b00000000
         let initialVy: Byte = 0b00000001
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -458,7 +458,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x05])
         let initialVx: Byte = 0b00000001
         let initialVy: Byte = 0b00000001
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -489,7 +489,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, 0x00, 0x06])
         let initialVx: Byte = 0b10100101
         let initialVf: Byte = 0b00000000
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[f] = initialVf
 
@@ -509,7 +509,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, 0x00, 0x06])
         let initialVx: Byte = 0b11110100
         let initialVf: Byte = 0b00000001
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[f] = initialVf
 
@@ -527,7 +527,7 @@ class OpExecutorTests: XCTestCase {
         let x: Byte = 0x0c
         let op = Word(nibbles: [0x08, x, 0x00, 0x06])
         let initialVx: Byte = 0b10100101
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
 
         var state = ChipState()
@@ -553,7 +553,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x07])
         let initialVx: Byte = 0b00000010
         let initialVy: Byte = 0b00000011
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -576,7 +576,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, y, 0x07])
         let initialVx: Byte = 0b00000110
         let initialVy: Byte = 0b00000011
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -606,7 +606,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, 0x00, 0x0e])
         let initialVx: Byte = 0b10100101
         let initialVf: Byte = 0b00000000
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[f] = initialVf
 
@@ -626,7 +626,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x08, x, 0x00, 0x0e])
         let initialVx: Byte = 0b01010100
         let initialVf: Byte = 0b00000001
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[f] = initialVf
 
@@ -644,7 +644,7 @@ class OpExecutorTests: XCTestCase {
         let x: Byte = 0x0c
         let op = Word(nibbles: [0x08, x, 0x00, 0x0e])
         let initialVx: Byte = 0b10100101
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
 
         var state = ChipState()
@@ -667,7 +667,7 @@ class OpExecutorTests: XCTestCase {
         let x: Byte = 0x0c, y: Byte = 0x0e
         let op = Word(nibbles: [0x09, x, y, 0x00])
         let initialVx: Byte = 1, initialVy: Byte = 2
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -685,7 +685,7 @@ class OpExecutorTests: XCTestCase {
         let x: Byte = 0x0c, y: Byte = 0x0e
         let op = Word(nibbles: [0x09, x, y, 0x00])
         let initialVx: Byte = 3, initialVy: Byte = 3
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
         v[y] = initialVy
 
@@ -722,7 +722,7 @@ class OpExecutorTests: XCTestCase {
         let x: Byte = 0, n1: Byte = 0x02, n2: Byte = 0x0a, n3: Byte = 0x06
         let op = Word(nibbles: [0x0b, n1, n2, n3])
         let initialVx: Byte = 0b00011010
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
 
         var state = ChipState()
@@ -740,7 +740,7 @@ class OpExecutorTests: XCTestCase {
         let x: Byte = 0, n1: Byte = 0b1111, n2: Byte = 0b1111, n3: Byte = 0b1111
         let op = Word(nibbles: [0x0b, n1, n2, n3])
         let initialVx: Byte = 0b11111111
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
 
         var state = ChipState()
@@ -760,7 +760,7 @@ class OpExecutorTests: XCTestCase {
         let x: Byte = 0, n1: Byte = 0b0011, n2: Byte = 0b1001
         let op = Word(nibbles: [0x0c, x, n1, n2])
         let initialVx: Byte = 0b11111111
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = initialVx
 
         var state = ChipState()
@@ -1119,7 +1119,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0e, x, 0x09, 0x0e])
         let triggerKey = 1
         let initialPc: Word = 0x6e6
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = Byte(triggerKey)
 
         var state = ChipState()
@@ -1138,7 +1138,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0e, x, 0x09, 0x0e])
         let triggerKey = 12
         let initialPc: Word = 0xaae6
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = Byte(triggerKey)
 
         var state = ChipState()
@@ -1156,7 +1156,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0e, x, 0x0a, 0x01])
         let triggerKey = 1
         let initialPc: Word = 0x6e6
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = Byte(triggerKey)
 
         var state = ChipState()
@@ -1174,7 +1174,7 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0e, x, 0x0a, 0x01])
         let triggerKey = 12
         let initialPc: Word = 0xaae6
-        var v = [Byte](repeating: 0, count: registerSize)
+        var v = createEmptyRegisters()
         v[x] = Byte(triggerKey)
 
         var state = ChipState()
@@ -1191,7 +1191,7 @@ class OpExecutorTests: XCTestCase {
     func test_MOV_0x0f_sets_Vx_to_delayTimer() {
         let x: Byte = 0x0d
         let op = Word(nibbles: [0x0f, x, 0x00, 0x07])
-        var v = [Byte](repeating: 0, count: 16)
+        var v = createEmptyRegisters()
         v[x] = 1
 
         var state = ChipState()
@@ -1209,10 +1209,100 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0f, x, 0x00, 0x07])
         assertPcIncremented(op: op)
     }
+
+    func test_WAITKEY_0x0f_awaits() {
+        let x: Byte = 0x02
+        let op = Word(nibbles: [0x0f, x, 0x00, 0x0a])
+        let downKeys = NSMutableOrderedSet()
+
+        var state = ChipState()
+        state.downKeys = downKeys
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedAwaiting = newState.isAwaitingKey
+        XCTAssertTrue(observedAwaiting)
+    }
+
+    func test_WAITKEY_0x0f_awaits_without_incrementing_pc() {
+        let x: Byte = 0x02
+        let op = Word(nibbles: [0x0f, x, 0x00, 0x0a])
+        let downKeys = NSMutableOrderedSet()
+        let initialPc: Word = 0x88a
+
+        var state = ChipState()
+        state.downKeys = downKeys
+        state.pc = initialPc
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPc = newState.pc
+        let expectedPc = initialPc
+        XCTAssertEqual(observedPc, expectedPc)
+    }
+
+    func test_WAITKEY_0x0f_resets_isAwaiting_when_awaited_key_pressed() {
+        let x: Byte = 0x02
+        let op = Word(nibbles: [0x0f, x, 0x00, 0x0a])
+        let downKeys = NSMutableOrderedSet()
+        let awaitedKey: Byte = 1
+        downKeys.add(awaitedKey)
+        let initialIsAwaiting = true
+
+        var state = ChipState()
+        state.downKeys = downKeys
+        state.isAwaitingKey = initialIsAwaiting
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedAwaiting = newState.isAwaitingKey
+        XCTAssertFalse(observedAwaiting)
+    }
+
+    func test_WAITKEY_0x0f_sets_Vx_to_pressed_key_when_awaited_key_pressed() {
+        let x: Byte = 0x02
+        let op = Word(nibbles: [0x0f, x, 0x00, 0x0a])
+        var v = createEmptyRegisters()
+        v[x] = 1
+        let downKeys = NSMutableOrderedSet()
+        let awaitedKey: Byte = 5
+        downKeys.add(awaitedKey)
+        let initialIsAwaiting = true
+
+        var state = ChipState()
+        state.v = v
+        state.downKeys = downKeys
+        state.isAwaitingKey = initialIsAwaiting
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedVx = newState.v[x]
+        let expectedVx = awaitedKey
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_WAITKEY_0x0f_increments_pc_when_awaited_key_pressed() {
+        let x: Byte = 0x02
+        let op = Word(nibbles: [0x0f, x, 0x00, 0x0a])
+        let downKeys = NSMutableOrderedSet()
+        let awaitedKey: Byte = 5
+        downKeys.add(awaitedKey)
+        let initialPc: Word = 0x88a
+
+        var state = ChipState()
+        state.downKeys = downKeys
+        state.pc = initialPc
+        state.isAwaitingKey = true
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedPc = newState.pc
+        let expectedPc = initialPc + 2
+        XCTAssertEqual(observedPc, expectedPc)
+    }
 }
 
 // Utils
 extension OpExecutorTests {
+    func createEmptyRegisters() -> [Byte] {
+        return [Byte](repeating: 0, count: registerSize)
+    }
+
     func assertPcIncremented(op: Word) {
         let state = ChipState()
         let newState = try! opExecutor.handle(state: state, op: op)

@@ -224,7 +224,6 @@ struct OpExecutor {
         case (0x0f, let x, 0x00, 0x0a):
             // FX0A, KeyOp, A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted until next key event)
             // WAITKEY
-            // TODO: test
             if let key = state.downKeys.lastObject as? Int, state.isAwaitingKey {
                 newState.v[x] = Byte(key)
                 newState.isAwaitingKey = false
