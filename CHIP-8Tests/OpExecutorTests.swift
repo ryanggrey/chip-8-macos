@@ -1187,6 +1187,28 @@ class OpExecutorTests: XCTestCase {
         let expectedPc: Word = initialPc + 2
         XCTAssertEqual(observedPc, expectedPc)
     }
+
+    func test_MOV_0x0f_sets_Vx_to_delayTimer() {
+        let x: Byte = 0x0d
+        let op = Word(nibbles: [0x0f, x, 0x00, 0x07])
+        var v = [Byte](repeating: 0, count: 16)
+        v[x] = 1
+
+        var state = ChipState()
+        state.v = v
+        let expectedVx: Byte = 100
+        state.delayTimer = TimeInterval(expectedVx)
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedVx = newState.v[x]
+        XCTAssertEqual(observedVx, expectedVx)
+    }
+
+    func test_MOV_0x0f_increments_pc() {
+        let x: Byte = 0x05
+        let op = Word(nibbles: [0x0f, x, 0x00, 0x07])
+        assertPcIncremented(op: op)
+    }
 }
 
 // Utils

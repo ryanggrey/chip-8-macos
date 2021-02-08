@@ -219,7 +219,6 @@ struct OpExecutor {
         case (0x0f, let x, 0x00, 0x07):
             // FX07, Timer, Sets VX to the value of the delay timer.
             // MOV
-            // TODO: test
             newState.v[x] = Byte(round(state.delayTimer))
             newState.pc += 2
         case (0x0f, let x, 0x00, 0x0a):
