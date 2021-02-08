@@ -1341,6 +1341,28 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0f, x, 0x01, 0x08])
         assertPcIncremented(op: op)
     }
+
+    func test_SPRITECHAR_0x0f_sets_I_to_Vx_multiplied_by_font_height() {
+        let x: Byte = 0x04
+        let op = Word(nibbles: [0x0f, x, 0x02, 0x09])
+        var v = createEmptyRegisters()
+        let initialVx: Word = 5
+        v[x] = Byte(initialVx)
+
+        var state = ChipState()
+        state.v = v
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedI = newState.i
+        let expectedI = initialVx * 5
+        XCTAssertEqual(observedI, expectedI)
+    }
+
+    func test_SPRITECHAR_0x0f_soundTimer_to_Vx_increments_pc() {
+        let x: Byte = 0x05
+        let op = Word(nibbles: [0x0f, x, 0x02, 0x09])
+        assertPcIncremented(op: op)
+    }
 }
 
 // Utils

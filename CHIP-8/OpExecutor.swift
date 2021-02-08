@@ -249,7 +249,6 @@ struct OpExecutor {
         case (0x0f, let x, 0x02, 0x09):
             // FX29, MEM, Sets I to the location of the sprite for the character in VX. Characters 0-F (in hexadecimal) are represented by a 4x5 font.
             // SPRITECHAR
-            // TODO: test
             let character = state.v[x]
             let charHeight: Byte = 5
             newState.i = Word(character * charHeight)
