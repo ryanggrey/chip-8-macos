@@ -1,4 +1,5 @@
 # README
+A Chip-8 emulator for macOS written in Swift.
 
 ## Assets
 ### Sounds
