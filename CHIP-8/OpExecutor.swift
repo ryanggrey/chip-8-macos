@@ -32,7 +32,6 @@ struct OpExecutor {
         }
     }
 
-    // TODO: remove throws?
     public func handle(state: ChipState, op: Word) throws -> ChipState {
         Disassembler().disassemble(pc: Int(state.pc), op: op)
         
