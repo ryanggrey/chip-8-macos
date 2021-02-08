@@ -1363,6 +1363,99 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0f, x, 0x02, 0x09])
         assertPcIncremented(op: op)
     }
+
+    func test_MOVBCD_0x0f_sets_ram_at_I_to_ones_tens_and_hundreds_of_Vx() {
+        let x: Byte = 0x07
+        let op = Word(nibbles: [0x0f, x, 0x03, 0x03])
+        var v = createEmptyRegisters()
+        v[x] = 104
+        let initialI: Word = 0x4a3
+
+        var state = ChipState()
+        state.v = v
+        state.i = initialI
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedRam = [
+            newState.ram[initialI + 0],
+            newState.ram[initialI + 1],
+            newState.ram[initialI + 2],
+        ]
+        let expectedRam: [Byte] = [1, 0, 4]
+        XCTAssertEqual(observedRam, expectedRam)
+    }
+
+    func test_MOVBCD_increments_pc() {
+        let x: Byte = 0x05
+        let op = Word(nibbles: [0x0f, x, 0x03, 0x03])
+        assertPcIncremented(op: op)
+    }
+
+    func test_MOVM_0x0f_stores_V0_to_Vx_in_memory_starting_at_I() {
+        let x: Byte = 0x04
+        let op = Word(nibbles: [0x0f, x, 0x05, 0x05])
+        var v = createEmptyRegisters()
+        let expectedRam: [Byte] = [241, 242, 243, 111, 104]
+        v[0] = expectedRam[0]
+        v[1] = expectedRam[1]
+        v[2] = expectedRam[2]
+        v[3] = expectedRam[3]
+        v[x] = expectedRam[4]
+        let initialI: Word = 0x4b3
+
+        var state = ChipState()
+        state.v = v
+        state.i = initialI
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedRam = [
+            newState.ram[initialI + 0],
+            newState.ram[initialI + 1],
+            newState.ram[initialI + 2],
+            newState.ram[initialI + 3],
+            newState.ram[initialI + 4],
+        ]
+        XCTAssertEqual(observedRam, expectedRam)
+    }
+
+    func test_MOVM_0x0f_increments_pc() {
+        let x: Byte = 0x05
+        let op = Word(nibbles: [0x0f, x, 0x05, 0x05])
+        assertPcIncremented(op: op)
+    }
+
+    func test_MOVM_0x0f_stores_I_onwards_in_memory_to_V0_to_Vx() {
+        let x: Byte = 0x04
+        let op = Word(nibbles: [0x0f, x, 0x06, 0x05])
+        let expectedVs: [Byte] = [241, 242, 243, 111, 104]
+        var initialRam = [Byte](repeating: 0, count: 4096)
+        let initialI: Word = 0x77a
+        initialRam[initialI + 0] = expectedVs[0]
+        initialRam[initialI + 1] = expectedVs[1]
+        initialRam[initialI + 2] = expectedVs[2]
+        initialRam[initialI + 3] = expectedVs[3]
+        initialRam[initialI + Word(x)] = expectedVs[x]
+
+        var state = ChipState()
+        state.i = initialI
+        state.ram = initialRam
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedVs = [
+            newState.v[0],
+            newState.v[1],
+            newState.v[2],
+            newState.v[3],
+            newState.v[x],
+        ]
+        XCTAssertEqual(observedVs, expectedVs)
+    }
+
+    func test_MOVM_0x0f_stores_I_onwards_in_memory_to_V0_to_Vx_increments_oc() {
+        let x: Byte = 0x05
+        let op = Word(nibbles: [0x0f, x, 0x06, 0x05])
+        assertPcIncremented(op: op)
+    }
 }
 
 // Utils
