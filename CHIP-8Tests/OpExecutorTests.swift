@@ -1295,6 +1295,29 @@ class OpExecutorTests: XCTestCase {
         let expectedPc = initialPc + 2
         XCTAssertEqual(observedPc, expectedPc)
     }
+
+    func test_MOV_0x0f_sets_decremented_delayTimer_to_Vx() {
+        let x: Byte = 0x0d
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x05])
+        var v = createEmptyRegisters()
+        v[x] = 1
+
+        var state = ChipState()
+        state.v = v
+        let initialDelayTimer: TimeInterval = 7
+        state.v[x] = Byte(initialDelayTimer)
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedDelayTimer = newState.delayTimer
+        let expectedDelayTimer = initialDelayTimer - opExecutor.cpuHz / opExecutor.delayHz
+        XCTAssertEqual(observedDelayTimer, expectedDelayTimer)
+    }
+
+    func test_MOV_0x0f_delayTimer_to_Vx_increments_pc() {
+        let x: Byte = 0x05
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x05])
+        assertPcIncremented(op: op)
+    }
 }
 
 // Utils

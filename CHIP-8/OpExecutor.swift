@@ -11,9 +11,9 @@ typealias RandomByteFunction = () -> Byte
 
 struct OpExecutor {
     private(set) var randomByte: RandomByteFunction
-    private let cpuHz: TimeInterval
-    private let delayHz: TimeInterval = 1/60
-    private let soundHz: TimeInterval = 1/60
+    public let cpuHz: TimeInterval
+    public let delayHz: TimeInterval = 1/60
+    public let soundHz: TimeInterval = 1/60
 
     init(
         cpuHz: TimeInterval,
@@ -234,7 +234,6 @@ struct OpExecutor {
         case (0x0f, let x, 0x01, 0x05):
             // FX15, Timer, Sets the delay timer to VX.
             // MOV
-            // TODO: test
             newState.delayTimer = TimeInterval(state.v[x])
             newState.pc += 2
         case (0x0f, let x, 0x01, 0x08):
