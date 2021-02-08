@@ -239,7 +239,6 @@ struct OpExecutor {
         case (0x0f, let x, 0x01, 0x08):
             // FX18, Sound, Sets the sound timer to VX.
             // MOV
-            // TODO: test
             newState.soundTimer = TimeInterval(state.v[x])
             newState.pc += 2
         case (0x0f, let x, 0x01, 0x0e):

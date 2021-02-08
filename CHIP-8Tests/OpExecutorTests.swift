@@ -1318,6 +1318,29 @@ class OpExecutorTests: XCTestCase {
         let op = Word(nibbles: [0x0f, x, 0x01, 0x05])
         assertPcIncremented(op: op)
     }
+
+    func test_MOV_0x0f_sets_decremented_soundTimer_to_Vx() {
+        let x: Byte = 0x0d
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x08])
+        var v = createEmptyRegisters()
+        v[x] = 1
+
+        var state = ChipState()
+        state.v = v
+        let initialSoundTimer: TimeInterval = 213
+        state.v[x] = Byte(initialSoundTimer)
+
+        let newState = try! opExecutor.handle(state: state, op: op)
+        let observedSoundTimer = newState.soundTimer
+        let expectedSoundTimer = initialSoundTimer - opExecutor.cpuHz / opExecutor.soundHz
+        XCTAssertEqual(observedSoundTimer, expectedSoundTimer)
+    }
+
+    func test_MOV_0x0f_soundTimer_to_Vx_increments_pc() {
+        let x: Byte = 0x05
+        let op = Word(nibbles: [0x0f, x, 0x01, 0x08])
+        assertPcIncremented(op: op)
+    }
 }
 
 // Utils
