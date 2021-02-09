@@ -108,7 +108,10 @@
 		164F160225BB8EE3002A8D89 /* CHIP-8 */ = {
 			isa = PBXGroup;
 			children = (
-				16B52B0B25D07DD6007C67A6 /* InputHandling */,
+				16B52B0C25D07DFD007C67A6 /* MacKeyCode.swift */,
+				16B52B1225D07E31007C67A6 /* Chip8KeyCode.swift */,
+				16B52B1625D07E46007C67A6 /* KeyMapping.swift */,
+				16B52B1A25D07E5B007C67A6 /* ControlScheme.swift */,
 				164F160325BB8EE3002A8D89 /* AppDelegate.swift */,
 				164F160525BB8EE3002A8D89 /* Chip8ViewController.swift */,
 				164F160725BB8EE6002A8D89 /* Assets.xcassets */,
@@ -138,17 +141,6 @@
 				164F161825BB8EE6002A8D89 /* Info.plist */,
 			);
 			path = "CHIP-8Tests";
-			sourceTree = "<group>";
-		};
-		16B52B0B25D07DD6007C67A6 /* InputHandling */ = {
-			isa = PBXGroup;
-			children = (
-				16B52B0C25D07DFD007C67A6 /* MacKeyCode.swift */,
-				16B52B1225D07E31007C67A6 /* Chip8KeyCode.swift */,
-				16B52B1625D07E46007C67A6 /* KeyMapping.swift */,
-				16B52B1A25D07E5B007C67A6 /* ControlScheme.swift */,
-			);
-			path = InputHandling;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
