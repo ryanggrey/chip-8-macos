@@ -1,6 +1,8 @@
 # README
 A Chip-8 emulator for macOS written in Swift.
 
+![](invaders.gif)
+
 ## References
 I made heavy use of the following resources when working on this project:
 - Checking runtime correctness:
