@@ -23,7 +23,7 @@ struct OpExecutor {
         self.cpuHz = cpuHz
     }
 
-    private func isAwaitingKey(op: Word) -> Bool {
+    private func isAwaitingKey(op: Word) {
         switch (op.nibble1, op.nibble2, op.nibble3, op.nibble4) {
         case (0x0f, _, 0x00, 0x0a):
             return true
