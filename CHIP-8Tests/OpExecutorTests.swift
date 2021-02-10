@@ -25,7 +25,7 @@ class OpExecutorTests: XCTestCase {
 
         let observedPixels = newState.screen.pixels
         let expectedPixels = [Byte](repeating: 0, count: state.screen.size.area)
-        XCTAssertEqual(observedPixels, expectedPixels)
+        XCTAssertTrue(false)
     }
 
     func test_CLS_0x00_increments_pc() {
