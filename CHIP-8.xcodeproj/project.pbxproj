@@ -11,7 +11,6 @@
 		164F160625BB8EE3002A8D89 /* Chip8ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F160525BB8EE3002A8D89 /* Chip8ViewController.swift */; };
 		164F160825BB8EE6002A8D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 164F160725BB8EE6002A8D89 /* Assets.xcassets */; };
 		164F160B25BB8EE6002A8D89 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 164F160925BB8EE6002A8D89 /* Main.storyboard */; };
-		164F161725BB8EE6002A8D89 /* OpExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164F161625BB8EE6002A8D89 /* OpExecutorTests.swift */; };
 		167368D625CAE33F002295FE /* Chip8View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167368D525CAE33F002295FE /* Chip8View.swift */; };
 		167368F525CB2F99002295FE /* RomSelectorModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167368F425CB2F98002295FE /* RomSelectorModal.swift */; };
 		16B52B0D25D07DFE007C67A6 /* MacKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B52B0C25D07DFD007C67A6 /* MacKeyCode.swift */; };
@@ -39,7 +38,6 @@
 		164F160C25BB8EE6002A8D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		164F160D25BB8EE6002A8D89 /* CHIP_8.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CHIP_8.entitlements; sourceTree = "<group>"; };
 		164F161225BB8EE6002A8D89 /* CHIP-8Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CHIP-8Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		164F161625BB8EE6002A8D89 /* OpExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpExecutorTests.swift; sourceTree = "<group>"; };
 		164F161825BB8EE6002A8D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		167368D525CAE33F002295FE /* Chip8View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chip8View.swift; sourceTree = "<group>"; };
 		167368F425CB2F98002295FE /* RomSelectorModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RomSelectorModal.swift; sourceTree = "<group>"; };
@@ -106,7 +104,6 @@
 		164F161525BB8EE6002A8D89 /* CHIP-8Tests */ = {
 			isa = PBXGroup;
 			children = (
-				164F161625BB8EE6002A8D89 /* OpExecutorTests.swift */,
 				164F161825BB8EE6002A8D89 /* Info.plist */,
 			);
 			path = "CHIP-8Tests";
@@ -231,7 +228,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				164F161725BB8EE6002A8D89 /* OpExecutorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
