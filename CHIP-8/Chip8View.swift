@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import Chip8Emulator
 
 class Chip8View: NSView {
     var screen: Chip8Screen?

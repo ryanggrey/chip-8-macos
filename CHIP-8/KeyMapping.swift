@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Chip8Emulator
 
 typealias KeyMapping = [MacKeyCode : Chip8KeyCode]
 
