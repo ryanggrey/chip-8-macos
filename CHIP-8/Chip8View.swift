@@ -35,28 +35,14 @@ class Chip8View: NSView {
     private func drawPixels() {
         guard let screen = screen, let pixelColor = pixelColor else { return }
 
-        // draw white pixels
-        pixelColor.setFill()
-        let pixelWidth = round(self.frame.size.width / CGFloat(screen.size.width))
-        let pixelHeight = round(self.frame.size.height / CGFloat(screen.size.height))
-        let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
-
-        let xRange = 0..<screen.size.width
-        let yRange = 0..<screen.size.height
-        for x in xRange {
-            for y in yRange {
-                let pixelAddress = y * screen.size.width + x
-                guard screen.pixels[pixelAddress] == 1 else {
-                    // skip if we're not meant to draw pixel
-                    continue
-                }
-
-                let xCoord = CGFloat(x) * pixelSize.width
-                let yCoord = CGFloat(y) * pixelSize.height
-                let origin = CGPoint(x: xCoord, y: yCoord)
-                let frame = NSRect(origin: origin, size: pixelSize)
-                frame.fill()
-            }
-        }
+        guard let context = NSGraphicsContext.current else { return }
+        let path = PathFactory.from(
+            screen: screen,
+            containerSize: self.frame.size,
+            isYReversed: false
+            )
+        context.cgContext.setFillColor(pixelColor.cgColor)
+        context.cgContext.addPath(path)
+        context.cgContext.fillPath()
     }
 }
