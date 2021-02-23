@@ -8,7 +8,7 @@
 import Foundation
 import Chip8Emulator
 
-typealias KeyMapping = [MacKeyCode : Chip8KeyCode]
+typealias KeyMapping = [MacKeyCode : Chip8InputCode]
 
 extension KeyMapping {
     static var wasd: KeyMapping {
