@@ -19,8 +19,8 @@ class Chip8ViewController: NSViewController {
     private var loadedRom: [Byte]?
     private var timer: Timer?
     private let cpuHz: TimeInterval = 1/600
-    private let beep = NSSound(data: NSDataAsset(name: "chip8-beep")!.data)!
     private var activeKeyMapping: KeyMapping?
+    private let beepPlayer = BeepPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,8 +72,8 @@ class Chip8ViewController: NSViewController {
     @objc private func timerFired() {
         chip8.cycle()
         render(screen: chip8.screen)
-        if chip8.shouldPlaySound && !beep.isPlaying {
-            beep.play()
+        if chip8.shouldPlaySound {
+            beepPlayer.play()
         }
     }
     
