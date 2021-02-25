@@ -11,7 +11,3 @@ Core Chip-8 emulator functionality is not handled by this project. This project 
 - How to run the Chip-8 emulator.
 - How to render the resulting Chip-8 emulator `pixels`.
 - How to collect and map user input to the Chip-8 emulator.
-
-## Assets
-### Sounds
-`chip8-beep.wav` file in Assets is from [Mixkit](https://mixkit.co), originally titled `mixkit-player-jumping-in-a-video-game-2043.wav`. See here for Mixkit [license](https://mixkit.co/license/#sfxFree).
