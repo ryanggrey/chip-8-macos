@@ -14,21 +14,25 @@ class Chip8ViewController: NSViewController {
     @IBOutlet weak var controlSchemeComboBox: NSComboBox!
     @IBOutlet weak var backgroundColorWell: NSColorWell!
     @IBOutlet weak var pixelColorWell: NSColorWell!
-    
-    private var chip8: Chip8!
+
     private var loadedRom: [Byte]?
-    private var timer: Timer?
-    private let cpuHz: TimeInterval = 1/600
     private var activeKeyMapping: KeyMapping?
+    private let chip8Engine = Chip8Engine()
     private let beepPlayer = BeepPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        resetControlScheme()
-        resetColors()
+
+        setupChip8Engine()
+        setupControlScheme()
+        setupColors()
+    }
+
+    private func setupChip8Engine() {
+        chip8Engine.delegate = self
     }
     
-    private func resetColors() {
+    private func setupColors() {
         backgroundColorWell.color = NSColor.black
         updateBackground(color: backgroundColorWell.color)
         pixelColorWell.color = NSColor.white
@@ -53,55 +57,32 @@ class Chip8ViewController: NSViewController {
     }
     
     private func runEmulator(with rom: [Byte]) {
-        var chipState = ChipState()
-        chipState.ram = rom
-        
-        self.chip8 = Chip8(
-            state: chipState,
-            cpuHz: cpuHz
-        )
-        timer = Timer.scheduledTimer(
-            timeInterval: cpuHz,
-            target: self,
-            selector: #selector(self.timerFired),
-            userInfo: nil,
-            repeats: true
-        )
-    }
-    
-    @objc private func timerFired() {
-        chip8.cycle()
-        render(screen: chip8.screen)
-        if chip8.shouldPlaySound {
-            beepPlayer.play()
-        }
-    }
-    
-    private func render(screen: Chip8Screen) {
-        chip8View.screen = screen
-        chip8View.needsDisplay = true
+        chip8Engine.start(with: rom)
     }
     
     override func keyDown(with event: NSEvent) {
         guard let key = chip8Key(from: event.keyCode), !event.isARepeat else { return }
-        chip8.handleKeyDown(key: key)
+        chip8Engine.handleKeyDown(key: key)
     }
     
     override func keyUp(with event: NSEvent) {
         guard let key = chip8Key(from: event.keyCode), !event.isARepeat else { return }
-        chip8.handleKeyUp(key: key)
+        chip8Engine.handleKeyUp(key: key)
     }
     
     override var acceptsFirstResponder: Bool {
         return true
     }
     
-    private func chip8Key(from input: UInt16) -> Int? {
-        guard let key = MacKeyCode(rawValue: input) else { return nil }
-        return activeKeyMapping?[key]?.rawValue
+    private func chip8Key(from input: UInt16) -> Chip8InputCode? {
+        guard let key = MacKeyCode(rawValue: input),
+              let inputCode = activeKeyMapping?[key]
+              else { return nil }
+
+        return inputCode
     }
     
-    private func resetControlScheme() {
+    private func setupControlScheme() {
         controlSchemeComboBox.dataSource = self
         controlSchemeComboBox.delegate = self
         controlSchemeComboBox.selectItem(at: 0)
@@ -137,12 +118,12 @@ extension Chip8ViewController: NSComboBoxDataSource, NSComboBoxDelegate {
 // handle control actions
 extension Chip8ViewController {
     @IBAction func loadRomPressed(_ sender: NSButton) {
-        timer?.invalidate()
+        chip8Engine.stop()
         self.runRomSelectorModal()
     }
     
     @IBAction func restartPressed(_ sender: NSButton) {
-        timer?.invalidate()
+        chip8Engine.stop()
         guard let loadedRom = loadedRom else { return }
         self.runEmulator(with: loadedRom)
     }
@@ -153,6 +134,17 @@ extension Chip8ViewController {
     
     @IBAction func pixelColourChanged(_ sender: NSColorWell) {
         updatePixel(color: sender.color)
+    }
+}
+
+extension Chip8ViewController: Chip8EngineDelegate {
+    func beep() {
+        beepPlayer.play()
+    }
+    
+    func render(screen: Chip8Screen) {
+        chip8View.screen = screen
+        chip8View.needsDisplay = true
     }
 }
 
