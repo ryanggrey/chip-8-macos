@@ -4,7 +4,7 @@ A Chip-8 emulator for macOS written in Swift.
 ![](invaders.gif)
 
 ## Architecture
-The core Chip-8 emulator functionality is implemented in [this Swift pacakge](https://github.com/ryanggrey/Chip8EmulatorPackage) which this project uses as a dependency. 
+The core Chip-8 emulator functionality is implemented in [this Swift package](https://github.com/ryanggrey/Chip8EmulatorPackage) which this project uses as a dependency. 
 
 Core Chip-8 emulator functionality is not handled by this project. This project concerns itself with:
 - How to select and load ROMs into the Chip-8 engine
