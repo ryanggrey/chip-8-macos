@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Carbon
 
 enum MacKeyCode: CGKeyCode {
     case zero = 0x1D
